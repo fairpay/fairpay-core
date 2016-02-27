@@ -1,0 +1,3 @@
+fairpay_homepage:
+    path:     /
+    defaults: { _controller: FairpayShowcaseBundle:Showcase:index }

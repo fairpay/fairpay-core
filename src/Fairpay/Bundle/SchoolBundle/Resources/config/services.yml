@@ -1,0 +1,5 @@
+services:
+    school_manager:
+        class: Fairpay\Bundle\SchoolBundle\Manager\SchoolManager
+        arguments:
+            - "@doctrine.orm.entity_manager"

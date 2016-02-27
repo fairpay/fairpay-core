@@ -1,0 +1,8 @@
+fairpay_showcase:
+    resource: "@FairpayShowcaseBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fairpay_school:
+    resource: "@FairpaySchoolBundle/Resources/config/routing.yml"
+    prefix:   /
+
