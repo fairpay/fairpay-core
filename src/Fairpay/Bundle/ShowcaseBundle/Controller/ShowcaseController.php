@@ -19,6 +19,11 @@ class ShowcaseController extends FairpayController
         if ($request->isMethod('POST')) {
             if ($form->handleRequest($request)->isValid()) {
                 $this->get('school_manager')->create($form->getData());
+
+                return $this->redirectToRoute(
+                    'fairpay_school_registration_email_sent',
+                    array('email' => $form->getData()->email)
+                );
             }
         }
 

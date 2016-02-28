@@ -30,7 +30,7 @@ class SchoolCreationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Fairpay\Bundle\SchoolBundle\Form\Entity\SchoolCreation'
+            'data_class' => 'Fairpay\Bundle\SchoolBundle\Form\SchoolCreation'
         ));
     }
 }

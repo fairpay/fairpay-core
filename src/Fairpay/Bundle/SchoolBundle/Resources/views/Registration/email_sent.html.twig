@@ -1,0 +1,5 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+    Félicitation, vous pouvez continuer en ouvrant l'email envoyé a <b>{{ app.request.query.get('email') }}</b>
+{% endblock %}

@@ -2,6 +2,8 @@
 
 namespace Fairpay\Bundle\SchoolBundle\Repository;
 
+use Fairpay\Bundle\SchoolBundle\Entity\School;
+
 /**
  * SchoolRepository
  *
@@ -10,4 +12,17 @@ namespace Fairpay\Bundle\SchoolBundle\Repository;
  */
 class SchoolRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findWithOldSlug($oldSlug)
+    {
+        $result = $this->createQueryBuilder('s')
+            ->where('s.oldSlugs LIKE :slug')
+            ->setParameter('slug', "%$oldSlug%")
+            ->getQuery()
+            ->getResult();
+
+        return array_filter($result, function($school) use($oldSlug) {
+            /** @var School $school */
+            return in_array($oldSlug, $school->getOldSlugs());
+        });
+    }
 }

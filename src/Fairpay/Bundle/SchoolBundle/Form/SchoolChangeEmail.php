@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Fairpay\Bundle\SchoolBundle\Form\Registration;
+namespace Fairpay\Bundle\SchoolBundle\Form;
 
 use Fairpay\Util\Email\Validator\Constraints\NotDisposableEmail;
 use Symfony\Component\Validator\Constraints as Assert;

@@ -1,0 +1,15 @@
+{% extends "@FairpaySchool/Registration/layout.html.twig" %}
+
+{% block body %}
+    <h1>Votre URL</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <p>
+            Choisissez quelque chose de court et de facile à retenir.
+        </p>
+        <p>
+            Votre url ne peut contenir que des lettres minuscules, des tirets et des chiffres (et doit forcément commencer par une lettre).
+        </p>
+        <button>Suivant</button>
+    {{ form_end(form) }}
+{% endblock %}

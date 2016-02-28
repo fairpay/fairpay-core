@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Fairpay\Bundle\SchoolBundle\Form\Entity;
+namespace Fairpay\Bundle\SchoolBundle\Form;
 
 use Fairpay\Util\Email\Validator\Constraints\NotDisposableEmail;
 use Fairpay\Util\Validator\Constraints\UniqueEntity;

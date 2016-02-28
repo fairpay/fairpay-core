@@ -166,6 +166,15 @@ class School
         return $this->oldSlugs;
     }
 
+    public function addOldSlug($slug)
+    {
+        if (!is_array($this->oldSlugs)) {
+            $this->oldSlugs = array();
+        }
+
+        $this->oldSlugs[] = $slug;
+    }
+
     /**
      * Set email
      *

@@ -63,7 +63,7 @@ class UniqueEntityValidator extends ConstraintValidator
         $repo = $this->em->getRepository($constraint->entity);
         $result = $repo->findBy($criteria);
 
-        if (0 === count($result)) {
+        if (0 === count($result) || (1 === count($result) && isset($object->id) && $object->id == $result[0]->getId())) {
             return;
         }
 

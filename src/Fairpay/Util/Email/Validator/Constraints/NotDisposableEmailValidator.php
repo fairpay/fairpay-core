@@ -33,7 +33,7 @@ class NotDisposableEmailValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof NotDisposableEmail) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\UniqueEntity');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\NotDisposableEmail');
         }
 
         if ($this->emailHelper->isDisposable($value)) {

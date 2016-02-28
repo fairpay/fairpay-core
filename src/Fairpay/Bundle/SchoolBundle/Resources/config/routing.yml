@@ -1,3 +1,7 @@
+fairpay_school_registration_email_sent:
+    path:     /register/success
+    defaults: { _controller: FrameworkBundle:Template:template, template: "@FairpaySchool/Registration/email_sent.html.twig" }
+
 fairpay_school_registration_step1:
     path:     /register/{registrationToken}/1
     defaults: { _controller: FairpaySchoolBundle:Registration:step1 }
@@ -5,3 +9,7 @@ fairpay_school_registration_step1:
 fairpay_school_registration_step2:
     path:     /register/{registrationToken}/2
     defaults: { _controller: FairpaySchoolBundle:Registration:step2 }
+
+fairpay_school_registration_step3:
+    path:     /register/{registrationToken}/3
+    defaults: { _controller: FairpaySchoolBundle:Registration:step3 }

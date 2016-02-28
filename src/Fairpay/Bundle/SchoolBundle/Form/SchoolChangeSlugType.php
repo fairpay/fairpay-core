@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SchoolChangeEmailType extends AbstractType
+class SchoolChangeSlugType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,7 +15,7 @@ class SchoolChangeEmailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
+            ->add('slug')
         ;
     }
     
@@ -25,7 +25,7 @@ class SchoolChangeEmailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Fairpay\Bundle\SchoolBundle\Form\SchoolChangeEmail'
+            'data_class' => 'Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlug'
         ));
     }
 }

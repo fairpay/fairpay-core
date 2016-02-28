@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Fairpay\Util\Email\Validator\Constraints;
+namespace Fairpay\Bundle\SchoolBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
-class NotDisposableEmail extends Constraint
+class SchoolSlug extends Constraint
 {
-    public $message = 'Utilisez une vrai adresse mail.';
+    public $message = 'Cette url n\'est pas valide.';
 
     public function getDefaultOption()
     {
@@ -24,10 +24,5 @@ class NotDisposableEmail extends Constraint
     public function getTargets()
     {
         return self::PROPERTY_CONSTRAINT;
-    }
-
-    public function validatedBy()
-    {
-        return 'fairpay.not_disposable_email';
     }
 }

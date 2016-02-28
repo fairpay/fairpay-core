@@ -2,10 +2,13 @@
 
 {% block body %}
     <h1>Nom de l'école</h1>
-    <input ng-model="ctrl.school.name">
-    <p>
-        Cela permettra aux élèves de trouver facilement votre BDE sur Fairpay.
-    </p>
 
-    <button ng-click="ctrl.next()">Suivant</button>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <p>
+            Cela permettra aux élèves de trouver facilement votre BDE sur Fairpay.
+        </p>
+
+        <button>Suivant</button>
+    {{ form_end(form) }}
 {% endblock %}
