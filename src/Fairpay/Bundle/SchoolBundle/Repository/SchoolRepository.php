@@ -12,6 +12,12 @@ use Fairpay\Bundle\SchoolBundle\Entity\School;
  */
 class SchoolRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Find all Schools having the old_slug $oldSlug
+     *
+     * @param string $oldSlug
+     * @return array
+     */
     public function findWithOldSlug($oldSlug)
     {
         $result = $this->createQueryBuilder('s')

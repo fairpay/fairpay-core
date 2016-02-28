@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Just like the standard Symfony UniqueEntity constraint but with an extra entity field (should be the entity shortcut
- * name).
+ * name). If the object has a public $id field it will be used to check against any result from the DB.
  *
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})

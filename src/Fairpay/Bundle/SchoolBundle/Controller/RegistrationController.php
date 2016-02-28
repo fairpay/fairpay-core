@@ -25,15 +25,13 @@ class RegistrationController extends FairpayController
     {
         $form = $this->createForm(SchoolChangeEmailType::class);
 
-        if ($request->isMethod('POST')) {
-            if ($form->handleRequest($request)->isValid()) {
-                $this->get('school_manager')->updateEmail($form->getData(), $school);
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $this->get('school_manager')->updateEmail($form->getData(), $school);
 
-                return $this->redirectToRoute(
-                    'fairpay_school_registration_email_sent',
-                    array('email' => $form->getData()->email)
-                );
-            }
+            return $this->redirectToRoute(
+                'fairpay_school_registration_email_sent',
+                array('email' => $form->getData()->email)
+            );
         }
 
         return array(
@@ -52,15 +50,13 @@ class RegistrationController extends FairpayController
     {
         $form = $this->createForm(SchoolChangeNameType::class, new SchoolChangeName($school));
 
-        if ($request->isMethod('POST')) {
-            if ($form->handleRequest($request)->isValid()) {
-                $this->get('school_manager')->updateName($form->getData(), $school);
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $this->get('school_manager')->updateName($form->getData(), $school);
 
-                return $this->redirectToRoute(
-                    'fairpay_school_registration_step3',
-                    array('registrationToken' => $school->getRegistrationToken())
-                );
-            }
+            return $this->redirectToRoute(
+                'fairpay_school_registration_step3',
+                array('registrationToken' => $school->getRegistrationToken())
+            );
         }
 
         return array(
@@ -79,15 +75,13 @@ class RegistrationController extends FairpayController
     {
         $form = $this->createForm(SchoolChangeSlugType::class, new SchoolChangeSlug($school));
 
-        if ($request->isMethod('POST')) {
-            if ($form->handleRequest($request)->isValid()) {
-                $this->get('school_manager')->updateSlug($form->getData(), $school);
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $this->get('school_manager')->updateSlug($form->getData(), $school);
 
-                return $this->redirectToRoute(
-                    'fairpay_school_registration_step4',
-                    array('registrationToken' => $school->getRegistrationToken())
-                );
-            }
+            return $this->redirectToRoute(
+                'fairpay_school_registration_step4',
+                array('registrationToken' => $school->getRegistrationToken())
+            );
         }
 
         return array(

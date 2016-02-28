@@ -11,20 +11,20 @@ class ShowcaseController extends FairpayController
 {
     /**
      * @Template()
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexAction(Request $request)
     {
         $form = $this->createForm(SchoolCreationType::class);
 
-        if ($request->isMethod('POST')) {
-            if ($form->handleRequest($request)->isValid()) {
-                $this->get('school_manager')->create($form->getData());
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $this->get('school_manager')->create($form->getData());
 
-                return $this->redirectToRoute(
-                    'fairpay_school_registration_email_sent',
-                    array('email' => $form->getData()->email)
-                );
-            }
+            return $this->redirectToRoute(
+                'fairpay_school_registration_email_sent',
+                array('email' => $form->getData()->email)
+            );
         }
 
         return array(

@@ -22,16 +22,34 @@ class EmailHelper
         $this->standardDomains = $standardDomains;
     }
 
+    /**
+     * Checks whether or not an email is disposable based on a black list of domains (cf: app/config/email).
+     *
+     * @param string $email
+     * @return bool
+     */
     public function isDisposable($email)
     {
         return in_array($this->getDomain($email), $this->disposableDomains);
     }
 
+    /**
+     * Checks whether or not an email is from a known provider based on a white list of domains (cf: app/config/email).
+     *
+     * @param string $email
+     * @return bool
+     */
     public function isStandard($email)
     {
         return in_array($this->getMainDomain($email), $this->standardDomains);
     }
 
+    /**
+     * Get an email domain.
+     *
+     * @param string $email
+     * @return string|null
+     */
     public function getDomain($email)
     {
         try {
@@ -41,6 +59,12 @@ class EmailHelper
         }
     }
 
+    /**
+     * Get an email main domain (first domain after @ sign).
+     *
+     * @param string $email
+     * @return string|null
+     */
     public function getMainDomain($email)
     {
         try {

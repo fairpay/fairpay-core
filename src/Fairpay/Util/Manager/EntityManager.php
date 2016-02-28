@@ -35,5 +35,10 @@ abstract class EntityManager
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * This method should return the entity shortcut name to properly get the repository.
+     *
+     * @return string
+     */
     abstract public function getEntityShortcutName();
 }

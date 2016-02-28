@@ -6,6 +6,8 @@ namespace Fairpay\Util\Email\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * Make sure the email address is not disposable.
+ *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */

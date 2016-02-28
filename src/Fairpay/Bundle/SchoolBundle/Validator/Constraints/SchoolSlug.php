@@ -6,6 +6,8 @@ namespace Fairpay\Bundle\SchoolBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * Make sure property is a valid school slug.
+ *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */

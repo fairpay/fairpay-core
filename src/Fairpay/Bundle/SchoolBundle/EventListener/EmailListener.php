@@ -38,7 +38,7 @@ class EmailListener implements EventSubscriberInterface
     }
 
     /**
-     * Send a message with the activation link when a school is created.
+     * Send an email with the activation link when a school is created.
      *
      * @param SchoolEvent $event
      */
@@ -61,7 +61,7 @@ class EmailListener implements EventSubscriberInterface
     }
 
     /**
-     * Send a message with the new activation link when a school email changes.
+     * Send an email with the new activation link when a school email changes.
      *
      * @param SchoolEvent $event
      */

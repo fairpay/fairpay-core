@@ -9,7 +9,6 @@ use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlug;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolCreation;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeEmail;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeName;
-use Fairpay\Bundle\SchoolBundle\Repository\SchoolRepository;
 use Fairpay\Util\Manager\EntityManager;
 
 class SchoolManager extends EntityManager
@@ -17,7 +16,8 @@ class SchoolManager extends EntityManager
     const ENTITY_SHORTCUT_NAME = 'FairpaySchoolBundle:School';
 
     /**
-     * Create a School with a random registrationToken, save it, and dispatch onSchoolCreated event
+     * Create a School with a random registrationToken, save it, and dispatch onSchoolCreated event.
+     *
      * @param SchoolCreation $schoolCreation
      */
     public function create(SchoolCreation $schoolCreation)
@@ -31,6 +31,12 @@ class SchoolManager extends EntityManager
         $this->dispatcher->dispatch(SchoolEvent::onSchoolCreated, new SchoolEvent($school));
     }
 
+    /**
+     * Update School's email, generate a new random registrationToken, and dispatch onSchoolChangedEmail event.
+     *
+     * @param SchoolChangeEmail $schoolChangeEmail
+     * @param School            $school
+     */
     public function updateEmail(SchoolChangeEmail $schoolChangeEmail, School $school)
     {
         $school->setEmail($schoolChangeEmail->email);
@@ -42,6 +48,12 @@ class SchoolManager extends EntityManager
         $this->dispatcher->dispatch(SchoolEvent::onSchoolChangedEmail, new SchoolEvent($school));
     }
 
+    /**
+     * Update School's name.
+     *
+     * @param SchoolChangeName $schoolChangeName
+     * @param School           $school
+     */
     public function updateName(SchoolChangeName $schoolChangeName, School $school)
     {
         $school->setName($schoolChangeName->name);
@@ -49,18 +61,25 @@ class SchoolManager extends EntityManager
         $this->em->flush();
     }
 
+    /**
+     * Update School's slug
+     *
+     * @param SchoolChangeSlug $schoolChangeSlug
+     * @param School           $school
+     */
     public function updateSlug(SchoolChangeSlug $schoolChangeSlug, School $school)
     {
         $oldSlug = $school->getSlug();
         $school->setSlug($schoolChangeSlug->slug);
 
+        // Save old slug for legacy
         if ($oldSlug) {
             $school->addOldSlug($oldSlug);
         }
 
         $this->em->persist($school);
 
-        // Remove new slug from others school's old_slugs
+        // Remove new slug from others school's old_slugs to prevent conflicts
         foreach ($this->repo->findWithOldSlug($schoolChangeSlug->slug) as $s) {
             /** @var School $s */
             $slugs = $s->getOldSlugs();
