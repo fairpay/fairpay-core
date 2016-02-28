@@ -1,0 +1,21 @@
+{% extends "@FairpaySchool/Registration/layout.html.twig" %}
+
+{% block body %}
+    <h1>Bienvenue !</h1>
+    <h2>Vous êtes sur le point de booster votre BDE avec Fairpay.</h2>
+    <p>
+        Votre invitation a été envoyée à <b>{{ school.email }}</b>.
+    </p>
+    <p>
+        Est-ce bien l'adresse de votre BDE ?
+    </p>
+    <a href="{{ path('fairpay_school_registration_step2', {registrationToken: school.registrationToken}) }}">Oui, c'est bien ça</a>
+    <p>
+        Si ce n'est pas la bonne adresse vous pouvez changer. Nous vous enverrons alors une nouvelle invitation sur le champ.
+    </p>
+    {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+        <button>Changer d'adresse</button>
+    {{ form_end(form) }}
+{% endblock %}

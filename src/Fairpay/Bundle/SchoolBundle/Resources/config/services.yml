@@ -4,3 +4,11 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@event_dispatcher"
+
+    fairpay.school.email_listener:
+        class: Fairpay\Bundle\SchoolBundle\EventListener\EmailListener
+        arguments:
+            - "@mailer"
+            - "@twig"
+        tags:
+            - { name: kernel.event_subscriber }

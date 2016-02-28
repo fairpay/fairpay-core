@@ -6,8 +6,11 @@ namespace Fairpay\Bundle\SchoolBundle\Event;
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 use Symfony\Component\EventDispatcher\Event;
 
-class SchoolCreatedEvent extends Event
+class SchoolEvent extends Event
 {
+    const onSchoolCreated = 'fairpay.school.created';
+    const onSchoolChangedEmail = 'fairpay.school.changed_email';
+
     /**
      * @var School
      */

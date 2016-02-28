@@ -1,23 +1,17 @@
 <?php
 
 
-namespace Fairpay\Bundle\SchoolBundle\Form\Entity;
+namespace Fairpay\Bundle\SchoolBundle\Form\Registration;
 
 use Fairpay\Util\Email\Validator\Constraints\NotDisposableEmail;
-use Fairpay\Util\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Fairpay\Util\Validator\Constraints\UniqueEntity;
 
 /**
- * @UniqueEntity(fields="name", entity="FairpaySchoolBundle:School")
  * @UniqueEntity(fields="email", entity="FairpaySchoolBundle:School")
  */
-class SchoolRegister
+class SchoolChangeEmail
 {
-    /**
-     * @Assert\NotBlank()
-     */
-    public $name;
-
     /**
      * @Assert\NotBlank()
      * @Assert\Email()
