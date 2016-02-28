@@ -3,7 +3,8 @@
 
 namespace Fairpay\Bundle\SchoolBundle\Form\Entity;
 
-use Fairpay\Bundle\SchoolBundle\Validator\Constraints\UniqueEntity;
+use Fairpay\Util\Email\Validator\Constraints\NotDisposableEmail;
+use Fairpay\Util\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,6 +21,7 @@ class SchoolRegister
     /**
      * @Assert\NotBlank()
      * @Assert\Email()
+     * @NotDisposableEmail()
      */
     public $email;
 }

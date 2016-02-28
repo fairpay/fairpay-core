@@ -4,6 +4,8 @@ namespace Fairpay\Bundle\SchoolBundle\Manager;
 
 
 use Fairpay\Bundle\SchoolBundle\Entity\School;
+use Fairpay\Bundle\SchoolBundle\Event\SchoolCreatedEvent;
+use Fairpay\Bundle\SchoolBundle\Event\SchoolEvents;
 use Fairpay\Bundle\SchoolBundle\Form\Entity\SchoolRegister;
 use Fairpay\Bundle\SchoolBundle\Repository\SchoolRepository;
 use Fairpay\Util\Manager\EntityManager;
@@ -16,11 +18,6 @@ class SchoolManager extends EntityManager
 
     const ENTITY_SHORTCUT_NAME = 'FairpaySchoolBundle:School';
 
-    public function __construct(\Doctrine\ORM\EntityManager $entityManager)
-    {
-        parent::__construct($entityManager);
-    }
-
     public function register(SchoolRegister $schoolRegister)
     {
         $school = new School($schoolRegister->name, $schoolRegister->email);
@@ -28,6 +25,8 @@ class SchoolManager extends EntityManager
 
         $this->em->persist($school);
         $this->em->flush();
+
+        $this->dispatcher->dispatch(SchoolEvents::onSchoolCreated, new SchoolCreatedEvent($school));
     }
 
     public function getEntityShortcutName()

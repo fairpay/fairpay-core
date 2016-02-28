@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Fairpay\Bundle\SchoolBundle\Validator\Constraints;
+namespace Fairpay\Util\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

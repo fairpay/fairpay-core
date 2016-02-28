@@ -1,0 +1,20 @@
+services:
+    fairpay.email_helper:
+        class: Fairpay\Util\Email\Services\EmailHelper
+        arguments:
+            - %email.disposable%
+            - %email.standard%
+
+    validator.fairpay.unique_entity:
+        class: Fairpay\Util\Validator\Constraints\UniqueEntityValidator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: validator.constraint_validator, alias: fairpay.unique_entity }
+
+    validator.fairpay.not_disposable_email:
+        class: Fairpay\Util\Email\Validator\Constraints\NotDisposableEmailValidator
+        arguments:
+            - "@fairpay.email_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: fairpay.not_disposable_email }

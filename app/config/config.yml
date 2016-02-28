@@ -1,7 +1,10 @@
 imports:
-    - { resource: parameters.yml }
+    - { resource: parameters.yml, ignore_errors: true }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: email/disposable_domain.yml }
+    - { resource: email/standard_domain.yml }
+    - { resource: ../../src/Fairpay/Util/Resources/config/services.yml }
     - { resource: "@FairpaySchoolBundle/Resources/config/services.yml" }
     - { resource: "@FairpayShowcaseBundle/Resources/config/services.yml" }
 

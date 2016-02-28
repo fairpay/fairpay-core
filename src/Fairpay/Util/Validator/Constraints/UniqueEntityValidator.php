@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Fairpay\Bundle\SchoolBundle\Validator\Constraints;
+namespace Fairpay\Util\Validator\Constraints;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraint;
@@ -25,6 +25,12 @@ class UniqueEntityValidator extends ConstraintValidator
         $this->em = $em;
     }
 
+    /**
+     * Checks if the passed value is valid.
+     *
+     * @param mixed      $object     The value that should be validated
+     * @param Constraint $constraint The constraint for the validation
+     */
     public function validate($object, Constraint $constraint)
     {
         if (!$constraint instanceof UniqueEntity) {
