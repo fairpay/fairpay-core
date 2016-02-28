@@ -31,7 +31,7 @@ class School
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=20, unique=true)
+     * @ORM\Column(name="slug", type="string", length=20, unique=true, nullable=true)
      */
     private $slug;
 
@@ -77,6 +77,12 @@ class School
      */
     private $schoolYears;
 
+    public function __construct($name = null, $email = null)
+    {
+        $this->name = $name;
+        $this->email = $email;
+        $this->allowUnregisteredEmails = false;
+    }
 
     /**
      * Get id

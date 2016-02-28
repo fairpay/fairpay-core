@@ -3,3 +3,10 @@ services:
         class: Fairpay\Bundle\SchoolBundle\Manager\SchoolManager
         arguments:
             - "@doctrine.orm.entity_manager"
+
+    validator.fairpay.unique_entity:
+        class: Fairpay\Bundle\SchoolBundle\Validator\Constraints\UniqueEntityValidator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: validator.constraint_validator, alias: fairpay.unique_entity }

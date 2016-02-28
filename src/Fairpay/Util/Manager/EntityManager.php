@@ -11,12 +11,12 @@ abstract class EntityManager
     /**
      * @var DoctrineEM
      */
-    private $em;
+    protected $em;
 
     /**
      * @var EntityRepository
      */
-    private $repo;
+    protected $repo;
 
     /**
      * @param DoctrineEM $em
