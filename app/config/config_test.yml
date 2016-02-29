@@ -20,8 +20,5 @@ doctrine:
     dbal:
         driver:     pdo_sqlite
         host:       localhost
-        dbname:     fairpay_test
-        user:       ~
-        password:   ~
         charset:    UTF8
-        memory:     true
+        path:       "%kernel.root_dir%/../var/cache/sqlite.db.cache"

@@ -4,11 +4,19 @@
 namespace Fairpay\Util\Tests;
 
 use Doctrine\ORM\Tools\SchemaTool;
+use Fairpay\Util\Tests\Helpers\FillFormHelper;
+use Fairpay\Util\Tests\Helpers\MailHelper;
 use Fairpay\Util\Tests\Helpers\TestCaseHelper;
+use Fairpay\Util\Tests\Helpers\UrlHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @property FillFormHelper $fillForm
+ * @property UrlHelper $url
+ * @property MailHelper $mail
+ */
 abstract class WebTestCase extends BaseTestCase
 {
     /** @var \Doctrine\ORM\EntityManager */
@@ -33,7 +41,10 @@ abstract class WebTestCase extends BaseTestCase
 
         $metadata = $this->em->getMetadataFactory()->getAllMetadata();
         $tool = new SchemaTool($this->em);
+        $tool->dropDatabase();
         $tool->createSchema($metadata);
+
+        parent::setUp();
     }
 
     /**

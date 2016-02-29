@@ -35,4 +35,13 @@ abstract class TestCaseHelper
     {
         return $this->testCase->client->getCrawler();
     }
+
+    /**
+     * @param string $service
+     * @return object
+     */
+    protected function get($service)
+    {
+        return $this->testCase->container->get($service);
+    }
 }
