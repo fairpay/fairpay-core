@@ -14,6 +14,7 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>src/Fairpay/Bundle/*Bundle/Tests</directory>
+            <directory>src/Fairpay/Bundle/*Bundle/Tests/*</directory>
         </testsuite>
     </testsuites>
 

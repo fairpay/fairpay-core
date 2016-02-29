@@ -1,12 +1,12 @@
 imports:
     - { resource: config_dev.yml }
-    - { resource: parameters_test.yml }
 
 framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
     profiler:
+        enabled: true
         collect: false
 
 web_profiler:
@@ -15,3 +15,13 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        driver:     pdo_sqlite
+        host:       localhost
+        dbname:     fairpay_test
+        user:       ~
+        password:   ~
+        charset:    UTF8
+        memory:     true
