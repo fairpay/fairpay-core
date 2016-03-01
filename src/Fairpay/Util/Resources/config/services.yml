@@ -18,3 +18,17 @@ services:
             - "@fairpay.email_helper"
         tags:
             - { name: validator.constraint_validator, alias: fairpay.not_disposable_email }
+
+    validator.fairpay.not_standard_email:
+        class: Fairpay\Util\Email\Validator\Constraints\NotStandardEmailValidator
+        arguments:
+            - "@fairpay.email_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: fairpay.not_standard_email }
+
+    validator.fairpay.valid_domain:
+        class: Fairpay\Util\Email\Validator\Constraints\ValidDomainValidator
+        arguments:
+            - "@fairpay.email_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: fairpay.valid_domain }

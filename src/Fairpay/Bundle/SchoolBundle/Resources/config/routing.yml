@@ -13,3 +13,7 @@ fairpay_school_registration_step2:
 fairpay_school_registration_step3:
     path:     /register/{registrationToken}/3
     defaults: { _controller: FairpaySchoolBundle:Registration:step3 }
+
+fairpay_school_registration_step4:
+    path:     /register/{registrationToken}/4
+    defaults: { _controller: FairpaySchoolBundle:Registration:step4 }

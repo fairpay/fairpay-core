@@ -4,11 +4,13 @@
 namespace Fairpay\Bundle\SchoolBundle\Controller;
 
 use Fairpay\Bundle\SchoolBundle\Entity\School;
-use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeName;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeEmailType;
+use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeName;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeNameType;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlug;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlugType;
+use Fairpay\Bundle\SchoolBundle\Form\SchoolEmailPolicy;
+use Fairpay\Bundle\SchoolBundle\Form\SchoolEmailPolicyType;
 use Fairpay\Util\Controller\FairpayController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,6 +82,31 @@ class RegistrationController extends FairpayController
 
             return $this->redirectToRoute(
                 'fairpay_school_registration_step4',
+                array('registrationToken' => $school->getRegistrationToken())
+            );
+        }
+
+        return array(
+            'form' => $form->createView(),
+            'school' => $school,
+        );
+    }
+
+    /**
+     * @Template()
+     * @param Request $request
+     * @param School  $school
+     * @return array
+     */
+    public function step4Action(Request $request, School $school)
+    {
+        $form = $this->createForm(SchoolEmailPolicyType::class, new SchoolEmailPolicy($school));
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $this->get('school_manager')->updateEmailPolicy($form->getData(), $school);
+
+            return $this->redirectToRoute(
+                'fairpay_school_registration_step5',
                 array('registrationToken' => $school->getRegistrationToken())
             );
         }

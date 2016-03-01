@@ -19,6 +19,26 @@ class FillFormHelper extends TestCaseHelper
         $this->getClient()->submit($form, $data);
     }
 
+    public function registrationStep2($schoolName = null)
+    {
+        $form = $this->getForm('school_change_name');
+        if ($schoolName === null) {
+            $schoolName = $form->getValues()['school_change_name[name]'];
+        }
+
+        $this->getClient()->submit($form, array(
+            'school_change_name[name]' => $schoolName,
+        ));
+    }
+
+    public function registrationStep3($schoolSlug = 'esiee')
+    {
+        $form = $this->getForm('school_change_slug');
+        $this->getClient()->submit($form, array(
+            'school_change_slug[slug]' => $schoolSlug,
+        ));
+    }
+
     /**
      * Get a form from its name.
      *

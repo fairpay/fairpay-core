@@ -4,8 +4,6 @@
 namespace Fairpay\Util\Email\Services;
 
 
-use Symfony\Component\Debug\Exception\ContextErrorException;
-
 class EmailHelper
 {
     private $disposableDomains;
@@ -45,33 +43,62 @@ class EmailHelper
     }
 
     /**
-     * Get an email domain.
+     * Checks if domain is valid.
      *
      * @param string $email
-     * @return string|null
+     * @return bool
      */
-    public function getDomain($email)
+    public function isValidDomain($email)
     {
-        try {
-            return explode('@', $email)[1];
-        } catch(ContextErrorException $e) {
-            return null;
-        }
+        return 1 === preg_match('/^([a-z](-?[a-z0-9]+)+-?\.)+[a-z]{2,4}$/', $this->getDomain($email));
     }
 
     /**
-     * Get an email main domain (first domain after @ sign).
+     * Get an email domain. Return what comes after the @ sign, or the whole string if no @ sign is found.
+     *
+     * @param string $email
+     * @return string
+     */
+    public function getDomain($email)
+    {
+        $email = $this->getEmail($email);
+
+        $parts = explode('@', $email);
+        return isset($parts[1]) ? $parts[1] : $email;
+    }
+
+    /**
+     * Get an email main domain (first domain before the first dot).
      *
      * @param string $email
      * @return string|null
      */
     public function getMainDomain($email)
     {
-        try {
-            preg_match('/@([^.]+)\./', $email, $matches);
-            return $matches[1];
-        } catch(ContextErrorException $e) {
-            return null;
+        $domain = $this->getDomain($email);
+        return substr($domain, 0, strpos($domain, '.'));
+    }
+
+    /**
+     * If $email is an object returns the result of $email->getEmail(), return $email otherwise.
+     *
+     * @param object|string $email
+     * @return string
+     */
+    public function getEmail($email)
+    {
+        if (is_string($email)) {
+            return $email;
         }
+
+        if (is_object($email)) {
+            if (method_exists($email, 'getEmail')) {
+                return $email->getEmail();
+            }
+
+            throw new \InvalidArgumentException('Object does not have a method getEmail.');
+        }
+
+        throw new \InvalidArgumentException('Argument must be a string or an object.');
     }
 }

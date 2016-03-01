@@ -1,0 +1,28 @@
+{% extends "@FairpaySchool/Registration/layout.html.twig" %}
+
+{% block body %}
+    <h1>Adresses mail</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.allowUnregisteredEmails) }}
+        <p>
+            Vous pouvez autoriser les élèves à s'inscrire d'eux même à partir de l'adresse fournie par l'école.
+            Sinon seuls les élèves que vous aurez ajouté à la liste d'élèves pourront s'inscrire.
+        </p>
+        <p>
+            Si vous avez la liste des élèves en votre possession nous vous conseillons de désactiver cette option pour plus de sécurité.
+        </p>
+        <div>
+            <h2>Adresses de l'école</h2>
+
+            <p>
+                Les adresses autorisées finiront en :
+            </p>
+
+            {{ form_widget(form.allowedEmailDomains) }}
+            {{ form_errors(form.allowedEmailDomains) }}
+            <p class="help-block">Séparer les domaines par une virgule</p>
+        </div>
+        <button>Suivant</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -23,49 +23,42 @@ class School
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=100, unique=true)
      */
     private $name;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="slug", type="string", length=20, unique=true, nullable=true)
      */
     private $slug;
 
     /**
      * @var array
-     *
      * @ORM\Column(name="old_slugs", type="simple_array", nullable=true)
      */
     private $oldSlugs;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="registration_token", type="string", length=255, nullable=true)
      */
     private $registrationToken;
 
     /**
      * @var bool
-     *
      * @ORM\Column(name="allow_unregistered_emails", type="boolean")
      */
     private $allowUnregisteredEmails;
 
     /**
      * @var array
-     *
      * @ORM\Column(name="allowed_email_domains", type="simple_array", nullable=true)
      */
     private $allowedEmailDomains;
