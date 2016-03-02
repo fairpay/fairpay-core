@@ -15,18 +15,20 @@ class SchoolRegistrationTest extends WebTestCase
         $this->completeStep1();
         $this->completeStep2();
         $this->completeStep3();
+        $this->completeStep4();
     }
 
     /**
      * Register from the homepage and get the registration token from the email.
-     * @param array $data
+     * @param null|string $name
+     * @param null|string $email
      * @return string registration token
      */
-    protected function registerFromHomepage(array $data = array())
+    protected function registerFromHomepage($name = 'ESIEE Paris', $email = 'bde@edu.esiee.fr')
     {
         $this->client->request('GET', $this->url->showcase());
         $this->mail->catchMails();
-        $this->fillForm->schoolCreation($data);
+        $this->fillForm->schoolCreation($name, $email);
         $this->registrationToken = $this->getRegistrationTokenFromMail();
         $this->client->followRedirect();
 
@@ -65,6 +67,18 @@ class SchoolRegistrationTest extends WebTestCase
     protected function completeStep3($schoolSlug = 'esiee')
     {
         $this->fillForm->registrationStep3($schoolSlug);
+        $this->client->followRedirect();
+    }
+
+    /**
+     * Send the form and go to step 4.
+     * @param bool|null  $allowUnregisteredEmails
+     * @param string|null $allowedEmailDomains
+     * @internal param string $schoolSlug
+     */
+    protected function completeStep4($allowUnregisteredEmails = null, $allowedEmailDomains = null)
+    {
+        $this->fillForm->registrationStep4($allowUnregisteredEmails, $allowedEmailDomains);
         $this->client->followRedirect();
     }
 

@@ -35,7 +35,6 @@ class SchoolEmailPolicy
      */
     public function validate(ExecutionContextInterface $context)
     {
-        dump(count($this->allowedEmailDomains));
         if (!count($this->allowedEmailDomains) && $this->allowUnregisteredEmails) {
             $context->buildViolation('Si vous autorisez l\'inscription avec une adresse de l\'école, vous devez indiquer le domaine.')
                 ->atPath('allowedEmailDomains')

@@ -8,34 +8,33 @@ namespace Fairpay\Util\Tests\Helpers;
  */
 class FillFormHelper extends TestCaseHelper
 {
-    public function schoolCreation(array $data = array())
+    public function schoolCreation($name = 'ESIEE Paris', $email = 'bde@edu.esiee.fr')
     {
-        $form = $this->getForm('school_creation');
-        $data = array_merge(array(
-            'school_creation[name]' => 'ESIEE Paris',
-            'school_creation[email]' => 'bde@edu.esiee.fr',
-        ), $data);
-
-        $this->getClient()->submit($form, $data);
+        $this->sendForm('school_creation', array(
+            'name' => $name,
+            'email' => $email,
+        ));
     }
 
     public function registrationStep2($schoolName = null)
     {
-        $form = $this->getForm('school_change_name');
-        if ($schoolName === null) {
-            $schoolName = $form->getValues()['school_change_name[name]'];
-        }
-
-        $this->getClient()->submit($form, array(
-            'school_change_name[name]' => $schoolName,
+        $this->sendForm('school_change_name', array(
+            'name' => $schoolName,
         ));
     }
 
     public function registrationStep3($schoolSlug = 'esiee')
     {
-        $form = $this->getForm('school_change_slug');
-        $this->getClient()->submit($form, array(
-            'school_change_slug[slug]' => $schoolSlug,
+        $this->sendForm('school_change_slug', array(
+            'slug' => $schoolSlug,
+        ));
+    }
+
+    public function registrationStep4($allowUnregisteredEmails = null, $allowedEmailDomains = null)
+    {
+        $this->sendForm('school_email_policy', array(
+            'allowUnregisteredEmails' => $allowUnregisteredEmails,
+            'allowedEmailDomains' => $allowedEmailDomains,
         ));
     }
 
@@ -48,5 +47,15 @@ class FillFormHelper extends TestCaseHelper
     protected function getForm($name)
     {
         return $this->getCrawler()->filter("form[name=$name]")->form();
+    }
+
+    protected function sendForm($name, $data)
+    {
+        $form = $this->getForm($name);
+        $formData = array();
+        foreach($data as $key => $value) {
+            $formData[$name."[$key]"] = $value === null ? $form->getValues()[$name."[$key]"] : $value;
+        }
+        $this->getClient()->submit($form, $formData);
     }
 }
