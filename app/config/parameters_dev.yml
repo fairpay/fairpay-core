@@ -13,3 +13,5 @@ parameters:
     mailer_password:   ~
 
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    base_host:         fairpay.local

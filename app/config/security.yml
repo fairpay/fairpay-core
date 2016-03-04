@@ -1,13 +1,28 @@
 security:
+    encoders:
+        Fairpay\Bundle\UserBundle\Security\UserProvider:
+            algorithm: bcrypt
 
     providers:
-        in_memory:
-            memory: ~
+        fairpay_db:
+            id: user_provider
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        showcase:
+            host: ^(www\.)?%base_host%$
+            stateless: true
             anonymous: ~
+
+        api:
+            host: ^api\.%base_host%$
+            stateless: true
+            anonymous: ~
+
+        school:
+            host: ^[^.]+\.%base_host%$
+            anonymous: ~
+

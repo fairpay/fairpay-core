@@ -10,10 +10,15 @@ use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeName;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlug;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolCreation;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolEmailPolicy;
+use Fairpay\Bundle\SchoolBundle\Repository\SchoolRepository;
 use Fairpay\Util\Email\Services\EmailHelper;
 use Fairpay\Util\Manager\EntityManager;
+use Fairpay\Util\Util\TokenGeneratorInterface;
 use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 
+/**
+ * @property SchoolRepository $repo
+ */
 class SchoolManager extends EntityManager
 {
     const ENTITY_SHORTCUT_NAME = 'FairpaySchoolBundle:School';
@@ -21,16 +26,59 @@ class SchoolManager extends EntityManager
     /** @var EmailHelper */
     private $emailHelper;
 
+    /** @var TokenGeneratorInterface */
+    private $tokenGenerator;
+
+    /** @var School */
+    private $currentSchool;
+
     /**
      * SchoolManager constructor.
      * @param DoctrineEM               $em
      * @param TraceableEventDispatcher $dispatcher
      * @param EmailHelper              $emailHelper
+     * @param TokenGeneratorInterface  $tokenGenerator
      */
-    public function __construct(DoctrineEM $em, TraceableEventDispatcher $dispatcher, EmailHelper $emailHelper)
+    public function __construct(DoctrineEM $em, TraceableEventDispatcher $dispatcher, EmailHelper $emailHelper, TokenGeneratorInterface $tokenGenerator)
     {
         parent::__construct($em, $dispatcher);
         $this->emailHelper = $emailHelper;
+        $this->tokenGenerator = $tokenGenerator;
+    }
+
+    /**
+     * Get the School matching the subdomain.
+     * @return School
+     */
+    public function getCurrentSchool()
+    {
+        return $this->currentSchool;
+    }
+
+    /**
+     * Set the School matching the subdomain.
+     * @param string $slug
+     * @return School|null
+     * @throws CurrentSchoolAlreadySetException
+     */
+    public function setCurrentSchool($slug)
+    {
+        if ($this->currentSchool) {
+            throw new CurrentSchoolAlreadySetException('Current school has already been set.');
+        }
+
+        $this->currentSchool = $this->repo->findOneBy(array('slug' => $slug));
+        return $this->currentSchool;
+    }
+
+    /**
+     * Check if a slug is valid.
+     * @param string $slug
+     * @return bool
+     */
+    public function isValidSlug($slug)
+    {
+        return preg_match('/^[a-z](-?[a-z0-9]+)+$/', $slug) && !in_array($slug, ['api', 'www']);
     }
 
     /**
@@ -149,7 +197,7 @@ class SchoolManager extends EntityManager
 
     private function generateRegistrationToken()
     {
-        return rtrim(strtr(base64_encode(base64_encode(random_bytes(16))), '+/', '-_'), '=');
+        return $this->tokenGenerator->generateToken();
     }
 
     public function getEntityShortcutName()

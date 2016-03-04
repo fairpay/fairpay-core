@@ -5,6 +5,11 @@ services:
             - %email.disposable%
             - %email.standard%
 
+    fairpay.token_generator:
+        class: Fairpay\Util\Util\TokenGenerator
+
+    # Validators
+
     validator.fairpay.unique_entity:
         class: Fairpay\Util\Validator\Constraints\UniqueEntityValidator
         arguments:

@@ -27,4 +27,9 @@ class SchoolSlug extends Constraint
     {
         return self::PROPERTY_CONSTRAINT;
     }
+
+    public function validatedBy()
+    {
+        return 'fairpay.school_slug';
+    }
 }

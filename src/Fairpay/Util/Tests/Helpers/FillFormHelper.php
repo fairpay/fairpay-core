@@ -16,6 +16,13 @@ class FillFormHelper extends TestCaseHelper
         ));
     }
 
+    public function registrationChangeEmail($email = 'bde@edu.esiee.fr')
+    {
+        $this->sendForm('school_change_email', array(
+            'email' => $email,
+        ));
+    }
+
     public function registrationStep2($schoolName = null)
     {
         $this->sendForm('school_change_name', array(

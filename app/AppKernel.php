@@ -1,7 +1,7 @@
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
@@ -18,6 +18,7 @@ class AppKernel extends Kernel
 
             new Fairpay\Bundle\SchoolBundle\FairpaySchoolBundle(),
             new Fairpay\Bundle\ShowcaseBundle\FairpayShowcaseBundle(),
+            new Fairpay\Bundle\UserBundle\FairpayUserBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

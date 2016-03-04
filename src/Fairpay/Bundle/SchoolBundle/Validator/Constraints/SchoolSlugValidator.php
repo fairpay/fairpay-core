@@ -3,12 +3,25 @@
 
 namespace Fairpay\Bundle\SchoolBundle\Validator\Constraints;
 
+use Fairpay\Bundle\SchoolBundle\Manager\SchoolManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class SchoolSlugValidator extends ConstraintValidator
 {
+    /** @var  SchoolManager */
+    private $schoolManager;
+
+    /**
+     * SchoolSlugValidator constructor.
+     * @param SchoolManager $schoolManager
+     */
+    public function __construct(SchoolManager $schoolManager)
+    {
+        $this->schoolManager = $schoolManager;
+    }
+
     /**
      *
      * @param mixed      $value      The value that should be validated
@@ -20,7 +33,7 @@ class SchoolSlugValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\SchoolSlug');
         }
 
-        if (!preg_match('/^[a-z](-?[a-z0-9]+)+$/', $value) || in_array($value, ['api', 'www'])) {
+        if ('' != $value && !$this->schoolManager->isValidSlug($value)) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

@@ -5,6 +5,19 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@event_dispatcher"
             - "@fairpay.email_helper"
+            - "@fairpay.token_generator"
+
+    # Validator
+
+    validator.fairpay.school_slug:
+        class: Fairpay\Bundle\SchoolBundle\Validator\Constraints\SchoolSlugValidator
+        arguments:
+            - "@school_manager"
+        tags:
+            - { name: validator.constraint_validator, alias: fairpay.school_slug }
+
+
+    # Listener
 
     fairpay.school.email_listener:
         class: Fairpay\Bundle\SchoolBundle\EventListener\EmailListener
@@ -13,3 +26,12 @@ services:
             - "@twig"
         tags:
             - { name: kernel.event_subscriber }
+
+    fairpay.school.current_school_listener:
+        class: Fairpay\Bundle\SchoolBundle\EventListener\CurrentSchoolListener
+        arguments:
+            - "@school_manager"
+            - "%base_host%"
+            - "@router"
+        tags:
+            - { name: kernel.event_listener, method: onKernelRequest, event: kernel.request }

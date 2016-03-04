@@ -8,12 +8,14 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 /**
  * @method string showcase()
  * @method string registrationStep1($registrationToken)
+ * @method string registrationStep3($registrationToken)
  */
 class UrlHelper extends TestCaseHelper
 {
     static $routes = array(
         'showcase' => 'fairpay_homepage',
         'registrationStep1' => ['fairpay_school_registration_step1', 'registrationToken'],
+        'registrationStep3' => ['fairpay_school_registration_step3', 'registrationToken'],
     );
 
     /**
