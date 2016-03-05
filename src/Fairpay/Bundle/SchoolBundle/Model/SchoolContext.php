@@ -6,7 +6,7 @@ namespace Fairpay\Bundle\SchoolBundle\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 
-class SchoolContext implements SchoolContextInterface
+abstract class SchoolContext implements SchoolContextInterface
 {
     /**
      * @var School

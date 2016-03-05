@@ -38,13 +38,14 @@ abstract class WebTestCase extends BaseTestCase
         self::bootKernel();
 
         $this->container = static::$kernel->getContainer();
-        $this->em = $this->container->get('doctrine')->getManager();
+        $this->em = $this->container->get('doctrine.orm.entity_manager');
         $this->client = static::createClient();
 
         $metadata = $this->em->getMetadataFactory()->getAllMetadata();
         $tool = new SchemaTool($this->em);
         $tool->dropDatabase();
         $tool->createSchema($metadata);
+        $this->em->clear();
 
         parent::setUp();
     }
