@@ -1,6 +1,8 @@
 {% extends "::layout.html.twig" %}
 
 {% block body %}
+    <h1>{{ school }}</h1>
+
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}

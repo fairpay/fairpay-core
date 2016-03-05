@@ -7,6 +7,15 @@ services:
             - "@fairpay.email_helper"
             - "@fairpay.token_generator"
 
+    # Twig
+
+    fairpay.twig.school_extension:
+        class: Fairpay\Bundle\SchoolBundle\Twig\SchoolExtension
+        arguments:
+            - "@school_manager"
+        tags:
+            - { name: twig.extension }
+
     # Validator
 
     validator.fairpay.school_slug:

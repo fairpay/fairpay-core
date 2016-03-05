@@ -77,6 +77,11 @@ class School
         $this->allowUnregisteredEmails = false;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * Get id
      *
