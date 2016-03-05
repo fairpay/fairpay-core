@@ -24,5 +24,12 @@ security:
 
         school:
             host: ^[^.]+\.%base_host%$
-            anonymous: ~
+            anonymous: true
+            form_login:
+                provider: fairpay_db
+                csrf_token_generator: security.csrf.token_manager
+            logout: ~
 
+    access_control:
+        - { path: ^/login$, host: ^[^.]+\.%base_host%$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, host: ^[^.]+\.%base_host%$, role: ROLE_USER }

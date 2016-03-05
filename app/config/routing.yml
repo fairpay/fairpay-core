@@ -7,3 +7,8 @@ fairpay_registration:
     resource: "@FairpaySchoolBundle/Resources/config/registration.yml"
     host: %base_host%
     prefix:   /
+
+fairpay_security:
+    resource: "@FairpayUserBundle/Resources/config/security.yml"
+    host: "{_subdomain}.%base_host%"
+    prefix:   /

@@ -179,6 +179,17 @@ class SchoolManager extends EntityManager
     }
 
     /**
+     * Clean up School entity once registration is complete.
+     * @param School $school
+     */
+    public function finishRegistration(School $school)
+    {
+        $school->setRegistrationToken(null);
+        $this->em->persist($school);
+        $this->em->flush();
+    }
+
+    /**
      * Update School's allowedEmailDomains and allowUnregisteredEmails based on it's email domain.
      *
      * @param School $school

@@ -34,4 +34,4 @@ services:
             - "%base_host%"
             - "@router"
         tags:
-            - { name: kernel.event_listener, method: onKernelRequest, event: kernel.request }
+            - { name: kernel.event_listener, method: onKernelRequest, event: kernel.request, priority: 10 }

@@ -178,7 +178,9 @@ class RegistrationController extends FairpayController
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
 
             // Manually set the current school for user creation
-            $this->get('school_manager')->setCurrentSchool($school);
+            $schoolManager = $this->get('school_manager');
+            $schoolManager->setCurrentSchool($school);
+            $schoolManager->finishRegistration($school);
 
             $this->get('user_manager')->create(
                 $this->get('session')->get('username'),

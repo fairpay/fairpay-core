@@ -44,6 +44,10 @@ class CurrentSchoolListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if ($this->schoolManager->getCurrentSchool()) {
+            return;
+        }
+
         $slug = $this->getSubdomain($event->getRequest());
 
         // We don't want to affect showcase or api pages

@@ -1,0 +1,14 @@
+fairpay_login:
+    path:     /login
+    defaults: { _controller: FairpayUserBundle:Security:login }
+    methods: [GET, POST]
+
+fairpay_login_check:
+    path:     /login_check
+    defaults: { _controller: FairpayUserBundle:Security:check }
+    methods: [POST]
+
+fairpay_logout:
+    path:     /logout
+    defaults: { _controller: FairpayUserBundle:Security:logout }
+    methods: [GET]
