@@ -9,6 +9,8 @@ use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeName;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeNameType;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlug;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlugType;
+use Fairpay\Bundle\SchoolBundle\Form\SchoolChoosePasswordType;
+use Fairpay\Bundle\SchoolBundle\Form\SchoolChooseUsernameType;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolEmailPolicy;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolEmailPolicyType;
 use Fairpay\Util\Controller\FairpayController;
@@ -100,6 +102,13 @@ class RegistrationController extends FairpayController
      */
     public function step4Action(Request $request, School $school)
     {
+        if ($school->getSlug() === null) {
+            return $this->redirectToRoute(
+                'fairpay_school_registration_step3',
+                array('registrationToken' => $school->getRegistrationToken())
+            );
+        }
+
         $form = $this->createForm(SchoolEmailPolicyType::class, new SchoolEmailPolicy($school));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
@@ -109,6 +118,74 @@ class RegistrationController extends FairpayController
                 'fairpay_school_registration_step5',
                 array('registrationToken' => $school->getRegistrationToken())
             );
+        }
+
+        return array(
+            'form' => $form->createView(),
+            'school' => $school,
+        );
+    }
+
+    /**
+     * @Template()
+     * @param Request $request
+     * @param School  $school
+     * @return array
+     */
+    public function step5Action(Request $request, School $school)
+    {
+        if ($school->getSlug() === null) {
+            return $this->redirectToRoute(
+                'fairpay_school_registration_step3',
+                array('registrationToken' => $school->getRegistrationToken())
+            );
+        }
+
+        $form = $this->createForm(SchoolChooseUsernameType::class);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $this->get('session')->set('username', $form->getData()->username);
+
+            return $this->redirectToRoute(
+                'fairpay_school_registration_step6',
+                array('registrationToken' => $school->getRegistrationToken())
+            );
+        }
+
+        return array(
+            'form' => $form->createView(),
+            'school' => $school,
+        );
+    }
+
+    /**
+     * @Template()
+     * @param Request $request
+     * @param School  $school
+     * @return array
+     */
+    public function step6Action(Request $request, School $school)
+    {
+        if ($this->get('session')->get('username') === null) {
+            return $this->redirectToRoute(
+                'fairpay_school_registration_step5',
+                array('registrationToken' => $school->getRegistrationToken())
+            );
+        }
+
+        $form = $this->createForm(SchoolChoosePasswordType::class);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+
+            // Manually set the current school for user creation
+            $this->get('school_manager')->setCurrentSchool($school);
+
+            $this->get('user_manager')->create(
+                $this->get('session')->get('username'),
+                $form->getData()->plainPassword,
+                $school->getEmail()
+            );
+            return $this->redirectToRoute('fairpay_homepage');
         }
 
         return array(

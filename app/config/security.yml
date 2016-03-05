@@ -1,6 +1,6 @@
 security:
     encoders:
-        Fairpay\Bundle\UserBundle\Security\UserProvider:
+        Fairpay\Bundle\UserBundle\Entity\User:
             algorithm: bcrypt
 
     providers:

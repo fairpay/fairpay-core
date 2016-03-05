@@ -7,15 +7,23 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
  * @method string showcase()
+ * @method string registrationEmailSent($email)
  * @method string registrationStep1($registrationToken)
  * @method string registrationStep3($registrationToken)
+ * @method string registrationStep4($registrationToken)
+ * @method string registrationStep5($registrationToken)
+ * @method string registrationStep6($registrationToken)
  */
 class UrlHelper extends TestCaseHelper
 {
     static $routes = array(
         'showcase' => 'fairpay_homepage',
+        'registrationEmailSent' => ['fairpay_school_registration_email_sent', 'email'],
         'registrationStep1' => ['fairpay_school_registration_step1', 'registrationToken'],
         'registrationStep3' => ['fairpay_school_registration_step3', 'registrationToken'],
+        'registrationStep4' => ['fairpay_school_registration_step4', 'registrationToken'],
+        'registrationStep5' => ['fairpay_school_registration_step5', 'registrationToken'],
+        'registrationStep6' => ['fairpay_school_registration_step6', 'registrationToken'],
     );
 
     /**

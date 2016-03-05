@@ -1,0 +1,14 @@
+{% extends '@FairpaySchool/Registration/layout.html.twig' %}
+
+{% block body %}
+    <h1>Nom de votre BDE</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <p>
+            C'est votre nom d'utilisateur et le nom que les élèves verront sur Fairpay.
+        </p>
+        <button>Suivant</button>
+    {{ form_end(form) }}
+{% endblock %}
+

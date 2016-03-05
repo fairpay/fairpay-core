@@ -1,0 +1,13 @@
+{% extends '@FairpaySchool/Registration/layout.html.twig' %}
+
+{% block body %}
+    <h1>Mot de passe</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <p>
+            Pour vous connecter en tant que BDE vous utiliserez votre adresse mail (<b>{{ school.email }}</b>) et votre mot de passe.
+        </p>
+        <button>Terminer</button>
+    {{ form_end(form) }}
+{% endblock %}
+

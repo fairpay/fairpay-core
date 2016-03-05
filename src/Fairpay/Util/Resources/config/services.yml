@@ -8,6 +8,9 @@ services:
     fairpay.token_generator:
         class: Fairpay\Util\Util\TokenGenerator
 
+    fairpay.string_util:
+        class: Fairpay\Util\Util\StringUtil
+
     # Validators
 
     validator.fairpay.unique_entity:

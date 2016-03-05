@@ -3,6 +3,7 @@
 namespace Fairpay\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Fairpay\Bundle\UserBundle\Repository\UserRepository")
  */
-class User implements UserInterface, EquatableInterface, \Serializable
+class User extends SchoolContext implements UserInterface, EquatableInterface, \Serializable
 {
     /**
      * @var int

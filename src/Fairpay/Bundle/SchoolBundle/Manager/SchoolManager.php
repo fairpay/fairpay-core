@@ -57,7 +57,7 @@ class SchoolManager extends EntityManager
 
     /**
      * Set the School matching the subdomain.
-     * @param string $slug
+     * @param string|School $slug
      * @return School|null
      * @throws CurrentSchoolAlreadySetException
      */
@@ -67,7 +67,12 @@ class SchoolManager extends EntityManager
             throw new CurrentSchoolAlreadySetException('Current school has already been set.');
         }
 
-        $this->currentSchool = $this->repo->findOneBy(array('slug' => $slug));
+        if ($slug instanceof School) {
+            $this->currentSchool = $slug;
+        } else {
+            $this->currentSchool = $this->repo->findOneBy(array('slug' => $slug));
+        }
+
         return $this->currentSchool;
     }
 

@@ -4,9 +4,22 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@event_dispatcher"
+            - "@school_manager"
+            - "@security.password_encoder"
+            - "@fairpay.token_generator"
+            - "@fairpay.string_util"
 
     user_provider:
         class: Fairpay\Bundle\UserBundle\Security\UserProvider
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@user_manager"
+
+    # Validator
+
+    validator.fairpay.display_name:
+        class: Fairpay\Bundle\UserBundle\Validator\Constraints\DisplayNameValidator
+        arguments:
+            - "@fairpay.string_util"
+        tags:
+            - { name: validator.constraint_validator, alias: fairpay.display_name }

@@ -45,6 +45,20 @@ class FillFormHelper extends TestCaseHelper
         ));
     }
 
+    public function registrationStep5($username = 'Ferus')
+    {
+        $this->sendForm('school_choose_username', array(
+            'username' => $username,
+        ));
+    }
+
+    public function registrationStep6($plainPassword = 'Hell0!')
+    {
+        $this->sendForm('school_choose_password', array(
+            'plainPassword' => $plainPassword,
+        ));
+    }
+
     /**
      * Get a form from its name.
      *
