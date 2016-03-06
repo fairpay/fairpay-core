@@ -2,10 +2,10 @@ services:
     school_manager:
         class: Fairpay\Bundle\SchoolBundle\Manager\SchoolManager
         arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@event_dispatcher"
             - "@fairpay.email_helper"
             - "@fairpay.token_generator"
+        calls:
+            - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
 
     # Twig
 

@@ -1,0 +1,3 @@
+fairpay_student_add:
+    path:     /add
+    defaults: { _controller: FairpayStudentBundle:Admin:add }

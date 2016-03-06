@@ -87,6 +87,10 @@ class EmailHelper
      */
     public function getEmail($email)
     {
+        if (is_null($email)) {
+            return null;
+        }
+
         if (is_string($email)) {
             return $email;
         }
@@ -99,6 +103,6 @@ class EmailHelper
             throw new \InvalidArgumentException('Object does not have a method getEmail.');
         }
 
-        throw new \InvalidArgumentException('Argument must be a string or an object.');
+        throw new \InvalidArgumentException(sprintf('Argument $email must be a string or an object, %s given.', gettype($email)));
     }
 }

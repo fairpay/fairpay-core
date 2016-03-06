@@ -2,7 +2,6 @@
 
 namespace Fairpay\Bundle\SchoolBundle\Manager;
 
-use Doctrine\ORM\EntityManager as DoctrineEM;
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 use Fairpay\Bundle\SchoolBundle\Event\SchoolEvent;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeEmail;
@@ -14,7 +13,6 @@ use Fairpay\Bundle\SchoolBundle\Repository\SchoolRepository;
 use Fairpay\Util\Email\Services\EmailHelper;
 use Fairpay\Util\Manager\EntityManager;
 use Fairpay\Util\Util\TokenGeneratorInterface;
-use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 
 /**
  * @property SchoolRepository $repo
@@ -34,14 +32,11 @@ class SchoolManager extends EntityManager
 
     /**
      * SchoolManager constructor.
-     * @param DoctrineEM               $em
-     * @param TraceableEventDispatcher $dispatcher
-     * @param EmailHelper              $emailHelper
-     * @param TokenGeneratorInterface  $tokenGenerator
+     * @param EmailHelper             $emailHelper
+     * @param TokenGeneratorInterface $tokenGenerator
      */
-    public function __construct(DoctrineEM $em, TraceableEventDispatcher $dispatcher, EmailHelper $emailHelper, TokenGeneratorInterface $tokenGenerator)
+    public function __construct(EmailHelper $emailHelper, TokenGeneratorInterface $tokenGenerator)
     {
-        parent::__construct($em, $dispatcher);
         $this->emailHelper = $emailHelper;
         $this->tokenGenerator = $tokenGenerator;
     }

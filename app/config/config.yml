@@ -8,6 +8,7 @@ imports:
     - { resource: "@FairpaySchoolBundle/Resources/config/services.yml" }
     - { resource: "@FairpayShowcaseBundle/Resources/config/services.yml" }
     - { resource: "@FairpayUserBundle/Resources/config/services.yml" }
+    - { resource: "@FairpayStudentBundle/Resources/config/services.yml" }
 
 parameters:
     locale: fr

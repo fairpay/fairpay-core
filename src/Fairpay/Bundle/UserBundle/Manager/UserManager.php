@@ -3,27 +3,19 @@
 
 namespace Fairpay\Bundle\UserBundle\Manager;
 
-
-use Doctrine\ORM\EntityManager as DoctrineEM;
-use Fairpay\Bundle\SchoolBundle\Entity\School;
-use Fairpay\Bundle\SchoolBundle\Manager\SchoolManager;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
-use Fairpay\Util\Manager\EntityManager;
+use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Util\StringUtil;
 use Fairpay\Util\Util\TokenGeneratorInterface;
-use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 /**
  * @property UserRepository $repo
  */
-class UserManager extends EntityManager
+class UserManager extends CurrentSchoolAwareManager
 {
     const ENTITY_SHORTCUT_NAME = 'FairpayUserBundle:User';
-
-    /** @var  SchoolManager */
-    protected $schoolManager;
 
     /** @var  UserPasswordEncoder */
     protected $passwordEncoder;
@@ -35,15 +27,10 @@ class UserManager extends EntityManager
     private $stringUtil;
 
     public function __construct(
-        DoctrineEM $em,
-        TraceableEventDispatcher $dispatcher,
-        SchoolManager $schoolManager,
         UserPasswordEncoder $passwordEncoder,
         TokenGeneratorInterface $tokenGenerator,
         StringUtil $stringUtil
     ) {
-        parent::__construct($em, $dispatcher);
-        $this->schoolManager = $schoolManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenGenerator = $tokenGenerator;
         $this->stringUtil = $stringUtil;
@@ -124,21 +111,6 @@ class UserManager extends EntityManager
     public function isEmail($email)
     {
         return false !== strpos($email, '@');
-    }
-
-    /**
-     * @return School
-     * @throws NoCurrentSchoolException
-     */
-    protected function getCurrentSchool()
-    {
-        $school = $this->schoolManager->getCurrentSchool();
-
-        if (null === $school) {
-            throw new NoCurrentSchoolException('Impossible to perform action, no current School is defined.');
-        }
-
-        return $school;
     }
 
     public function getEntityShortcutName()

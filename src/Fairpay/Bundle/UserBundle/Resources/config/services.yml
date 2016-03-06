@@ -2,12 +2,12 @@ services:
     user_manager:
         class: Fairpay\Bundle\UserBundle\Manager\UserManager
         arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@event_dispatcher"
-            - "@school_manager"
             - "@security.password_encoder"
             - "@fairpay.token_generator"
             - "@fairpay.string_util"
+        calls:
+            - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
+            - [ setSchoolManager,[ "@school_manager" ] ]
 
     user_provider:
         class: Fairpay\Bundle\UserBundle\Security\UserProvider

@@ -6,8 +6,8 @@ namespace Fairpay\Bundle\UserBundle\Tests\Manager;
 
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 use Fairpay\Bundle\UserBundle\Entity\User;
-use Fairpay\Bundle\UserBundle\Manager\NoCurrentSchoolException;
 use Fairpay\Bundle\UserBundle\Manager\UserManager;
+use Fairpay\Util\Manager\NoCurrentSchoolException;
 use Fairpay\Util\Tests\WebTestCase;
 
 class UserManagerTest extends WebTestCase

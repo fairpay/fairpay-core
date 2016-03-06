@@ -28,11 +28,23 @@ abstract class EntityManager
      * @param DoctrineEM               $em
      * @param TraceableEventDispatcher $dispatcher
      */
-    public function __construct(DoctrineEM $em, TraceableEventDispatcher $dispatcher)
+    public function init(DoctrineEM $em, TraceableEventDispatcher $dispatcher)
     {
         $this->em = $em;
         $this->repo = $em->getRepository($this->getEntityShortcutName());
         $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * Itterate through all $source public attributes and call corresponding setter of $target.
+     * @param object $target
+     * @param object $source
+     */
+    protected function mapData($target, $source)
+    {
+        foreach (get_object_vars($source) as $field => $value) {
+            $target->{'set' . ucfirst($field)}($value);
+        }
     }
 
     /**

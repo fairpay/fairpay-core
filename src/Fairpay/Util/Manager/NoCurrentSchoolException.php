@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Fairpay\Bundle\UserBundle\Manager;
+namespace Fairpay\Util\Manager;
 
 
 class NoCurrentSchoolException extends \Exception

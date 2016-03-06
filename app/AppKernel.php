@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Fairpay\Bundle\SchoolBundle\FairpaySchoolBundle(),
             new Fairpay\Bundle\ShowcaseBundle\FairpayShowcaseBundle(),
             new Fairpay\Bundle\UserBundle\FairpayUserBundle(),
+            new Fairpay\Bundle\StudentBundle\FairpayStudentBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
