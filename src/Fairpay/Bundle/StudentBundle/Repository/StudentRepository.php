@@ -2,6 +2,8 @@
 
 namespace Fairpay\Bundle\StudentBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * StudentRepository
  *
@@ -10,4 +12,11 @@ namespace Fairpay\Bundle\StudentBundle\Repository;
  */
 class StudentRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return QueryBuilder
+     */
+    public function queryAll()
+    {
+        return $this->createQueryBuilder('s');
+    }
 }

@@ -4,6 +4,8 @@ namespace Fairpay\Bundle\StudentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * Student
@@ -106,6 +108,11 @@ class Student extends SchoolContext
         $this->untouchableFields = array();
     }
 
+    /**
+     * @VirtualProperty()
+     * @SerializedName("full_name")
+     * @return string
+     */
     public function __toString()
     {
         return $this->firstName . ' ' . $this->lastName;

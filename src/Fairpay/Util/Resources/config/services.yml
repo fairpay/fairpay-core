@@ -18,6 +18,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, priority: 10 }
 
+    fairpay.paginator:
+        class: Fairpay\Util\Pagination\Paginator
+        arguments:
+            - "@router"
+
     # Validators
 
     validator.fairpay.unique_entity:

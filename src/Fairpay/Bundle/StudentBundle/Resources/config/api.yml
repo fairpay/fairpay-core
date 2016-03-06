@@ -1,4 +1,4 @@
 fairpay_api_students:
     path: /
-    defaults: { _controller: FairpayStudentBundle:Api:sudents }
+    defaults: { _controller: FairpayStudentBundle:Api:students }
     methods: GET
