@@ -51,7 +51,7 @@ class CurrentSchoolListener
         $slug = $this->getSubdomain($event->getRequest());
 
         // We don't want to affect showcase or api pages
-        if ($this->schoolManager->isValidSlug($slug)) {
+        if ($slug && $this->schoolManager->isValidSlug($slug)) {
             $school = $this->schoolManager->setCurrentSchool($slug);
             $this->router->getContext()->setParameter('_subdomain', $slug);
 
@@ -64,10 +64,14 @@ class CurrentSchoolListener
     /**
      * Get the subdomain from the request.
      * @param Request $request
-     * @return string
+     * @return string|null
      */
     public function getSubdomain(Request $request)
     {
+        if (false === strpos($request->getHost(), $this->baseHost)) {
+            return null;
+        }
+
         return preg_replace('#\.?' . $this->baseHost . '$#', '', $request->getHost());
     }
 }

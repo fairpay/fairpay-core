@@ -12,7 +12,6 @@ services:
     user_provider:
         class: Fairpay\Bundle\UserBundle\Security\UserProvider
         arguments:
-            - "@doctrine.orm.entity_manager"
             - "@user_manager"
 
     # Validator

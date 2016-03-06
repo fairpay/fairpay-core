@@ -95,7 +95,6 @@ class UserManagerTest extends WebTestCase
 
     public function testCreateUser()
     {
-        $this->em = $this->container->get('doctrine.orm.entity_manager');
         $this->havingASchool();
 
         try {

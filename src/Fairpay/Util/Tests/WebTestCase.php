@@ -45,9 +45,9 @@ abstract class WebTestCase extends BaseTestCase
         $tool = new SchemaTool($this->em);
         $tool->dropDatabase();
         $tool->createSchema($metadata);
-        $this->em->clear();
 
         parent::setUp();
+        $this->em = $this->container->get('doctrine.orm.entity_manager');
     }
 
     /**

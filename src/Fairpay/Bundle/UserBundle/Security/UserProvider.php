@@ -4,10 +4,8 @@
 namespace Fairpay\Bundle\UserBundle\Security;
 
 
-use Doctrine\ORM\EntityManager;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Manager\UserManager;
-use Fairpay\Bundle\UserBundle\Repository\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,24 +13,15 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {
-    /** @var  EntityManager */
-    protected $em;
-
-    /** @var  UserRepository */
-    protected $repo;
-
     /** @var  UserManager */
     protected $userManager;
 
     /**
      * UserProvider constructor.
-     * @param EntityManager $em
-     * @param UserManager   $userManager
+     * @param UserManager $userManager
      */
-    public function __construct(EntityManager $em, UserManager $userManager)
+    public function __construct(UserManager $userManager)
     {
-        $this->em = $em;
-        $this->repo = $em->getRepository('FairpayUserBundle:User');
         $this->userManager = $userManager;
     }
 

@@ -6,12 +6,13 @@ namespace Fairpay\Bundle\UserBundle\Manager;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
+use Fairpay\Util\Manager\NoCurrentSchoolException;
 use Fairpay\Util\Util\StringUtil;
 use Fairpay\Util\Util\TokenGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 /**
- * @property UserRepository $repo
+ * @method UserRepository getRepo()
  */
 class UserManager extends CurrentSchoolAwareManager
 {
@@ -69,7 +70,7 @@ class UserManager extends CurrentSchoolAwareManager
     public function usernameFromDisplayName($displayName)
     {
         $username = $this->stringUtil->urlize($displayName, '.');
-        $takenUsernames = $this->repo->findTakenUsernames($this->getCurrentSchool(), $username);
+        $takenUsernames = $this->getRepo()->findTakenUsernames($this->getCurrentSchool(), $username);
         $suffix = '';
 
         while (in_array($username . $suffix, $takenUsernames)) {
@@ -87,9 +88,9 @@ class UserManager extends CurrentSchoolAwareManager
     public function findUserByUsernameOrEmail($username)
     {
         if ($this->isEmail($username)) {
-            return $this->repo->findByEmail($this->getCurrentSchool(), $username);
+            return $this->getRepo()->findByEmail($this->getCurrentSchool(), $username);
         } else {
-            return $this->repo->findByUsername($this->getCurrentSchool(), $username);
+            return $this->getRepo()->findByUsername($this->getCurrentSchool(), $username);
         }
     }
 
@@ -100,7 +101,7 @@ class UserManager extends CurrentSchoolAwareManager
      */
     public function findUserById($id)
     {
-        return $this->repo->findUserById($this->getCurrentSchool(), $id);
+        return $this->getRepo()->findUserById($this->getCurrentSchool(), $id);
     }
 
     /**

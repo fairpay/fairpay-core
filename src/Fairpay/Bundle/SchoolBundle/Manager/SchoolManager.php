@@ -15,7 +15,7 @@ use Fairpay\Util\Manager\EntityManager;
 use Fairpay\Util\Util\TokenGeneratorInterface;
 
 /**
- * @property SchoolRepository $repo
+ * @method SchoolRepository getRepo()
  */
 class SchoolManager extends EntityManager
 {
@@ -65,7 +65,7 @@ class SchoolManager extends EntityManager
         if ($slug instanceof School) {
             $this->currentSchool = $slug;
         } else {
-            $this->currentSchool = $this->repo->findOneBy(array('slug' => $slug));
+            $this->currentSchool = $this->getRepo()->findOneBy(array('slug' => $slug));
         }
 
         return $this->currentSchool;
@@ -148,7 +148,7 @@ class SchoolManager extends EntityManager
         $this->em->persist($school);
 
         // Remove new slug from others school's old_slugs to prevent conflicts
-        foreach ($this->repo->findWithOldSlug($schoolChangeSlug->slug) as $s) {
+        foreach ($this->getRepo()->findWithOldSlug($schoolChangeSlug->slug) as $s) {
             /** @var School $s */
             $slugs = $s->getOldSlugs();
             unset($slugs[array_search($schoolChangeSlug->slug, $slugs)]);

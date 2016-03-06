@@ -13,6 +13,14 @@ class AdminController extends FairpayController
 {
     /**
      * @Template()
+     */
+    public function listAction()
+    {
+        return array();
+    }
+
+    /**
+     * @Template()
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */

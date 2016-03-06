@@ -6,9 +6,13 @@ namespace Fairpay\Bundle\StudentBundle\Manager;
 
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Bundle\StudentBundle\Form\StudentAdd;
+use Fairpay\Bundle\StudentBundle\Repository\StudentRepository;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
 
+/**
+ * @method StudentRepository getRepo()
+ */
 class StudentManager extends CurrentSchoolAwareManager
 {
     const ENTITY_SHORTCUT_NAME = 'FairpayStudentBundle:Student';

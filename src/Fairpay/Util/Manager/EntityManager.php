@@ -17,7 +17,7 @@ abstract class EntityManager
     /**
      * @var EntityRepository
      */
-    protected $repo;
+    private $repo;
 
     /**
      * @var TraceableEventDispatcher
@@ -31,7 +31,6 @@ abstract class EntityManager
     public function init(DoctrineEM $em, TraceableEventDispatcher $dispatcher)
     {
         $this->em = $em;
-        $this->repo = $em->getRepository($this->getEntityShortcutName());
         $this->dispatcher = $dispatcher;
     }
 
@@ -45,6 +44,19 @@ abstract class EntityManager
         foreach (get_object_vars($source) as $field => $value) {
             $target->{'set' . ucfirst($field)}($value);
         }
+    }
+
+    /**
+     * Lazy load repository.
+     * @return EntityRepository
+     */
+    public function getRepo()
+    {
+        if (!$this->repo) {
+            $this->repo = $this->em->getRepository($this->getEntityShortcutName());
+        }
+
+        return $this->repo;
     }
 
     /**

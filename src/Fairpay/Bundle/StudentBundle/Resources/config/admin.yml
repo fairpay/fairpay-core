@@ -1,3 +1,7 @@
+fairpay_student_list:
+    path:     /
+    defaults: { _controller: FairpayStudentBundle:Admin:list }
+
 fairpay_student_add:
     path:     /add
     defaults: { _controller: FairpayStudentBundle:Admin:add }
