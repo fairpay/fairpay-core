@@ -20,7 +20,10 @@ security:
         api:
             host: ^api\.%base_host%$
             stateless: true
-            anonymous: ~
+            anonymous: true
+            guard:
+                authenticators:
+                    - api_authenticator
 
         school:
             host: ^[^.]+\.%base_host%$

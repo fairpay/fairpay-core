@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "805038bbf6a42db05d5ed7321da07aab",
-    "content-hash": "3c038a3b27e40bdb99f190c2747ccdde",
+    "hash": "2fc53c9bd9633d6dc19c74758a74e9c8",
+    "content-hash": "bf97517fc93d5c2086e851aa05250f30",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -811,6 +811,48 @@
                 "orm"
             ],
             "time": "2016-01-05 21:34:58"
+        },
+        {
+            "name": "emarref/jwt",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emarref/jwt.git",
+                "reference": "493206630f7f79a3d35a7d5070c01a451408e131"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emarref/jwt/zipball/493206630f7f79a3d35a7d5070c01a451408e131",
+                "reference": "493206630f7f79a3d35a7d5070c01a451408e131",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "suggest": {
+                "ext-openssl": "Enables more token encryption options"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Emarref\\Jwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malcolm Fell",
+                    "email": "emarref@gmail.com"
+                }
+            ],
+            "description": "A JWT implementation",
+            "time": "2015-09-02 21:03:57"
         },
         {
             "name": "guzzle/guzzle",

@@ -1,3 +1,5 @@
+# Public
+
 fairpay_showcase:
     resource: "@FairpayShowcaseBundle/Resources/config/routing.yml"
     host: %base_host%
@@ -7,6 +9,16 @@ fairpay_registration:
     resource: "@FairpaySchoolBundle/Resources/config/registration.yml"
     host: %base_host%
     prefix:   /
+
+# API
+
+fairpay_student_api:
+    resource: "@FairpayStudentBundle/Resources/config/api.yml"
+    host: api.%base_host%
+    prefix:   /students
+
+
+# School
 
 fairpay_security:
     resource: "@FairpayUserBundle/Resources/config/security.yml"

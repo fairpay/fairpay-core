@@ -14,6 +14,21 @@ services:
         arguments:
             - "@user_manager"
 
+    api_authenticator:
+        class: Fairpay\Bundle\UserBundle\Security\ApiAuthenticator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@jwt_generator"
+            - "@user_manager"
+            - "@school_manager"
+
+    jwt_generator:
+        class: Fairpay\Bundle\UserBundle\Security\JwtGenerator
+        arguments:
+            - "%base_host%"
+            - "%secret%"
+            - "@school_manager"
+
     # Validator
 
     validator.fairpay.display_name:

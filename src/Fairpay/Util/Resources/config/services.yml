@@ -11,6 +11,13 @@ services:
     fairpay.string_util:
         class: Fairpay\Util\Util\StringUtil
 
+    fairpay.exception_listener:
+        class: Fairpay\Util\EventListener\ExceptionListener
+        arguments:
+            - "%base_host%"
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: 10 }
+
     # Validators
 
     validator.fairpay.unique_entity:
