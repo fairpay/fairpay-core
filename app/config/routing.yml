@@ -15,7 +15,6 @@ fairpay_registration:
 fairpay_student_api:
     resource: "@FairpayStudentBundle/Resources/config/api.yml"
     host: api.%base_host%
-    prefix:   /students
 
 
 # School

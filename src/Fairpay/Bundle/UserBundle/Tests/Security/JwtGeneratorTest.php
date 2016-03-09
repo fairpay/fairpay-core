@@ -12,6 +12,7 @@ use Emarref\Jwt\Token;
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Security\JwtGenerator;
+use Fairpay\Util\Manager\NoCurrentSchoolException;
 use Fairpay\Util\Tests\WebTestCase;
 
 class JwtGeneratorTest extends WebTestCase
@@ -34,8 +35,16 @@ class JwtGeneratorTest extends WebTestCase
 
     public function testGetToken()
     {
-        $this->havingASchool();
         $user = $this->getBatman();
+
+        try {
+            $this->jwtGenerator->generate($user);
+            $this->fail('Should not be able to create a JWT when no current school is defined.');
+        } catch (NoCurrentSchoolException $e) {
+            // Should trow
+        }
+
+        $this->havingASchool();
 
         $token = $this->jwtGenerator->generate($user);
         $payload = json_decode(base64_decode(explode('.', $token)[1]), true);

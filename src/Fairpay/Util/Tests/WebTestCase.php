@@ -4,6 +4,7 @@
 namespace Fairpay\Util\Tests;
 
 use Doctrine\ORM\Tools\SchemaTool;
+use Fairpay\Util\Tests\Helpers\ApiHelper;
 use Fairpay\Util\Tests\Helpers\FillFormHelper;
 use Fairpay\Util\Tests\Helpers\MailHelper;
 use Fairpay\Util\Tests\Helpers\RedirectedHelper;
@@ -18,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @property UrlHelper $url
  * @property MailHelper $mail
  * @property RedirectedHelper $redirected
+ * @property ApiHelper $api
  */
 abstract class WebTestCase extends BaseTestCase
 {

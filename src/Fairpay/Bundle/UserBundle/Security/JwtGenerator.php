@@ -73,11 +73,15 @@ class JwtGenerator
     /**
      * Decode a jwt.
      * @param string $token
-     * @return Token
+     * @return Token|null
      */
     public function decode($token)
     {
-        return $this->jwt->deserialize($token);
+        try {
+            return $this->jwt->deserialize($token);
+        } catch(\RuntimeException $e) {
+            return null;
+        }
     }
 
     /**
@@ -85,8 +89,12 @@ class JwtGenerator
      * @param Token $token
      * @return bool|string
      */
-    public function isValid(Token $token)
+    public function isValid(Token $token = null)
     {
+        if (null === $token) {
+            return 'Le jeton d\'authentification n\'est pas valide.';
+        }
+
         $context = new Context(Factory::create($this->hs256));
         $context->setIssuer($this->baseHost);
 

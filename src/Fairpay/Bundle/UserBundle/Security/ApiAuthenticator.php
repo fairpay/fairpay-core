@@ -46,8 +46,7 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        // Can't use $request->headers->get('Authorization') because of Apache
-        $token = isset(getallheaders()['Authorization']) ? getallheaders()['Authorization'] : null;
+        $token = $request->headers->get('Authorization');
 
         if (!$token || substr($token, 0, 7) !== 'Bearer ') {
             throw new UnauthorizedHttpException('', 'Vous devez vous authentifier.');
@@ -71,7 +70,13 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
 
         $userPayload = $token->getPayload()->findClaimByName('user')->getValue();
         $this->schoolManager->setCurrentSchool($userPayload['school']);
-        return $this->userManager->findUserById($userPayload['id']);
+        $user =  $this->userManager->findUserById($userPayload['id']);
+
+        if (null === $user) {
+            throw new AuthenticationException('Cet utilisateur n\'existe pas.', ExceptionListener::INVALID_TOKEN);
+        }
+
+        return $user;
     }
 
     /**
