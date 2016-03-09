@@ -45,11 +45,12 @@ class JwtGenerator
 
     /**
      * Generate a 30 minutes jwt.
-     * @param User $user
+     * @param User   $user
+     * @param string $exp
      * @return string
      * @throws NoCurrentSchoolException
      */
-    public function generate(User $user)
+    public function generate(User $user, $exp = '30 minutes')
     {
         $school = $this->schoolManager->getCurrentSchool();
         if (null === $school) {
@@ -57,7 +58,7 @@ class JwtGenerator
         }
 
         $token = new Token();
-        $token->addClaim(new Claim\Expiration(new \DateTime('30 minutes')));
+        $token->addClaim(new Claim\Expiration(new \DateTime($exp)));
         $token->addClaim(new Claim\IssuedAt(new \DateTime('now')));
         $token->addClaim(new Claim\Issuer($this->baseHost));
         $token->addClaim(new Claim\PublicClaim('user', array(
@@ -79,6 +80,11 @@ class JwtGenerator
         return $this->jwt->deserialize($token);
     }
 
+    /**
+     * Make sure the JWT is valid.
+     * @param Token $token
+     * @return bool|string
+     */
     public function isValid(Token $token)
     {
         $context = new Context(Factory::create($this->hs256));

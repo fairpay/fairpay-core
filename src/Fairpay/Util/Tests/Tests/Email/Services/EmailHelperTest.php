@@ -33,6 +33,9 @@ class EmailHelperTest extends \PHPUnit_Framework_TestCase
         return array(
             ['addr@domain.com', 'addr@domain.com'],
             [$school, 'addr@domain.com'],
+            [null, null],
+            [42, new \InvalidArgumentException()],
+            [new \stdClass(), new \InvalidArgumentException()],
         );
     }
 
@@ -93,10 +96,22 @@ class EmailHelperTest extends \PHPUnit_Framework_TestCase
      * @dataProvider getEmailProvider
      * @param string|object $email
      * @param string        $expected
+     * @throws \Exception
      */
     public function testGetEmail($email, $expected)
     {
-        $this->assertEquals($expected, self::$emailHelper->getEmail($email));
+        if ($expected instanceof \Exception) {
+            try {
+                self::$emailHelper->getEmail($email);
+                $this->fail('It should have thrown an exception.');
+            } catch (\Exception $e) {
+                if (get_class($expected) !== get_class($e)) {
+                    throw $e;
+                }
+            }
+        } else {
+            $this->assertEquals($expected, self::$emailHelper->getEmail($email));
+        }
     }
 
     /**

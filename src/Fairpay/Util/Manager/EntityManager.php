@@ -35,7 +35,7 @@ abstract class EntityManager
     }
 
     /**
-     * Itterate through all $source public attributes and call corresponding setter of $target.
+     * Iterate through all $source public attributes and call corresponding setter of $target.
      * @param object $target
      * @param object $source
      */

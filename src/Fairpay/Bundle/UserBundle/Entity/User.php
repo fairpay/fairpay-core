@@ -58,6 +58,14 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
         return $this->displayName;
     }
 
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
 
     /**
      * @return int
