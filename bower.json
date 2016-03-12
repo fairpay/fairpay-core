@@ -1,0 +1,10 @@
+{
+  "name": "fairpay-core",
+  "homepage": "https://github.com/fairpay/fairpay-core",
+  "authors": [
+    "Nick Keller <solix@hotmail.fr>"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.1"
+  }
+}

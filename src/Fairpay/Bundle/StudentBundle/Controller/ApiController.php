@@ -4,6 +4,7 @@
 namespace Fairpay\Bundle\StudentBundle\Controller;
 
 
+use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Util\Controller\FairpayApiController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,6 +15,11 @@ class ApiController extends FairpayApiController
         $paginator = $this->get('fairpay.paginator');
         $queryAll = $this->em()->getRepository('FairpayStudentBundle:Student')->queryAll();
         $students = $paginator->paginate($queryAll, $request);
-        return $this->view($students);
+        return $students;
+    }
+
+    public function showAction(Student $student)
+    {
+        return $student;
     }
 }

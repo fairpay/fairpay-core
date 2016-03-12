@@ -4,3 +4,10 @@ services:
         calls:
             - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
             - [ setSchoolManager,[ "@school_manager" ] ]
+
+    student_param_converter:
+        class: Fairpay\Bundle\StudentBundle\Request\ParamConverter\StudentParamConverter
+        arguments:
+            - "@student_manager"
+        tags:
+            - { name: request.param_converter }

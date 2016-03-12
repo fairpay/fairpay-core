@@ -11,6 +11,13 @@ services:
     fairpay.string_util:
         class: Fairpay\Util\Util\StringUtil
 
+    fairpay.paginator:
+        class: Fairpay\Util\Pagination\Paginator
+        arguments:
+            - "@router"
+
+    # Listeners
+
     fairpay.exception_listener:
         class: Fairpay\Util\EventListener\ExceptionListener
         arguments:
@@ -18,10 +25,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, priority: 10 }
 
-    fairpay.paginator:
-        class: Fairpay\Util\Pagination\Paginator
+    fairpay.api_view_listener:
+        class: Fairpay\Util\EventListener\ApiViewListener
         arguments:
-            - "@router"
+            - "@jms_serializer"
+            - "%base_host%"
+        tags:
+            - { name: kernel.event_listener, event: kernel.view }
 
     # Validators
 

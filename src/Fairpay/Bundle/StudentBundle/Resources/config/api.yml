@@ -2,3 +2,10 @@ fairpay_api_students:
     path: /students
     defaults: { _controller: FairpayStudentBundle:Api:students }
     methods: GET
+
+fairpay_api_students_show:
+    path: /students/{id}
+    defaults: { _controller: FairpayStudentBundle:Api:show }
+    methods: GET
+    requirements:
+        id: \d+

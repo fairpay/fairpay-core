@@ -38,7 +38,7 @@ class StudentManager extends CurrentSchoolAwareManager
     }
 
     /**
-     * Update $student's untouche fields based on diff with $updateFields.
+     * Update $student's untouched fields based on diff with $updateFields.
      * @param Student $student
      * @param object  $updateFields
      */
@@ -59,6 +59,19 @@ class StudentManager extends CurrentSchoolAwareManager
         }
 
         $student->setUntouchableFields(array_unique($untouchableFields));
+    }
+
+    /**
+     * @param $id
+     * @return Student|null
+     * @throws NoCurrentSchoolException
+     */
+    public function findStudentById($id)
+    {
+        return $this->getRepo()->findOneBy(array(
+            'school' => $this->getCurrentSchool(),
+            'id' => $id
+        ));
     }
 
     public function getEntityShortcutName()
