@@ -1,0 +1,44 @@
+{%- block form_row -%}
+    <div class="form-group">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <p class="text-danger">
+            {%- for error in errors -%}
+                {{ error.message }}<br>
+            {%- endfor -%}
+        </p>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block datetime_widget -%}
+    {% if widget == 'single_text' %}
+        <input type="date" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_errors(form.date) -}}
+            {{- form_errors(form.time) -}}
+            {{- form_widget(form.date) -}}
+            {{- form_widget(form.time) -}}
+        </div>
+    {%- endif -%}
+{%- endblock datetime_widget -%}
+
+{%- block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        <input type="date" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- date_pattern|replace({
+                '{{ year }}':  form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}':   form_widget(form.day),
+            })|raw -}}
+        </div>
+    {%- endif -%}
+{%- endblock date_widget -%}

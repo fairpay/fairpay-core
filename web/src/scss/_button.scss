@@ -1,0 +1,115 @@
+button, .btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    color: #333;
+    background: #fff none;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    padding: 8px 14px;
+    border-radius: 3px;
+}
+
+&[disabled], &.disabled {
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: .65;
+    background: #e0e0e0 none;
+}
+
+&.block {
+    display: block;
+    margin-bottom: 15px;
+}
+
+&.primary {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+
+    &:hover, &.active {
+        color: #fff;
+        background-color: #286090;
+        border-color: #286090;
+    }
+
+    &[disabled], &.disabled {
+        background-color: #337ab7;
+        border-color: #337ab7;
+    }
+}
+
+&.success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+
+    &:hover, &.active {
+        color: #fff;
+        background-color: #449d44;
+        border-color: #449d44;
+    }
+
+    &[disabled], &.disabled {
+        background-color: #5cb85c;
+        border-color: #5cb85c;
+    }
+}
+
+&.info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+
+    &:hover, &.active {
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #31b0d5;
+    }
+
+    &[disabled], &.disabled {
+        background-color: #5bc0de;
+        border-color: #5bc0de;
+    }
+}
+
+&.warning {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+
+    &:hover, &.active {
+        color: #fff;
+        background-color: #ec971f;
+        border-color: #ec971f;
+    }
+
+    &[disabled], &.disabled {
+        background-color: #f0ad4e;
+        border-color: #f0ad4e;
+    }
+}
+
+&.danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d9534f;
+
+    &:hover, &.active {
+        color: #fff;
+        background-color: #c9302c;
+        border-color: #c9302c;
+    }
+
+    &[disabled], &.disabled {
+        background-color: #d9534f;
+        border-color: #d9534f;
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "fairpay-core",
+  "homepage": "https://github.com/fairpay/fairpay-core",
+  "author": "Nicolas Keller",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^2.2.0"
+  }
+}

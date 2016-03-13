@@ -1,0 +1,31 @@
+@mixin center($horizontal: true, $vertical: true) {
+    position: absolute;
+    @if ($horizontal and $vertical) {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    } @else if ($horizontal) {
+        left: 50%;
+        transform: translate(-50%, 0);
+    } @else if ($vertical) {
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+}
+
+@mixin placeholder($c) {
+    &::-webkit-input-placeholder {
+        color: $c;
+    }
+    &:-moz-placeholder {
+        color: $c;
+        opacity: 1;
+    }
+    &::-moz-placeholder {
+        color: $c;
+        opacity: 1;
+    }
+    &:-ms-input-placeholder {
+        color: $c;
+    }
+}

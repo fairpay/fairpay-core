@@ -1,24 +1,44 @@
 {% extends '::layout.html.twig' %}
 
+{% block heading %}
+    <h1>Liste des étudiants</h1>
+{% endblock %}
+
 {% block body %}
-    <div data-paginate="/students">
+    <div data-paginate="/students" data-limit="1">
         Chargement...
         <script id="template" type="text/html">
-            <table>
+            <table class="table">
+                <thead>
                 <tr>
-                    <td>Nom</td>
-                    <td>Email</td>
-                    <td>Année scolaire</td>
-                    <td>Cotisant</td>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Promo</th>
+                    <th>Adresse email</th>
+                    <th>Cotisant</th>
                 </tr>
-                [[for data]]
-                    <tr>
-                        <td>[[:full_name]]</td>
-                        <td>[[:email]]</td>
-                        <td>[[:school_year]]</td>
-                        <td>[[:is_sub]]</td>
-                    </tr>
-                [[/for]]
+                </thead>
+                <tbody>
+                    [[for data]]
+                        <tr>
+                            <td>[[:first_name]]</td>
+                            <td>[[:last_name]]</td>
+                            <td>[[:school_year]]</td>
+                            <td>[[:email]]</td>
+                            <td>
+                                [[if is_sub]]
+                                    <span class="label success">
+                                        Oui
+                                    </span>
+                                [[else]]
+                                    <span class="label danger">
+                                        Non
+                                    </span>
+                                [[/if]]
+                            </td>
+                        </tr>
+                    [[/for]]
+                </tbody>
             </table>
         </script>
     </div>

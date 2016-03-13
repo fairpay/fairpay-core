@@ -38,6 +38,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - '::Form/fairpay_layout.html.twig'
     globals:
         base_host: "%base_host%"
 

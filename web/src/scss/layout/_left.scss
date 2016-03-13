@@ -1,0 +1,76 @@
+.left {
+    min-width: $navbar-height;
+    width: $navbar-height;
+    background-color: #313443;
+    color: #999a9f;
+    font-weight: 600;
+    overflow: hidden;
+    height: calc(100vh - #{$navbar-height});
+
+    @include lg {
+        min-width: $left-width;
+        width: $left-width;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+
+        a {
+            color: inherit;
+            font-size: 16px;
+
+            &:hover {
+                color: #fff;
+            }
+
+            &.active {
+                color: #fff;
+                background-color: #1e202c;
+                background-color: rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        * {
+            line-height: $navbar-height;
+
+            & > * {
+                line-height: normal;
+            }
+        }
+
+        & > * {
+            position: relative;
+            height: $navbar-height;
+            padding: 0;
+            border-bottom: solid 1px rgba(0, 0, 0, .1);
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            @include lg {
+                padding: 0 22px;
+            }
+        }
+
+        i {
+            width: $navbar-height;
+            font-size: 1.4em;
+            text-align: center;
+
+            @include lg {
+                width: 50px;
+            }
+        }
+
+        span {
+            display: none;
+            padding-left: 8px;
+
+            @include lg {
+                display: initial;
+            }
+        }
+    }
+}

@@ -1,0 +1,47 @@
+.checkbox {
+    display: inline-block;
+    padding: 2px 6px;
+    margin: 0 2px;
+
+    border-radius: 3px;
+    cursor: pointer;
+
+    &.required {
+        color: red;
+    }
+
+    &.checked {
+        background-color: green;
+    }
+
+    &.already {
+        color: #ccc;
+    }
+}
+
+.form-checkbox, .form-radio {
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    label {
+        min-height: 20px;
+        padding-left: 20px;
+        margin-bottom: 0;
+        font-weight: 400;
+        cursor: pointer;
+    }
+
+    & input[type=checkbox], & input[type=radio] {
+        position: absolute;
+        margin-left: -20px;
+    }
+}
+
+input[type=checkbox], input[type=radio] {
+    margin: 4px 0 0;
+    line-height: normal;
+    box-sizing: border-box;
+    padding: 0;
+}

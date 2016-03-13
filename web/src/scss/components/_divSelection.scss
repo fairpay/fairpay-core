@@ -1,0 +1,23 @@
+.div-selection {
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid transparent;
+
+    display: inline-block;
+    padding: 6px;
+    margin: 4px;
+    width: calc(25% - 8px);
+
+    &:hover {
+        background-color: rgba(0, 187, 0, 0.05);
+    }
+
+    &.inherit {
+        background-color: rgba(0, 187, 0, 0.1);
+    }
+
+    &.selected {
+        background-color: rgba(0, 187, 0, 0.2);
+        border-color: green;
+    }
+}

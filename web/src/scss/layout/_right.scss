@@ -1,0 +1,56 @@
+.right {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(100vh - #{$navbar-height});
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 35px;
+
+    .data-section {
+        padding: 35px 0;
+        margin: 35px 0;
+        background-color: #fff;
+    }
+
+    .submenu {
+        & > * {
+            margin-right: 15px;
+        }
+
+        nav {
+            height: 40px;
+            display: inline-flex;
+            overflow: hidden;
+
+            margin-bottom: 0;
+            font-size: inherit;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            color: #333;
+            background: #fff none;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+
+            & > * {
+                color: inherit;
+                display: inline-block;
+                border-right: 1px solid #ccc;
+                line-height: 38px;
+                padding: 0 16px;
+
+                &.active {
+                    color: #fff;
+                    background-color: #52545e;
+                }
+
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+    }
+}

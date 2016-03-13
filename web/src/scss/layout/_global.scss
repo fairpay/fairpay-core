@@ -1,0 +1,41 @@
+body {
+    padding-bottom: 40px;
+    overflow: hidden;
+    margin: $navbar-height 0 0;
+    height: 100vh;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.page {
+    display: flex;
+}
+
+.container {
+    padding: 0 35px;
+    margin: auto;
+    width: 100%;
+    min-width: 700px;
+    max-width: 1100px;
+    
+    & > h1 {
+        margin-top: 0;
+    }
+
+    &.submenu {
+        margin-bottom: 35px;
+    }
+
+    &.container-centered {
+        @include center();
+        background-color: #fff;
+        border-radius: 3px;
+
+        min-width: 300px;
+        width: 100%;
+        max-width: 600px;
+        padding: 35px;
+    }
+}

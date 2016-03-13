@@ -16,3 +16,5 @@
 /vendor/
 /web/bundles/
 /web/lib/
+/web/compiled/
+/node_modules/

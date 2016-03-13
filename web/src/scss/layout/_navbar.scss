@@ -1,0 +1,189 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    z-index: 1;
+    height: $navbar-height;
+    width: 100%;
+    background-color: #313443;
+    color: #fff;
+
+    nav {
+        display: inline-flex;
+
+        & > * {
+            line-height: $navbar-height;
+            display: inherit;
+            padding: 0 30px;
+            border-right: solid 1px rgba(255, 255, 255, .2);
+
+            &[href] {
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+
+        a {
+            color: inherit;
+            font-size: 16px;
+
+            &:hover {
+                color: #fff;
+            }
+
+            &.active {
+                color: #fff;
+                background-color: #1e202c;
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+
+    .important {
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        display: inline-block;
+
+        @media (max-width: 900px) {
+            display: none;
+        }
+    }
+
+    .switcher {
+        line-height: 68px;
+        font-size: 18px;
+        background-color: #a48ad4;
+        height: 100%;
+        text-transform: uppercase;
+        color: #fff;
+        font-weight: 700;
+        position: relative;
+        min-width: $navbar-height;
+        width: $navbar-height;
+        padding: 0;
+        text-align: center;
+
+        @include lg {
+            min-width: $left-width;
+            width: $left-width;
+            padding: initial;
+            text-align: initial;
+        }
+
+        i {
+            position: absolute;
+            right: 26px;
+            top: 0;
+            line-height: 64px;
+        }
+
+        & > .padder {
+            padding-right: 54px;
+        }
+
+        .padder {
+            display: block;
+            padding: 0;
+            cursor: pointer;
+            height: $navbar-height;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: #fff;
+
+            @include lg {
+                padding: 0 35px;
+            }
+        }
+
+        .choices {
+            background-color: rgba(0, 0, 0, .6);
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: calc(100vh - #{$navbar-height});
+
+            &.hidden {
+                display: none;
+            }
+
+            div {
+                background-color: #313443;
+            }
+        }
+
+        .small {
+            display: initial;
+
+            @include lg {
+                display: none;
+            }
+        }
+
+        .standard {
+            display: none;
+            white-space: nowrap;
+
+            @include lg {
+                display: initial;
+            }
+        }
+    }
+
+    .user {
+        cursor: pointer;
+        position: relative;
+
+        i {
+            position: absolute;
+            right: 40px;
+            line-height: $navbar-height - 3px;
+        }
+
+        .user-photo {
+            width: 40px;
+            height: 40px;
+            background: transparent center no-repeat;
+            background-size: cover;
+            margin: auto 38px auto 15px;
+            border-radius: 50%;
+        }
+    }
+
+    .drop-menu {
+        background-color: #fff;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: $navbar-height;
+        color: #52545e;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+        &.hidden {
+            display: none;
+        }
+
+        a {
+            display: block;
+            font-size: 15px;
+            padding: 0 25px;
+            line-height: 40px;
+
+            &:hover {
+                color: inherit;
+            }
+        }
+    }
+
+    .pull-right {
+        float: none;
+        position: absolute;
+        right: 0;
+    }
+}

@@ -3,14 +3,57 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('compiled/style.css') }}">
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="navbar" style="background-color:#65c9fd;">
+            <div class="switcher">
+                <div class="padder" style="background-color:#41BEFF;">
+                    <div class="standard">
+                        Férus
+                    </div>
+                    <div class="small">
+                        F
+                    </div>
+                </div>
+            </div>
+            <nav>
+
+            </nav>
+            <div class="pull-right">
+                <nav>
+                    <div class="user">
+                        <div class="user-photo">
+
+                        </div>
+                    </div>
+                    <div class="important">
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="page">
+            <div class="left">
+
+            </div>
+            <div class="right">
+                <div class="container">
+                    {% block heading %}{% endblock %}
+                </div>
+                <div class="data-section">
+                    <div class="container">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script id="tmpl-pager" type="text/html">
-            <button data-goto-page="[[:page-1]]">Prev</button>
-            <button data-goto-page="[[:page+1]]">Next</button>
+            [[if prev]]<button data-goto-page="[[:page-1]]">Précédent</button>[[/if]]
+            [[if next]]<button data-goto-page="[[:page+1]]">Suivant</button>[[/if]]
         </script>
 
         {% block javascripts %}

@@ -1,0 +1,92 @@
+button, input, optgroup, select, textarea {
+    margin: 0;
+    font: inherit;
+    color: inherit;
+}
+
+input {
+    line-height: normal;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+input[type="text"], input[type="number"], input[type="date"], input[type="password"], input[type="email"], input[type="tel"], select {
+    display: block;
+    background: #fff none;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    height: 40px;
+    border-radius: 3px;
+    border: 1px solid #dcdcdc;
+    font-size: 1em;
+    font-family: inherit;
+    padding: 0 18px;
+    width: 100%;
+    min-width: 300px;
+    max-width: 700px;
+    color: inherit;
+
+    &[disabled], &[readonly] {
+        background-color: #eee;
+        opacity: 1;
+    }
+
+    &[disabled] {
+        cursor: not-allowed;
+    }
+
+    &.short {
+        display: inline-block;
+        min-width: initial;
+        width: initial;
+    }
+}
+
+input[type=file] {
+    display: block;
+}
+
+input[type="number"] {
+    padding-right: 0;
+}
+
+label[for] {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    padding-left: 18px;
+    font-weight: 600;
+}
+
+select option {
+    &.required {
+        color: red;
+    }
+
+    &.already {
+        color: #ccc;
+    }
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.text-danger {
+    color: #a94442;
+}
+
+.text-success {
+    color: #3c763d;
+}
+
+.help-block {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #737373;
+}

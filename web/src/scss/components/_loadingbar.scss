@@ -1,0 +1,13 @@
+// loading bar on top of screen when AJAX calls
+
+#loading-bar {
+    z-index: 100;
+
+    .bar {
+        background: #337AB7;
+    }
+
+    .peg {
+        box-shadow: #337AB7 1px 0 6px 1px;
+    }
+}

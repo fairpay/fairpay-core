@@ -1,0 +1,31 @@
+.progress {
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+
+    .progress-bar {
+        float: left;
+        width: 0;
+        height: 100%;
+        font-size: 12px;
+        line-height: 20px;
+        color: #fff;
+        text-align: center;
+        background-color: #337ab7;
+        transition: width .6s ease;
+
+        &-success {
+            background-color: #5cb85c;
+        }
+
+        &-warning {
+            background-color: #f0ad4e;
+        }
+
+        &-danger {
+            background-color: #d9534f;
+        }
+    }
+}

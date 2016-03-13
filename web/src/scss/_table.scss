@@ -1,0 +1,39 @@
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+
+    & > tbody > tr:hover {
+        background-color: #ffffdf;
+    }
+
+    th,
+    td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    th {
+        text-align: left;
+        text-transform: uppercase;
+        border-color: #d8d8d8;
+    }
+
+    td.actions {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .btn,
+    button {
+        line-height: 1;
+    }
+}

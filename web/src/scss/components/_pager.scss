@@ -1,0 +1,47 @@
+.pager {
+    padding-left: 0;
+    margin: 20px 0;
+    list-style: none;
+    text-align: center;
+
+    &::before {
+        content: " ";
+        display: table;
+    }
+
+    &::after {
+        content: " ";
+        display: table;
+        clear: both;
+    }
+
+    &.hidden {
+        display: none;
+    }
+
+    li {
+        display: inline;
+
+        a {
+            display: inline-block;
+            padding: 5px 14px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+        }
+    }
+
+    .previous {
+        float: left;
+    }
+
+    .next {
+        float: right;
+    }
+
+    .disabled > a {
+        color: #999;
+        background-color: #fff;
+        cursor: not-allowed;
+    }
+}
