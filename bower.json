@@ -5,6 +5,7 @@
     "Nick Keller <solix@hotmail.fr>"
   ],
   "dependencies": {
-    "jquery": "^2.2.1"
+    "jquery": "^2.2.1",
+    "jsviews": "^0.9.73"
   }
 }

@@ -38,6 +38,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        base_host: "%base_host%"
 
 # Doctrine Configuration
 doctrine:

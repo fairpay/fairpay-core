@@ -7,6 +7,25 @@
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+        <script id="tmpl-pager" type="text/html">
+            <button data-goto-page="[[:page-1]]">Prev</button>
+            <button data-goto-page="[[:page+1]]">Next</button>
+        </script>
+
+        {% block javascripts %}
+            <script type="text/javascript">
+                var api = {
+                    host: 'api.{{ base_host }}',
+                    token: '{{ api_token() }}'
+                };
+            </script>
+            <script type="text/javascript" src="{{ asset('lib/jquery/dist/jquery.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('lib/jsviews/jsviews.min.js') }}"></script>
+            <script type="text/javascript">
+                $.views.settings.delimiters("[[", "]]");
+            </script>
+            <script type="text/javascript" src="{{ asset('src/js/paginator.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

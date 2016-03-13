@@ -29,6 +29,15 @@ services:
             - "%secret%"
             - "@school_manager"
 
+    # Tiwg
+    fairpay.twig.api_token_extension:
+        class: Fairpay\Bundle\UserBundle\Twig\ApiTokenExtension
+        arguments:
+            - "@jwt_generator"
+            - "@security.token_storage"
+        tags:
+            - { name: twig.extension }
+
     # Validator
 
     validator.fairpay.display_name:

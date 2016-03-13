@@ -1,7 +1,26 @@
 {% extends '::layout.html.twig' %}
 
 {% block body %}
-    List
-    {{ dump(token) }}
+    <div data-paginate="/students">
+        Chargement...
+        <script id="template" type="text/html">
+            <table>
+                <tr>
+                    <td>Nom</td>
+                    <td>Email</td>
+                    <td>Année scolaire</td>
+                    <td>Cotisant</td>
+                </tr>
+                [[for data]]
+                    <tr>
+                        <td>[[:full_name]]</td>
+                        <td>[[:email]]</td>
+                        <td>[[:school_year]]</td>
+                        <td>[[:is_sub]]</td>
+                    </tr>
+                [[/for]]
+            </table>
+        </script>
+    </div>
 {% endblock %}
 

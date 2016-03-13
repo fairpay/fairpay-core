@@ -31,7 +31,7 @@ services:
             - "@jms_serializer"
             - "%base_host%"
         tags:
-            - { name: kernel.event_listener, event: kernel.view }
+            - { name: kernel.event_subscriber }
 
     # Validators
 
