@@ -3,6 +3,7 @@
 namespace Fairpay\Bundle\StudentBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use Fairpay\Bundle\SchoolBundle\Entity\School;
 
 /**
  * StudentRepository
@@ -13,10 +14,14 @@ use Doctrine\ORM\QueryBuilder;
 class StudentRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * @param School $school
      * @return QueryBuilder
      */
-    public function queryAll()
+    public function queryAll(School $school)
     {
-        return $this->createQueryBuilder('s');
+        return $this->createQueryBuilder('s')
+            ->where('s.school = :school')
+            ->setParameter('school', $school)
+            ;
     }
 }

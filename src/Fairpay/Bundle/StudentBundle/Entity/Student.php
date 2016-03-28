@@ -4,6 +4,7 @@ namespace Fairpay\Bundle\StudentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
+use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\VirtualProperty;
 
@@ -89,13 +90,14 @@ class Student extends SchoolContext
 
     /**
      * @var bool
+     * @Exclude()
      * @ORM\Column(name="self_registered", type="boolean")
      */
     private $selfRegistered;
 
     /**
      * @var array
-     *
+     * @Exclude()
      * @ORM\Column(name="untouchable_fields", type="simple_array", nullable=true)
      */
     private $untouchableFields;

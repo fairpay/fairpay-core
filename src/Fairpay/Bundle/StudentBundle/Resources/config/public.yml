@@ -1,0 +1,5 @@
+fairpay_profile_student:
+    path:     /profile/students/{id}
+    defaults: { _controller: FairpayStudentBundle:Public:profile }
+    requirements:
+        id: \d+|b80bb7740288fda1f201890375a60c8f

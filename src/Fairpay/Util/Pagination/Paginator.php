@@ -43,12 +43,7 @@ class Paginator
             ->getResult()
         ;
 
-        $pageView = new PageView();
-        $pageView->count = $count;
-        $pageView->perPage = $limit;
-        $pageView->page = $page;
-        $pageView->totalPages = ceil($count / $limit);
-        $pageView->data = $data;
+        $pageView = new PageView($count, $limit, $data, $page);
 
         $route = $request->attributes->get('_route');
         $routeParams = $request->attributes->get('_route_params');

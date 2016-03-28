@@ -1,21 +1,24 @@
 {% extends '::layout.html.twig' %}
 
+{% trans_default_domain "entities" %}
+
 {% block heading %}
     <h1>Liste des étudiants</h1>
 {% endblock %}
 
 {% block body %}
-    <div data-paginate="/students" data-limit="1">
+    <div data-paginate="/students">
         Chargement...
         <script id="template" type="text/html">
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Promo</th>
-                    <th>Adresse email</th>
-                    <th>Cotisant</th>
+                    <th>{{ 'student.first_name'|trans }}</th>
+                    <th>{{ 'student.last_name'|trans }}</th>
+                    <th>{{ 'student.school_year'|trans }}</th>
+                    <th>{{ 'student.email'|trans }}</th>
+                    <th>{{ 'student.is_sub'|trans }}</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,14 +30,15 @@
                             <td>[[:email]]</td>
                             <td>
                                 [[if is_sub]]
-                                    <span class="label success">
-                                        Oui
-                                    </span>
+                                    {{ true | label }}
                                 [[else]]
-                                    <span class="label danger">
-                                        Non
-                                    </span>
+                                    {{ false | label }}
                                 [[/if]]
+                            </td>
+                            <td class="actions">
+                                <a class="btn info" href="{{ path_tmpl('fairpay_profile_student') }}">
+                                    Voir
+                                </a>
                             </td>
                         </tr>
                     [[/for]]

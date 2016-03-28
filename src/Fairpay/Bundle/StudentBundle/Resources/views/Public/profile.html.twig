@@ -1,0 +1,31 @@
+{% extends "::layout.html.twig" %}
+
+{% trans_default_domain "entities" %}
+
+{% block heading %}
+    <h1>
+        <span class="label success">Étudiant</span> {{ student.full_name }}
+    </h1>
+{% endblock %}
+
+
+{% block body %}
+    <p>
+        <b>{{ 'student.email'|trans }} :</b> {{ student.email }}
+    </p>
+    <p>
+        <b>{{ 'student.gender'|trans }} :</b> {{ student.gender|default|format_gender }}
+    </p>
+    <p>
+        <b>{{ 'student.school_year'|trans }} :</b> {{ student.school_year }}
+    </p>
+    <p>
+        <b>{{ 'student.birthday'|trans }} :</b> {{ student.birthday|default('student.values.birthday.unknown'|trans) }}
+    </p>
+    <p>
+        <b>{{ 'student.phone'|trans }} :</b> {{ student.phone|default|format_phone }}
+    </p>
+    <p>
+        <b>{{ 'student.is_sub'|trans }} :</b> {{ student.is_sub|label }}
+    </p>
+{% endblock %}

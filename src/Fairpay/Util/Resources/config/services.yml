@@ -16,6 +16,21 @@ services:
         arguments:
             - "@router"
 
+    # Tiwg
+    fairpay.twig.html_extension:
+        class: Fairpay\Util\Twig\HtmlExtension
+        arguments:
+            - "@router"
+        tags:
+            - { name: twig.extension }
+
+    fairpay.twig.formatter_extension:
+        class: Fairpay\Util\Twig\FormatterExtension
+        arguments:
+            - "@translator"
+        tags:
+            - { name: twig.extension }
+
     # Listeners
 
     fairpay.exception_listener:

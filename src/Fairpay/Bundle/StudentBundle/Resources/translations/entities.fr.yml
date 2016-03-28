@@ -1,0 +1,22 @@
+student:
+
+    first_name: Prénom
+    last_name: Nom de famille
+    email: Adresse email
+    email_full: Adresse email scolaire
+    school_year: Année scolaire
+    is_sub: Cotisant
+    gender: Sexe
+    birthday: Date de naissance
+    barcode: ID étudiant
+    phone: Numéro de téléphone
+
+    values:
+        gender:
+            male: Homme
+            female: Femme
+            unknown: Inconnu
+        birthday:
+            unknown: Inconnue
+        phone:
+            unknown: Inconnu

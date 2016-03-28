@@ -13,7 +13,7 @@ class ApiController extends FairpayApiController
     public function studentsAction(Request $request)
     {
         $paginator = $this->get('fairpay.paginator');
-        $queryAll = $this->em()->getRepository('FairpayStudentBundle:Student')->queryAll();
+        $queryAll = $this->em()->getRepository('FairpayStudentBundle:Student')->queryAll($this->get('school_manager')->getCurrentSchool());
         $students = $paginator->paginate($queryAll, $request);
         return $students;
     }

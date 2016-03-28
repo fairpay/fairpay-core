@@ -24,7 +24,12 @@ fairpay_security:
     host: "{_subdomain}.%base_host%"
     prefix:   /
 
+fairpay_student_public:
+    resource: "@FairpayStudentBundle/Resources/config/public.yml"
+    host: "{_subdomain}.%base_host%"
+    prefix:   /
+
 fairpay_student_admin:
     resource: "@FairpayStudentBundle/Resources/config/admin.yml"
     host: "{_subdomain}.%base_host%"
-    prefix:   /admin/students
+    prefix:   /

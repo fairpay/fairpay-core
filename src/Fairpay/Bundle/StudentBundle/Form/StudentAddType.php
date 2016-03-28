@@ -21,37 +21,37 @@ class StudentAddType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, array(
-                'label' => 'Prénom',
+                'label' => 'student.first_name',
             ))
             ->add('lastName', TextType::class, array(
-                'label' => 'Nom de famille',
+                'label' => 'student.last_name',
             ))
             ->add('email', TextType::class, array(
-                'label' => 'Adresse email scolaire',
+                'label' => 'student.email_full',
             ))
             ->add('schoolYear', TextType::class, array(
-                'label' => 'Année scolaire',
+                'label' => 'student.school_year',
             ))
             ->add('gender', ChoiceType::class, array(
-                'label' => 'Sexe',
+                'label' => 'student.gender',
                 'required' => false,
                 'choices' => array(
-                    'Homme' => Student::MALE,
-                    'Femme' => Student::FEMALE,
+                    'student.values.gender.male' => Student::MALE,
+                    'student.values.gender.female' => Student::FEMALE,
                 )
             ))
             ->add('birthday', BirthdayType::class, array(
-                'label' => 'Date de naissance',
+                'label' => 'student.birthday',
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ))
             ->add('barcode', TextType::class, array(
-                'label' => 'ID étudiant',
+                'label' => 'student.barcode',
                 'required' => false,
             ))
             ->add('phone', TextType::class, array(
-                'label' => 'Numéro de téléphone',
+                'label' => 'student.phone',
                 'required' => false,
             ))
             ->add('save', SubmitType::class, array(
@@ -66,7 +66,8 @@ class StudentAddType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Fairpay\Bundle\StudentBundle\Form\StudentAdd'
+            'data_class' => 'Fairpay\Bundle\StudentBundle\Form\StudentAdd',
+            'translation_domain' => 'entities',
         ));
     }
 }
