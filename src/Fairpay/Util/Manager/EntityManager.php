@@ -42,6 +42,10 @@ abstract class EntityManager
     protected function mapData($target, $source)
     {
         foreach (get_object_vars($source) as $field => $value) {
+            if ($field === 'id') {
+                continue;
+            }
+
             $target->{'set' . ucfirst($field)}($value);
         }
     }

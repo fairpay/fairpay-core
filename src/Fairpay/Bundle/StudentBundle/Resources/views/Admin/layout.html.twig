@@ -1,1 +1,11 @@
 {% extends "::layout.html.twig" %}
+
+{% block nav %}
+    <div class="container submenu">
+        <nav>
+            <a href="{{ path('fairpay_student_list') }}">Liste</a>
+        </nav>
+
+        <a class="btn success" href="{{ path('fairpay_student_add') }}">Ajouter</a>
+    </div>
+{% endblock %}

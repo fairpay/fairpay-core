@@ -5,7 +5,7 @@ namespace Fairpay\Bundle\StudentBundle\Manager;
 
 
 use Fairpay\Bundle\StudentBundle\Entity\Student;
-use Fairpay\Bundle\StudentBundle\Form\StudentAdd;
+use Fairpay\Bundle\StudentBundle\Form\StudentData;
 use Fairpay\Bundle\StudentBundle\Repository\StudentRepository;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
@@ -20,10 +20,11 @@ class StudentManager extends CurrentSchoolAwareManager
     /**
      * Create a student and save it to DB.
      *
-     * @param StudentAdd $studentAdd
+     * @param StudentData $studentAdd
+     * @return Student
      * @throws NoCurrentSchoolException
      */
-    public function create(StudentAdd $studentAdd)
+    public function create(StudentData $studentAdd)
     {
         $student = new Student();
         $this->updateUntouchableFields($student, $studentAdd);
@@ -32,6 +33,23 @@ class StudentManager extends CurrentSchoolAwareManager
         $student->setSchool($this->getCurrentSchool());
         $student->setIsSub(false);
         $student->setSelfRegistered(false);
+
+        $this->em->persist($student);
+        $this->em->flush();
+
+        return $student;
+    }
+
+    /**
+     * Update a student and save it to DB.
+     *
+     * @param Student     $student
+     * @param StudentData $studentAdd
+     */
+    public function update(Student $student, StudentData $studentAdd)
+    {
+        $this->updateUntouchableFields($student, $studentAdd);
+        $this->mapData($student, $studentAdd);
 
         $this->em->persist($student);
         $this->em->flush();

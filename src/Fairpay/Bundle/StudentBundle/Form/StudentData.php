@@ -3,6 +3,7 @@
 
 namespace Fairpay\Bundle\StudentBundle\Form;
 
+use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Util\Email\Validator\Constraints\NotDisposableEmail;
 use Fairpay\Util\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,8 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueEntity(fields="email", entity="FairpayStudentBundle:Student")
  */
-class StudentAdd
+class StudentData
 {
+    public $id;
+
     /**
      * @Assert\NotBlank()
      * @Assert\Length(min = 2)
@@ -43,4 +46,13 @@ class StudentAdd
     public $barcode;
 
     public $phone;
+
+    public function __construct(Student $student = null)
+    {
+        if ($student) {
+            foreach (get_object_vars($this) as $field => $value) {
+                $this->$field = $student->{'get' . ucfirst($field)}();
+            }
+        }
+    }
 }

@@ -4,7 +4,9 @@
 namespace Fairpay\Bundle\StudentBundle\Controller;
 
 
-use Fairpay\Bundle\StudentBundle\Form\StudentAddType;
+use Fairpay\Bundle\StudentBundle\Entity\Student;
+use Fairpay\Bundle\StudentBundle\Form\StudentData;
+use Fairpay\Bundle\StudentBundle\Form\StudentDataType;
 use Fairpay\Util\Controller\FairpayController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,15 +30,37 @@ class AdminController extends FairpayController
      */
     public function addAction(Request $request)
     {
-        $form = $this->createForm(StudentAddType::class);
+        $form = $this->createForm(StudentDataType::class);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $this->get('student_manager')->create($form->getData());
+            $student = $this->get('student_manager')->create($form->getData());
 
-            //return $this->redirectToRoute('fairpay_student_add');
+            return $this->redirectToRoute('fairpay_profile_student', ['id' => $student->getId()]);
         }
 
         return array(
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * @Template()
+     * @param Request $request
+     * @param Student $student
+     * @return array
+     */
+    public function editAction(Request $request, Student $student)
+    {
+        $form = $this->createForm(StudentDataType::class, new StudentData($student));
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $this->get('student_manager')->update($student, $form->getData());
+
+            return $this->redirectToRoute('fairpay_profile_student', ['id' => $student->getId()]);
+        }
+
+        return array(
+            'student' => $student,
             'form' => $form->createView(),
         );
     }

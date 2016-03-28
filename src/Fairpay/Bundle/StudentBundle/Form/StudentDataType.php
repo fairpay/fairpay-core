@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StudentAddType extends AbstractType
+class StudentDataType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -44,7 +44,7 @@ class StudentAddType extends AbstractType
                 'label' => 'student.birthday',
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ))
             ->add('barcode', TextType::class, array(
                 'label' => 'student.barcode',
@@ -66,7 +66,7 @@ class StudentAddType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Fairpay\Bundle\StudentBundle\Form\StudentAdd',
+            'data_class' => 'Fairpay\Bundle\StudentBundle\Form\StudentData',
             'translation_domain' => 'entities',
         ));
     }
