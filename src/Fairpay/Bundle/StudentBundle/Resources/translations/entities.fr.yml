@@ -16,6 +16,9 @@ student:
             male: Homme
             female: Femme
             unknown: Inconnu
+        is_sub:
+            true: Cotisant
+            false: Non-cotisant
         birthday:
             unknown: Inconnue
         phone:

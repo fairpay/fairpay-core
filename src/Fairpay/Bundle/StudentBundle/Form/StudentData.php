@@ -47,6 +47,8 @@ class StudentData
 
     public $phone;
 
+    public $isSub = false;
+
     public function __construct(Student $student = null)
     {
         if ($student) {

@@ -54,6 +54,14 @@ class StudentDataType extends AbstractType
                 'label' => 'student.phone',
                 'required' => false,
             ))
+            ->add('isSub', ChoiceType::class, array(
+                'label' => 'student.is_sub',
+                'expanded' => true,
+                'choices' => array(
+                    'student.values.is_sub.1' => true,
+                    'student.values.is_sub.0' => false,
+                )
+            ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Ok',
             ))

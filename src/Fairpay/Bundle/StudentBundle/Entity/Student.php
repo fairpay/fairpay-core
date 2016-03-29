@@ -102,12 +102,19 @@ class Student extends SchoolContext
      */
     private $untouchableFields;
 
+    /**
+     * @var SubHistory
+     * @ORM\OneToMany(targetEntity="Fairpay\Bundle\StudentBundle\Entity\SubHistory", mappedBy="student", fetch="LAZY")
+     */
+    protected $subHistory;
+
     public function __construct($firstName = null, $lastName = null, $email = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
         $this->untouchableFields = array();
+        $this->isSub = false;
     }
 
     /**
@@ -418,5 +425,38 @@ class Student extends SchoolContext
     {
         return $this->untouchableFields;
     }
-}
 
+    /**
+     * Add subHistory
+     *
+     * @param SubHistory $subHistory
+     *
+     * @return Student
+     */
+    public function addSubHistory(SubHistory $subHistory)
+    {
+        $this->subHistory[] = $subHistory;
+
+        return $this;
+    }
+
+    /**
+     * Remove subHistory
+     *
+     * @param SubHistory $subHistory
+     */
+    public function removeSubHistory(SubHistory $subHistory)
+    {
+        $this->subHistory->removeElement($subHistory);
+    }
+
+    /**
+     * Get subHistory
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubHistory()
+    {
+        return $this->subHistory;
+    }
+}

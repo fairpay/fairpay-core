@@ -31,4 +31,29 @@
     <p>
         <b>{{ 'student.is_sub'|trans }} :</b> {{ student.is_sub|label }}
     </p>
+
+    <h4>Historique de ses cotisations</h4>
+
+    {% if sub_history|length %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Nouvel état</th>
+                    <th>Auteur</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in sub_history %}
+                    <tr>
+                        <td>{{ history.createdAt|format_date }}</td>
+                        <td>{{ history.state|label }}</td>
+                        <td>{{ history.updatedBy }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Cet utilisateur n'a subit aucune modification de son statut de cotisant.</p>
+    {% endif %}
 {% endblock %}

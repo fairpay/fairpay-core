@@ -19,6 +19,7 @@ class PublicController extends FairpayController
     {
         return array(
             'student' => $this->get('jms_serializer')->toArray($student),
+            'sub_history' => $student->getSubHistory(),
         );
     }
 }

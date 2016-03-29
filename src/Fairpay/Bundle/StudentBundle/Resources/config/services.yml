@@ -1,6 +1,8 @@
 services:
     student_manager:
         class: Fairpay\Bundle\StudentBundle\Manager\StudentManager
+        arguments:
+            - "@security.token_storage"
         calls:
             - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
             - [ setSchoolManager,[ "@school_manager" ] ]
