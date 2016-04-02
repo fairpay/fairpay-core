@@ -2,7 +2,7 @@
 
 namespace Fairpay\Bundle\ShowcaseBundle\Controller;
 
-use Fairpay\Bundle\SchoolBundle\Form\SchoolCreationType;
+use Fairpay\Bundle\SchoolBundle\Form\SchoolCreateType;
 use Fairpay\Util\Controller\FairpayController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ class ShowcaseController extends FairpayController
      */
     public function indexAction(Request $request)
     {
-        $form = $this->createForm(SchoolCreationType::class);
+        $form = $this->createForm(SchoolCreateType::class);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $this->get('school_manager')->create($form->getData());

@@ -55,6 +55,7 @@ class UserManager extends CurrentSchoolAwareManager
         $user->setEmail($email);
         $user->setSchool($this->getCurrentSchool());
         $user->setUsername($this->usernameFromDisplayName($displayName));
+        $user->setIsVendor(true);
 
         $this->em->persist($user);
         $this->em->flush();

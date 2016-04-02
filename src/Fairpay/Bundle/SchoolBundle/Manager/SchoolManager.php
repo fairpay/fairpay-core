@@ -7,7 +7,7 @@ use Fairpay\Bundle\SchoolBundle\Event\SchoolEvent;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeEmail;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeName;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolChangeSlug;
-use Fairpay\Bundle\SchoolBundle\Form\SchoolCreation;
+use Fairpay\Bundle\SchoolBundle\Form\SchoolCreate;
 use Fairpay\Bundle\SchoolBundle\Form\SchoolEmailPolicy;
 use Fairpay\Bundle\SchoolBundle\Repository\SchoolRepository;
 use Fairpay\Util\Email\Services\EmailHelper;
@@ -84,9 +84,9 @@ class SchoolManager extends EntityManager
     /**
      * Create a School with a random registrationToken, save it, and dispatch onSchoolCreated event.
      *
-     * @param SchoolCreation $schoolCreation
+     * @param SchoolCreate $schoolCreation
      */
-    public function create(SchoolCreation $schoolCreation)
+    public function create(SchoolCreate $schoolCreation)
     {
         $school = new School($schoolCreation->name, $schoolCreation->email);
         $school->setRegistrationToken($this->generateRegistrationToken());

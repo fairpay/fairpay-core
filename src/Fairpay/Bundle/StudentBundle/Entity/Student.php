@@ -4,6 +4,7 @@ namespace Fairpay\Bundle\StudentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
+use Fairpay\Bundle\UserBundle\Entity\User;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\VirtualProperty;
@@ -107,6 +108,12 @@ class Student extends SchoolContext
      * @ORM\OneToMany(targetEntity="Fairpay\Bundle\StudentBundle\Entity\SubHistory", mappedBy="student", fetch="LAZY")
      */
     protected $subHistory;
+
+    /**
+     * @var User
+     * @ORM\OneToOne(targetEntity="Fairpay\Bundle\UserBundle\Entity\User", fetch="LAZY", inversedBy="student")
+     */
+    private $user;
 
     public function __construct($firstName = null, $lastName = null, $email = null)
     {
@@ -458,5 +465,30 @@ class Student extends SchoolContext
     public function getSubHistory()
     {
         return $this->subHistory;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @VirtualProperty()
+     * @return bool
+     */
+    public function hasAccount()
+    {
+        return null !== $this->user;
     }
 }

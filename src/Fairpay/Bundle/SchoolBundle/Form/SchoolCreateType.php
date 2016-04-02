@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SchoolCreationType extends AbstractType
+class SchoolCreateType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -30,7 +30,7 @@ class SchoolCreationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Fairpay\Bundle\SchoolBundle\Form\SchoolCreation'
+            'data_class' => 'Fairpay\Bundle\SchoolBundle\Form\SchoolCreate'
         ));
     }
 }

@@ -6,6 +6,7 @@ namespace Fairpay\Bundle\StudentBundle\Manager;
 
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Bundle\StudentBundle\Entity\SubHistory;
+use Fairpay\Bundle\StudentBundle\Event\StudentEvent;
 use Fairpay\Bundle\StudentBundle\Form\StudentData;
 use Fairpay\Bundle\StudentBundle\Repository\StudentRepository;
 use Fairpay\Bundle\UserBundle\Entity\User;
@@ -52,6 +53,8 @@ class StudentManager extends CurrentSchoolAwareManager
         $this->em->flush();
 
         $this->updateSubHistory($student, false);
+
+        $this->dispatcher->dispatch(StudentEvent::onStudentCreated, new StudentEvent($student));
 
         return $student;
     }

@@ -4,6 +4,7 @@ namespace Fairpay\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
+use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -52,6 +53,23 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
      * @ORM\Column(name="salt", type="string", length=255)
      */
     private $salt;
+
+    /**
+     * @var string
+     * @ORM\Column(name="is_vendor", type="boolean")
+     */
+    private $isVendor;
+
+    /**
+     * @var Student
+     * @ORM\OneToOne(targetEntity="Fairpay\Bundle\StudentBundle\Entity\Student", fetch="EXTRA_LAZY", mappedBy="user")
+     */
+    private $student;
+
+    public function __construct()
+    {
+        $this->isVendor = true;
+    }
 
     public function __toString()
     {
@@ -212,6 +230,38 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
         }
 
         return $user->getId() === $this->getId();
+    }
+
+    /**
+     * @return Student
+     */
+    public function getStudent()
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param Student $student
+     */
+    public function setStudent($student)
+    {
+        $this->student = $student;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsVendor()
+    {
+        return $this->isVendor;
+    }
+
+    /**
+     * @param string $isVendor
+     */
+    public function setIsVendor($isVendor)
+    {
+        $this->isVendor = $isVendor;
     }
 }
 

@@ -44,7 +44,7 @@ class SubHistory
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="Fairpay\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Fairpay\Bundle\UserBundle\Entity\User", fetch="EAGER")
      */
     protected $updatedBy;
 

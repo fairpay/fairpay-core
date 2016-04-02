@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields="name", entity="FairpaySchoolBundle:School")
  * @UniqueEntity(fields="email", entity="FairpaySchoolBundle:School")
  */
-class SchoolCreation
+class SchoolCreate
 {
     /**
      * @Assert\NotBlank()
