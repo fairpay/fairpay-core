@@ -68,7 +68,7 @@ class CurrentSchoolListener
      */
     public function getSubdomain(Request $request)
     {
-        if (false === strpos($request->getHost(), $this->baseHost)) {
+        if (stripos(strrev($request->getHost()), strrev($this->baseHost)) !== 0) {
             return null;
         }
 

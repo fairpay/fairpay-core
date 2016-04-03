@@ -28,7 +28,7 @@ class SchoolRepository extends \Doctrine\ORM\EntityRepository
 
         return array_filter($result, function($school) use($oldSlug) {
             /** @var School $school */
-            return in_array($oldSlug, $school->getOldSlugs());
+            return in_array($oldSlug, (array) $school->getOldSlugs());
         });
     }
 }
