@@ -98,7 +98,7 @@ class UserManagerTest extends WebTestCase
         $this->havingASchool();
 
         try {
-            $this->userManager->create('Bruce Wayne', 'b4atman', 'bruce@wayne');
+            $this->userManager->createMainVendor('Bruce Wayne', 'b4atman', 'bruce@wayne');
             $this->fail('Should not be able to find a user without having a current School defined.');
         } catch (NoCurrentSchoolException $e) {
             // Should throw an exception when no current School is defined.
@@ -106,7 +106,7 @@ class UserManagerTest extends WebTestCase
 
         // Should work when current school is defined
         $this->container->get('school_manager')->setCurrentSchool($this->school);
-        $user = $this->userManager->create('Bruce Wayne', 'b4atman', 'bruce@wayne');
+        $user = $this->userManager->createMainVendor('Bruce Wayne', 'b4atman', 'bruce@wayne');
 
         $this->assertNotNull($user->getId());
         $this->assertEquals('bruce.wayne', $user->getUsername());

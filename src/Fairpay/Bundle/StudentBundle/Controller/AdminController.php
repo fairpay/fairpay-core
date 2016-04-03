@@ -64,4 +64,15 @@ class AdminController extends FairpayController
             'form' => $form->createView(),
         );
     }
+
+    public function createUserAction(Student $student)
+    {
+        if ($student->hasAccount()) {
+            // TODO add error message
+        } else {
+            $this->get('user_manager')->createFromStudent($student);
+        }
+
+        return $this->redirectToRoute('fairpay_profile_student', ['id' => $student->getId()]);
+    }
 }

@@ -9,6 +9,13 @@ services:
             - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
             - [ setSchoolManager,[ "@school_manager" ] ]
 
+    token_manager:
+        class: Fairpay\Bundle\UserBundle\Manager\TokenManager
+        arguments:
+            - "@fairpay.token_generator"
+        calls:
+            - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
+
     user_provider:
         class: Fairpay\Bundle\UserBundle\Security\UserProvider
         arguments:
@@ -29,6 +36,14 @@ services:
             - "%secret%"
             - "@school_manager"
 
+    token_param_converter:
+        class: Fairpay\Bundle\UserBundle\Request\ParamConverter\TokenParamConverter
+        arguments:
+            - "@token_manager"
+            - "@school_manager"
+        tags:
+            - { name: request.param_converter }
+
     # Tiwg
     fairpay.twig.api_token_extension:
         class: Fairpay\Bundle\UserBundle\Twig\ApiTokenExtension
@@ -46,3 +61,15 @@ services:
             - "@fairpay.string_util"
         tags:
             - { name: validator.constraint_validator, alias: fairpay.display_name }
+
+
+    # Listener
+
+    fairpay.user.email_listener:
+        class: Fairpay\Bundle\UserBundle\EventListener\EmailListener
+        arguments:
+            - "@token_manager"
+        calls:
+            - [ init,[ "@mailer", "@twig" ] ]
+        tags:
+            - { name: kernel.event_subscriber }

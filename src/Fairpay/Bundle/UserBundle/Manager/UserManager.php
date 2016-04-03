@@ -3,7 +3,9 @@
 
 namespace Fairpay\Bundle\UserBundle\Manager;
 
+use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Bundle\UserBundle\Entity\User;
+use Fairpay\Bundle\UserBundle\Event\UserCreatedEvent;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
@@ -38,7 +40,7 @@ class UserManager extends CurrentSchoolAwareManager
     }
 
     /**
-     * Create a user and save it to DB.
+     * Create the main vendor and save it to DB.
      *
      * @param string $displayName
      * @param string $plainPassword
@@ -46,19 +48,66 @@ class UserManager extends CurrentSchoolAwareManager
      * @return User
      * @throws NoCurrentSchoolException
      */
-    public function create($displayName, $plainPassword, $email)
+    public function createMainVendor($displayName, $plainPassword, $email)
     {
-        $user = new User();
-        $user->setDisplayName($displayName);
-        $user->setSalt($this->tokenGenerator->generateToken());
+        $user = $this->newUser($displayName);
         $user->setPassword($this->passwordEncoder->encodePassword($user, $plainPassword));
         $user->setEmail($email);
-        $user->setSchool($this->getCurrentSchool());
-        $user->setUsername($this->usernameFromDisplayName($displayName));
         $user->setIsVendor(true);
 
         $this->em->persist($user);
         $this->em->flush();
+
+        $this->dispatcher->dispatch(
+            UserCreatedEvent::onUserCreated,
+            new UserCreatedEvent($user, UserCreatedEvent::REGISTERED_WITH_SCHOOL)
+        );
+
+        return $user;
+    }
+
+    /**
+     * Create a user based on a student and link it.
+     *
+     * @param Student $student
+     * @return User
+     */
+    public function createFromStudent(Student $student)
+    {
+        $user = $this->newUser((string) $student);
+        $user->setPassword($this->tokenGenerator->generateToken());
+        $user->setEmail($student->getEmail());
+        $user->setIsVendor(false);
+
+        $user->setStudent($student);
+        $student->setUser($user);
+
+        $this->em->persist($user);
+        $this->em->persist($student);
+        $this->em->flush();
+
+        $this->dispatcher->dispatch(
+            UserCreatedEvent::onUserCreated,
+            new UserCreatedEvent($user, UserCreatedEvent::REGISTERED_BY_ADMIN)
+        );
+
+        return $user;
+    }
+
+    /**
+     * Create a new User object.
+     *
+     * @param $displayName
+     * @return User
+     * @throws NoCurrentSchoolException
+     */
+    private function newUser($displayName)
+    {
+        $user = new User();
+        $user->setDisplayName($displayName);
+        $user->setSalt($this->tokenGenerator->generateToken());
+        $user->setSchool($this->getCurrentSchool());
+        $user->setUsername($this->usernameFromDisplayName($displayName));
 
         return $user;
     }

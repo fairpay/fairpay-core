@@ -111,6 +111,7 @@ class Student extends SchoolContext
 
     /**
      * @var User
+     * @Exclude()
      * @ORM\OneToOne(targetEntity="Fairpay\Bundle\UserBundle\Entity\User", fetch="LAZY", inversedBy="student")
      */
     private $user;

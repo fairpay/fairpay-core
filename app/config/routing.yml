@@ -5,7 +5,7 @@ fairpay_showcase:
     host: %base_host%
     prefix:   /
 
-fairpay_registration:
+fairpay_school_registration:
     resource: "@FairpaySchoolBundle/Resources/config/registration.yml"
     host: %base_host%
     prefix:   /
@@ -21,6 +21,11 @@ fairpay_student_api:
 
 fairpay_security:
     resource: "@FairpayUserBundle/Resources/config/security.yml"
+    host: "{_subdomain}.%base_host%"
+    prefix:   /
+
+fairpay_user_registration:
+    resource: "@FairpayUserBundle/Resources/config/registration.yml"
     host: "{_subdomain}.%base_host%"
     prefix:   /
 

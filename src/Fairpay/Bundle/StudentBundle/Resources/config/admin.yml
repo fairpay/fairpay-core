@@ -7,7 +7,13 @@ fairpay_student_add:
     defaults: { _controller: FairpayStudentBundle:Admin:add }
 
 fairpay_student_edit:
-    path:     /admin/students/edit/{id}
+    path:     /admin/students/{id}/edit
     defaults: { _controller: FairpayStudentBundle:Admin:edit }
+    requirements:
+        id: \d+|b80bb7740288fda1f201890375a60c8f
+
+fairpay_student_create_user:
+    path:     /admin/students/{id}/create-account
+    defaults: { _controller: FairpayStudentBundle:Admin:createUser }
     requirements:
         id: \d+|b80bb7740288fda1f201890375a60c8f

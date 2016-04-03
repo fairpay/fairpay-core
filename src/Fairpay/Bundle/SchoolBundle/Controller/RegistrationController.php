@@ -182,7 +182,7 @@ class RegistrationController extends FairpayController
             $schoolManager->setCurrentSchool($school);
             $schoolManager->finishRegistration($school);
 
-            $this->get('user_manager')->create(
+            $this->get('user_manager')->createMainVendor(
                 $this->get('session')->get('username'),
                 $form->getData()->plainPassword,
                 $school->getEmail()

@@ -10,7 +10,7 @@ class FillFormHelper extends TestCaseHelper
 {
     public function schoolCreation($name = 'ESIEE Paris', $email = 'bde@edu.esiee.fr')
     {
-        $this->sendForm('school_creation', array(
+        $this->sendForm('school_create', array(
             'name' => $name,
             'email' => $email,
         ));

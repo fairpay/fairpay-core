@@ -30,9 +30,8 @@ services:
 
     fairpay.school.email_listener:
         class: Fairpay\Bundle\SchoolBundle\EventListener\EmailListener
-        arguments:
-            - "@mailer"
-            - "@twig"
+        calls:
+            - [ init,[ "@mailer", "@twig" ] ]
         tags:
             - { name: kernel.event_subscriber }
 

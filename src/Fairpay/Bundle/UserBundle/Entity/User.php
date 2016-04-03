@@ -5,6 +5,7 @@ namespace Fairpay\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
+use JMS\Serializer\Annotation\Exclude;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -44,12 +45,14 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
 
     /**
      * @var string
+     * @Exclude()
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
 
     /**
      * @var string
+     * @Exclude()
      * @ORM\Column(name="salt", type="string", length=255)
      */
     private $salt;
