@@ -43,12 +43,13 @@ abstract class WebTestCase extends BaseTestCase
         $this->em = $this->container->get('doctrine.orm.entity_manager');
         $this->client = static::createClient();
 
+        $this->container->set('kernel', static::$kernel);
+
         $metadata = $this->em->getMetadataFactory()->getAllMetadata();
         $tool = new SchemaTool($this->em);
         $tool->dropDatabase();
         $tool->createSchema($metadata);
 
-        parent::setUp();
         $this->em = $this->container->get('doctrine.orm.entity_manager');
     }
 
@@ -57,9 +58,8 @@ abstract class WebTestCase extends BaseTestCase
      */
     protected function tearDown()
     {
-        parent::tearDown();
-
         $this->em->close();
+        parent::tearDown();
     }
 
     /**
