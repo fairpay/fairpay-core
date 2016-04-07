@@ -6,6 +6,7 @@ namespace Fairpay\Bundle\UserBundle\Manager;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Event\UserCreatedEvent;
+use Fairpay\Bundle\UserBundle\Form\UserSetPassword;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
@@ -110,6 +111,20 @@ class UserManager extends CurrentSchoolAwareManager
         $user->setUsername($this->usernameFromDisplayName($displayName));
 
         return $user;
+    }
+
+    /**
+     * Set $user's password and save it to DB.
+     *
+     * @param User            $user
+     * @param UserSetPassword $setPassword
+     */
+    public function setPassword(User $user, UserSetPassword $setPassword)
+    {
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $setPassword->plainPassword));
+
+        $this->em->persist($user);
+        $this->em->flush();
     }
 
     /**

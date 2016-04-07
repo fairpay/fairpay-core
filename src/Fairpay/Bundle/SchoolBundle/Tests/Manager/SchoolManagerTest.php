@@ -14,14 +14,8 @@ use Prophecy\Argument;
 
 class SchoolManagerTest extends UnitTestCase
 {
-    const school_repository = 'Fairpay\Bundle\SchoolBundle\Repository\SchoolRepository';
     /** @var  SchoolManager */
-    private $schoolManager;
-
-    // Mocked
-    private $em;
-    private $repo;
-    private $dispatcher;
+    protected $schoolManager;
 
     /**
      * {@inheritDoc}
@@ -29,17 +23,13 @@ class SchoolManagerTest extends UnitTestCase
     protected function setUp()
     {
         parent::setUp();
+
         $this->schoolManager = new SchoolManager(
             new EmailHelper([], ['gmail']),
             new TokenGenerator()
         );
 
-        $this->em = $this->mock(self::doctrine_orm_entity_manager);
-        $this->dispatcher = $this->mock(self::event_dispatcher);
-        $this->schoolManager->init($this->em->reveal(), $this->dispatcher->reveal());
-
-        $this->repo = $this->mock(self::school_repository);
-        $this->em->getRepository(SchoolManager::ENTITY_SHORTCUT_NAME)->willReturn($this->repo->reveal());
+        $this->initManager($this->schoolManager);
     }
 
     public function isValidSlugProvider()
@@ -57,14 +47,6 @@ class SchoolManagerTest extends UnitTestCase
         ];
     }
 
-    public function guessEmailPolicyProvider()
-    {
-        return [
-            ['bde@gmail.com', false, null],
-            ['bde@edu.esiee.fr', true, ['edu.esiee.fr']],
-        ];
-    }
-
     /**
      * @dataProvider isValidSlugProvider
      * @param $slug
@@ -73,6 +55,14 @@ class SchoolManagerTest extends UnitTestCase
     public function testIsValidSlug($slug, $expected)
     {
         $this->assertEquals($expected, $this->schoolManager->isValidSlug($slug));
+    }
+
+    public function guessEmailPolicyProvider()
+    {
+        return [
+            ['bde@gmail.com', false, null],
+            ['bde@edu.esiee.fr', true, ['edu.esiee.fr']],
+        ];
     }
 
     /**

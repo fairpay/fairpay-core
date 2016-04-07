@@ -12,6 +12,8 @@ use Fairpay\Bundle\StudentBundle\Manager\StudentManager;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Util\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class StudentManagerTest extends UnitTestCase
 {
@@ -22,37 +24,28 @@ class StudentManagerTest extends UnitTestCase
     /** @var  StudentManager */
     private $studentManager;
 
-    // Mocked
-    private $em;
-    private $repo;
-    private $dispatcher;
-    private $tokenStorage;
-    private $schoolManager;
-
     /**
      * {@inheritDoc}
      */
     protected function setUp()
     {
         parent::setUp();
-        $token = $this->mock(self::token_interface);
-        $token->getUser()->willReturn(new User());
-
-        $this->tokenStorage = $this->mock(self::security_token_storage);
-        $this->tokenStorage->getToken()->willReturn($token->reveal());
         $this->studentManager = new StudentManager(
-            $this->tokenStorage->reveal()
+            $this->getTokenStorage()
         );
 
-        $this->em = $this->mock(self::doctrine_orm_entity_manager);
-        $this->dispatcher = $this->mock(self::event_dispatcher);
-        $this->studentManager->init($this->em->reveal(), $this->dispatcher->reveal());
+        $this->initManager($this->studentManager);
+    }
 
-        $this->schoolManager = $this->mock(self::school_manager);
-        $this->studentManager->setSchoolManager($this->schoolManager->reveal());
+    protected function getTokenStorage()
+    {
+        $token = $this->mock(TokenInterface::class);
+        $token->getUser()->willReturn(new User());
 
-        $this->repo = $this->mock(self::student_repository);
-        $this->em->getRepository(StudentManager::ENTITY_SHORTCUT_NAME)->willReturn($this->repo->reveal());
+        $tokenStorage = $this->mock(TokenStorage::class);
+        $tokenStorage->getToken()->willReturn($token->reveal());
+
+        return $tokenStorage->reveal();
     }
 
     public function testUpdate()
@@ -66,10 +59,10 @@ class StudentManagerTest extends UnitTestCase
         $data->lastName = 'Wayne';
         $data->phone = null;
 
-        $this->em->persist($student)->shouldBeCalled();
-        $this->em->flush()->shouldBeCalledTimes(1);
+        $this->shouldBePersisted(Student::class);
 
         $this->studentManager->update($student, $data);
+
         $this->assertEquals('Bruce', $student->getFirstName());
         $this->assertEquals('Wayne', $student->getLastName());
         $this->assertCount(1, $student->getUntouchableFields());

@@ -55,4 +55,12 @@ class ArrayToStringTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($expected, self::$transformer->reverseTransform($value));
     }
+
+    /**
+     * @expectedException Symfony\Component\Form\Exception\TransformationFailedException
+     */
+    public function testShouldThrowWhenNotArray()
+    {
+        self::$transformer->transform(42);
+    }
 }

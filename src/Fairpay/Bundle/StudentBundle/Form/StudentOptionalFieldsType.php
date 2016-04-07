@@ -2,7 +2,10 @@
 
 namespace Fairpay\Bundle\StudentBundle\Form;
 
+use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,7 +13,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StudentMandatoryFieldsType extends AbstractType
+class StudentOptionalFieldsType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -19,14 +22,23 @@ class StudentMandatoryFieldsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class, array(
-                'label' => 'student.first_name',
+            ->add('gender', ChoiceType::class, array(
+                'label' => 'student.gender',
+                'required' => false,
+                'choices' => array(
+                    'student.values.gender.male' => Student::MALE,
+                    'student.values.gender.female' => Student::FEMALE,
+                )
             ))
-            ->add('lastName', TextType::class, array(
-                'label' => 'student.last_name',
+            ->add('birthday', BirthdayType::class, array(
+                'label' => 'student.birthday',
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
             ))
-            ->add('schoolYear', TextType::class, array(
-                'label' => 'student.school_year',
+            ->add('phone', TextType::class, array(
+                'label' => 'student.phone',
+                'required' => false,
             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Ok',
@@ -42,9 +54,11 @@ class StudentMandatoryFieldsType extends AbstractType
 
         foreach ($event->getData()->untouchableFields as $untouchableField) {
             if ($builder->has($untouchableField)) {
-                $options = $builder->get($untouchableField)->getConfig()->getOptions();
+                $config  = $builder->get($untouchableField)->getConfig();
+                $options = $config->getOptions();
                 $options['disabled'] = true;
-                $builder->add($untouchableField, TextType::class, $options);
+
+                $builder->add($untouchableField, get_class($config->getType()->getInnerType()), $options);
             }
         }
     }
@@ -55,7 +69,7 @@ class StudentMandatoryFieldsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Fairpay\Bundle\StudentBundle\Form\StudentMandatoryFields',
+            'data_class' => 'Fairpay\Bundle\StudentBundle\Form\StudentOptionalFields',
             'translation_domain' => 'entities',
         ));
     }

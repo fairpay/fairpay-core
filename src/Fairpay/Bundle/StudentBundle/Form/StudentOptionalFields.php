@@ -7,27 +7,16 @@ namespace Fairpay\Bundle\StudentBundle\Form;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class StudentMandatoryFields
+class StudentOptionalFields
 {
     public $id;
     public $untouchableFields;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(min = 2)
-     */
-    public $firstName;
+    public $gender;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(min = 2)
-     */
-    public $lastName;
+    public $birthday;
 
-    /**
-     * @Assert\NotBlank()
-     */
-    public $schoolYear;
+    public $phone;
 
     public function __construct(Student $student = null)
     {

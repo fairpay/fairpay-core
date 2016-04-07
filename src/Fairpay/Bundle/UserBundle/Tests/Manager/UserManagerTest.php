@@ -11,21 +11,15 @@ use Fairpay\Util\Tests\UnitTestCase;
 use Fairpay\Util\Util\StringUtil;
 use Fairpay\Util\Util\TokenGenerator;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class UserManagerTest extends UnitTestCase
 {
-    const user_repository       = 'Fairpay\Bundle\UserBundle\Repository\UserRepository';
-    const user_password_encoder = 'Symfony\Component\Security\Core\Encoder\UserPasswordEncoder';
-
     /** @var  UserManager */
     public $userManager;
 
     // Mocked
-    private $em;
-    private $repo;
-    private $dispatcher;
-    private $passwordEncoder;
-    private $schoolManager;
+    protected $passwordEncoder;
 
     /**
      * {@inheritDoc}
@@ -34,7 +28,7 @@ class UserManagerTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->passwordEncoder = $this->mock(self::user_password_encoder);
+        $this->passwordEncoder = $this->mock(UserPasswordEncoder::class);
 
         $this->userManager = new UserManager(
             $this->passwordEncoder->reveal(),
@@ -42,16 +36,7 @@ class UserManagerTest extends UnitTestCase
             new StringUtil()
         );
 
-        $this->em = $this->mock(self::doctrine_orm_entity_manager);
-        $this->dispatcher = $this->mock(self::event_dispatcher);
-        $this->userManager->init($this->em->reveal(), $this->dispatcher->reveal());
-
-        $this->schoolManager = $this->mock(self::school_manager);
-        $this->schoolManager->getCurrentSchool()->willReturn(null);
-        $this->userManager->setSchoolManager($this->schoolManager->reveal());
-
-        $this->repo = $this->mock(self::user_repository);
-        $this->em->getRepository(UserManager::ENTITY_SHORTCUT_NAME)->willReturn($this->repo->reveal());
+        $this->initManager($this->userManager);
     }
 
     public function isEmailProvider()
@@ -124,9 +109,10 @@ class UserManagerTest extends UnitTestCase
         $this->havingASchool();
         $this->havingTakenUsernames();
 
-        $this->em->persist(Argument::type(User::class))->shouldBeCalled();
-        $this->em->flush()->shouldBeCalled();
-        $this->passwordEncoder->encodePassword(Argument::type(User::class), 'b4atman')->willReturn('encoded_password');
+        $this->shouldBePersisted(User::class);
+        $this->passwordEncoder
+            ->encodePassword(Argument::type(User::class), 'b4atman')
+            ->willReturn('encoded_password');
 
         $user = $this->userManager->createMainVendor('Bruce Wayne', 'b4atman', 'bruce@wayne');
 
@@ -169,14 +155,6 @@ class UserManagerTest extends UnitTestCase
         $username = $this->userManager->usernameFromDisplayName($displayName);
 
         $this->assertEquals($expected, $username);
-    }
-
-    /**
-     * Current School is set.
-     */
-    protected function havingASchool()
-    {
-        $this->schoolManager->getCurrentSchool()->willReturn(new School());
     }
 
     /**

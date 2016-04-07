@@ -6,21 +6,19 @@ namespace Fairpay\Bundle\SchoolBundle\Tests\EventListener;
 
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 use Fairpay\Bundle\SchoolBundle\EventListener\CurrentSchoolListener;
+use Fairpay\Bundle\SchoolBundle\Manager\SchoolManager;
 use Fairpay\Util\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RequestContext;
 
 class CurrentSchoolListenerTest extends UnitTestCase
 {
-    const router          = 'Symfony\Bundle\FrameworkBundle\Routing\Router';
-    const event           = 'Symfony\Component\HttpKernel\Event\GetResponseEvent';
-    const request_context = 'Symfony\Component\Routing\RequestContext';
-    const request         = 'Symfony\Component\HttpFoundation\Request';
-
     /** @var  CurrentSchoolListener */
     private $currentSchoolListener;
-    private $schoolManager;
     private $router;
 
     /**
@@ -30,8 +28,9 @@ class CurrentSchoolListenerTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->schoolManager = $this->mock(self::school_manager);
-        $this->router = $this->mock(self::router);
+        $this->schoolManager = $this->mock(SchoolManager::class);
+        $this->router        = $this->mock(Router::class);
+
         $this->currentSchoolListener = new CurrentSchoolListener(
             $this->schoolManager->reveal(),
             'fairpay.local',
@@ -50,15 +49,6 @@ class CurrentSchoolListenerTest extends UnitTestCase
         ];
     }
 
-    public function listenerProvider()
-    {
-        return[
-            ['esiee.fairpay.local', true],
-            ['api.fairpay.local', false],
-            ['fake.fairpay.local', false],
-        ];
-    }
-
     /**
      * @dataProvider getSubdomainProvider
      * @param $host
@@ -69,48 +59,57 @@ class CurrentSchoolListenerTest extends UnitTestCase
         $this->assertEquals($expected, $this->currentSchoolListener->getSubdomain($this->getRequest($host)));
     }
 
+    public function listenerProvider()
+    {
+        return [
+            ['esiee.fairpay.local', true, true, false],
+            ['api.fairpay.local', false, false, false],
+            ['fake.fairpay.local', true, false, true],
+        ];
+    }
+
     /**
      * @dataProvider listenerProvider
      * @param $host
-     * @param $shouldWork
+     * @param $validSlug
+     * @param $schoolExist
+     * @param $shouldThrow
      */
-    public function testListener($host, $shouldWork)
+    public function testListener($host, $validSlug, $schoolExist, $shouldThrow)
     {
         // Event
-        $event = $this->mock(self::event);
+        $event = $this->mock(GetResponseEvent::class);
         $event->getRequest()->willReturn($this->getRequest($host));
 
         // School manager
         $this->schoolManager->getCurrentSchool()->willReturn(null);
+        $this->schoolManager->isValidSlug(Argument::any())->willReturn($validSlug);
 
-        if (true === $shouldWork) {
-            $this->schoolManager->isValidSlug(Argument::any())->willReturn(true);
-            $this->schoolManager->setCurrentSchool(Argument::any())->shouldBeCalled()->willReturn(new School());
-        } else if (false === $shouldWork) {
-            $this->schoolManager->isValidSlug(Argument::any())->willReturn(false);
-            $this->schoolManager->setCurrentSchool(Argument::any())->shouldNotBeCalled();
-        } else {
-            $this->schoolManager->isValidSlug(Argument::any())->willReturn(true);
-            $this->schoolManager->setCurrentSchool(Argument::any())->shouldBeCalled()->willReturn(null);
-        }
+        if ($validSlug) {
+            $this->schoolManager->setCurrentSchool(Argument::any())->shouldBeCalled()->willReturn($schoolExist ? new School() : null);
 
-        if (false !== $shouldWork) {
             // Context
-            $context = $this->mock(self::request_context);
+            $context = $this->mock(RequestContext::class);
             $context->setParameter('_subdomain', Argument::any())->shouldBeCalled();
 
             // Router
             $this->router->getContext()->willReturn($context->reveal());
+        } else {
+            $this->schoolManager->setCurrentSchool(Argument::any())->shouldNotBeCalled();
         }
 
         // Test
         try {
             $this->currentSchoolListener->onKernelRequest($event->reveal());
 
-            if ($shouldWork instanceof NotFoundHttpException) {
+            if ($shouldThrow) {
                 $this->fail('An NotFoundHttpException should have been thrown.');
             }
-        } catch(NotFoundHttpException $e) {}
+        } catch (NotFoundHttpException $e) {
+            if (!$shouldThrow) {
+                $this->fail('An NotFoundHttpException should not have been thrown.');
+            }
+        }
     }
 
     /**
@@ -119,8 +118,9 @@ class CurrentSchoolListenerTest extends UnitTestCase
      */
     private function getRequest($host)
     {
-        $request = $this->mock(self::request);
+        $request = $this->mock(Request::class);
         $request->getHost()->willReturn($host);
+
         return $request->reveal();
     }
 }

@@ -10,6 +10,7 @@ student:
     birthday: Date de naissance
     barcode: ID étudiant
     phone: Numéro de téléphone
+    password: Mot de passe
 
     values:
         gender:
