@@ -74,4 +74,16 @@ abstract class WebTestCase extends BaseTestCase
         $this->$name = new $helper($this);
         return $this->$name;
     }
+
+    protected function login(array $roles = ['ROLE_USER'], $username = 'user')
+    {
+        $this->client->setServerParameter('HTTP_username', $username);
+        $this->client->setServerParameter('HTTP_roles', implode('|', $roles));
+    }
+
+    protected function logout()
+    {
+        $this->client->setServerParameter('HTTP_username', null);
+        $this->client->setServerParameter('HTTP_roles', null);
+    }
 }

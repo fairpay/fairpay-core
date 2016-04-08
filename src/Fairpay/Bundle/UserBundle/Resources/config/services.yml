@@ -5,6 +5,7 @@ services:
             - "@security.password_encoder"
             - "@fairpay.token_generator"
             - "@fairpay.string_util"
+            - "@security.token_storage"
         calls:
             - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
             - [ setSchoolManager,[ "@school_manager" ] ]
@@ -28,6 +29,9 @@ services:
             - "@jwt_generator"
             - "@user_manager"
             - "@school_manager"
+
+    virtual_user_authenticator:
+        class: Fairpay\Bundle\UserBundle\Security\VirtualUserAuthenticator
 
     jwt_generator:
         class: Fairpay\Bundle\UserBundle\Security\JwtGenerator

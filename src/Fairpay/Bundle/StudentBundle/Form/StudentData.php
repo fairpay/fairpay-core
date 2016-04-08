@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueEntity(fields="email", entity="FairpayStudentBundle:Student")
+ * @UniqueEntity(fields="barcode", entity="FairpayStudentBundle:Student")
+ * @UniqueEntity(fields="phone", entity="FairpayStudentBundle:Student")
  */
 class StudentData
 {

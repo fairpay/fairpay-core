@@ -25,3 +25,10 @@ doctrine:
         host:       localhost
         charset:    UTF8
         path:       "%kernel.root_dir%/../var/cache/sqlite.db.cache"
+
+security:
+    firewalls:
+        school:
+            guard:
+                authenticators:
+                    - virtual_user_authenticator

@@ -54,6 +54,7 @@ services:
         class: Fairpay\Util\Validator\Constraints\UniqueEntityValidator
         arguments:
             - "@doctrine.orm.entity_manager"
+            - "@school_manager"
         tags:
             - { name: validator.constraint_validator, alias: fairpay.unique_entity }
 

@@ -11,6 +11,8 @@ namespace Fairpay\Util\Tests\Helpers;
  * @method registrationStep4($registrationToken)
  * @method registrationStep5($registrationToken)
  * @method registrationStep6($registrationToken)
+ * @method userRegistrationStep2($token)
+ * @method userRegistrationStep3($token)
  */
 class RedirectedHelper extends TestCaseHelper
 {
@@ -28,6 +30,11 @@ class RedirectedHelper extends TestCaseHelper
         $expected = $this->testCase->url->__call($name, $arguments);
         $actual = $this->testCase->client->getRequest()->getRequestUri();
 
-        $this->testCase->assertEquals($expected, $actual);
+        $this->testCase->assertEquals($this->normalize($expected), $this->normalize($actual));
+    }
+
+    protected function normalize($path)
+    {
+        return preg_replace('#^//[^.]+\.localhost/#', '/', $path);
     }
 }

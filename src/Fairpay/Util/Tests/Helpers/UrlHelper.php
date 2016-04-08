@@ -13,6 +13,10 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
  * @method string registrationStep4($registrationToken)
  * @method string registrationStep5($registrationToken)
  * @method string registrationStep6($registrationToken)
+ * @method string createUserFromStudent($id)
+ * @method string userRegistrationStep1($token)
+ * @method string userRegistrationStep2($token)
+ * @method string userRegistrationStep3($token)
  */
 class UrlHelper extends TestCaseHelper
 {
@@ -24,7 +28,13 @@ class UrlHelper extends TestCaseHelper
         'registrationStep4' => ['fairpay_school_registration_step4', 'registrationToken'],
         'registrationStep5' => ['fairpay_school_registration_step5', 'registrationToken'],
         'registrationStep6' => ['fairpay_school_registration_step6', 'registrationToken'],
+        'createUserFromStudent' => ['fairpay_student_create_user', 'id'],
+        'userRegistrationStep1' => ['fairpay_user_registration_step1', 'token'],
+        'userRegistrationStep2' => ['fairpay_user_registration_step2', 'token'],
+        'userRegistrationStep3' => ['fairpay_user_registration_step3', 'token'],
     );
+
+    private $subdomain;
 
     /**
      * Shortcut for generate.
@@ -63,6 +73,19 @@ class UrlHelper extends TestCaseHelper
             }
         }
 
+        if ($this->subdomain) {
+            $parameters['_subdomain'] = $this->subdomain;
+            return $router->generate($route, $parameters, Router::RELATIVE_PATH);
+        }
+
         return '/' . $router->generate($route, $parameters, Router::RELATIVE_PATH);
+    }
+
+    /**
+     * @param mixed $subdomain
+     */
+    public function setSubdomain($subdomain)
+    {
+        $this->subdomain = $subdomain;
     }
 }

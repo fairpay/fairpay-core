@@ -35,4 +35,5 @@ security:
 
     access_control:
         - { path: ^/login$, host: ^[^.]+\.%base_host%$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register/, host: ^[^.]+\.%base_host%$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, host: ^[^.]+\.%base_host%$, role: ROLE_USER }

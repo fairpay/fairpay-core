@@ -1,11 +1,11 @@
 fairpay_user_registration_step1:
-    path:     /register/{token}/step1
+    path:     /register/{token}/finalize
     defaults: { _controller: FairpayUserBundle:Registration:step1 }
 
 fairpay_user_registration_step2:
-    path:     /register/{token}/step2
+    path:     /register/{token}/complete-profile
     defaults: { _controller: FairpayUserBundle:Registration:step2 }
 
 fairpay_user_registration_step3:
-    path:     /register/{token}/step3
+    path:     /register/{token}/choose-password
     defaults: { _controller: FairpayUserBundle:Registration:step3 }

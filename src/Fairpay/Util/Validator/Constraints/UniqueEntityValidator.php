@@ -4,25 +4,29 @@
 namespace Fairpay\Util\Validator\Constraints;
 
 use Doctrine\ORM\EntityManager;
+use Fairpay\Bundle\SchoolBundle\Manager\SchoolManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UniqueEntityValidator extends ConstraintValidator
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     private $em;
+
+    /** @var  SchoolManager */
+    private $schoolManager;
 
     /**
      * UniqueEntityValidator constructor.
      * @param EntityManager $em
+     * @param SchoolManager $schoolManager
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, SchoolManager $schoolManager)
     {
         $this->em = $em;
+        $this->schoolManager = $schoolManager;
     }
 
     /**
@@ -58,6 +62,10 @@ class UniqueEntityValidator extends ConstraintValidator
             if ($constraint->ignoreNull && null === $criteria[$fieldName]) {
                 return;
             }
+        }
+
+        if ($school = $this->schoolManager->getCurrentSchool()) {
+            $criteria['school'] = $school;
         }
 
         $repo = $this->em->getRepository($constraint->entity);

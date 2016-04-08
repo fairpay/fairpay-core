@@ -59,6 +59,31 @@ class FillFormHelper extends TestCaseHelper
         ));
     }
 
+    public function userRegistrationStep1($firstName = null, $lastName = null, $schoolYear = null)
+    {
+        $this->sendForm('student_mandatory_fields', array(
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'schoolYear' => $schoolYear,
+        ));
+    }
+
+    public function userRegistrationStep2($gender = null, $birthday = null, $phone = null)
+    {
+        $this->sendForm('student_optional_fields', array(
+            'gender' => $gender,
+            'birthday' => $birthday,
+            'phone' => $phone,
+        ));
+    }
+
+    public function userRegistrationStep3($plainPassword = null)
+    {
+        $this->sendForm('user_set_password', array(
+            'plainPassword' => $plainPassword,
+        ));
+    }
+
     /**
      * Get a form from its name.
      *
@@ -75,8 +100,20 @@ class FillFormHelper extends TestCaseHelper
         $form = $this->getForm($name);
         $formData = array();
         foreach($data as $key => $value) {
-            $formData[$name."[$key]"] = $value === null ? $form->getValues()[$name."[$key]"] : $value;
+            $formData[$name."[$key]"] = $value === null ? $this->getFormValue($form, $name, $key) : $value;
         }
         $this->getClient()->submit($form, $formData);
+    }
+
+    protected function getFormValue($form, $name, $field)
+    {
+        $values = $form->getValues();
+        $key = $name."[$field]";
+
+        if (isset($values[$key])) {
+            return $values[$name."[$field]"];
+        }
+
+        return null;
     }
 }

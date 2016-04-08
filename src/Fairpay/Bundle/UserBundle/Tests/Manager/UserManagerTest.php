@@ -11,6 +11,7 @@ use Fairpay\Util\Tests\UnitTestCase;
 use Fairpay\Util\Util\StringUtil;
 use Fairpay\Util\Util\TokenGenerator;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class UserManagerTest extends UnitTestCase
@@ -33,7 +34,8 @@ class UserManagerTest extends UnitTestCase
         $this->userManager = new UserManager(
             $this->passwordEncoder->reveal(),
             new TokenGenerator(),
-            new StringUtil()
+            new StringUtil(),
+            new TokenStorage()
         );
 
         $this->initManager($this->userManager);

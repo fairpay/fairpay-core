@@ -18,11 +18,12 @@ class MailHelper extends TestCaseHelper
     /**
      * Returns the route parameter in email body.
      *
-     * @param string $name Route name
+     * @param string $name  Route name
      * @param string $param Parameter name
+     * @param null   $subdomain
      * @return string
      */
-    public function getLinkParam($name, $param)
+    public function getLinkParam($name, $param, $subdomain = null)
     {
         $collector = $this->getCollector();
         $this->testCase->assertGreaterThanOrEqual(1, $collector->getMessageCount(), 'No email was sent.');
@@ -30,7 +31,7 @@ class MailHelper extends TestCaseHelper
 
         /** @var Router $router */
         $router = $this->get('router');
-        $route = $router->generate($name, array($param => md5($param)));
+        $route = $router->generate($name, array($param => md5($param), '_subdomain' => $subdomain));
         $route = preg_replace('[#()]', '\\\$0', $route); // Escape regexp special char
         $route = str_replace(md5($param), '([^/]+)', $route);
         preg_match('#' . $route . '#', $body, $matches);

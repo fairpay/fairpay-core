@@ -53,6 +53,16 @@ class TokenManager extends EntityManager
     }
 
     /**
+     * Remove a token from the DB.
+     * @param Token $token
+     */
+    public function remove(Token $token)
+    {
+        $this->em->remove($token);
+        $this->em->flush();
+    }
+
+    /**
      * Find a Token object from it's string token.
      *
      * @param $token

@@ -12,6 +12,8 @@ use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
 use Fairpay\Util\Util\StringUtil;
 use Fairpay\Util\Util\TokenGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 /**
@@ -30,14 +32,25 @@ class UserManager extends CurrentSchoolAwareManager
     /** @var  StringUtil */
     private $stringUtil;
 
+    /** @var  TokenStorage */
+    private $tokenStorage;
+
     public function __construct(
         UserPasswordEncoder $passwordEncoder,
         TokenGeneratorInterface $tokenGenerator,
-        StringUtil $stringUtil
+        StringUtil $stringUtil,
+        TokenStorage $tokenStorage
     ) {
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenGenerator = $tokenGenerator;
         $this->stringUtil = $stringUtil;
+        $this->tokenStorage = $tokenStorage;
+    }
+
+    public function login(User $user)
+    {
+        $token = new UsernamePasswordToken($user, null, 'fairpay_db', $user->getRoles());
+        $this->tokenStorage->setToken($token);
     }
 
     /**

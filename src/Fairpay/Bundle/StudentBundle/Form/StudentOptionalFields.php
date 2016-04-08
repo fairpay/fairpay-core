@@ -5,8 +5,12 @@ namespace Fairpay\Bundle\StudentBundle\Form;
 
 
 use Fairpay\Bundle\StudentBundle\Entity\Student;
+use Fairpay\Util\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @UniqueEntity(fields="phone", entity="FairpayStudentBundle:Student")
+ */
 class StudentOptionalFields
 {
     public $id;

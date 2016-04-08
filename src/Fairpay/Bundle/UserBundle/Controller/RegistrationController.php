@@ -77,13 +77,16 @@ class RegistrationController extends FairpayController
     public function step3Action(Request $request, Token $token)
     {
         $form = $this->createForm(UserSetPasswordType::class);
+        $user = $token->getUser();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $this->get('user_manager')->setPassword($token->getUser(), $form->getData());
+            $userManager = $this->get('user_manager');
+            $userManager->setPassword($user, $form->getData());
+            $userManager->login($user);
+            $this->get('token_manager')->remove($token);
 
             return $this->redirectToRoute(
-                'fairpay_user_registration_step3',
-                array('token' => $token)
+                'fairpay_student_list'
             );
         }
 
