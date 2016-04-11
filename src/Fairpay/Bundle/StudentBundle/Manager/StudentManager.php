@@ -61,6 +61,25 @@ class StudentManager extends CurrentSchoolAwareManager
     }
 
     /**
+     * Create a blank Student and save it to DB.
+     * @param $email
+     * @return Student
+     * @throws NoCurrentSchoolException
+     */
+    public function createBlank($email)
+    {
+        $student = new Student();
+        $student->setEmail($email);
+        $student->setSchool($this->getCurrentSchool());
+        $student->setSelfRegistered(true);
+
+        $this->em->persist($student);
+        $this->em->flush();
+
+        return $student;
+    }
+
+    /**
      * Update a student and save it to DB.
      *
      * @param Student     $student
@@ -141,7 +160,20 @@ class StudentManager extends CurrentSchoolAwareManager
     {
         return $this->getRepo()->findOneBy(array(
             'school' => $this->getCurrentSchool(),
-            'id' => $id
+            'id' => $id,
+        ));
+    }
+
+    /**
+     * @param $email
+     * @return null|Student
+     * @throws NoCurrentSchoolException
+     */
+    public function findStudentByEmail($email)
+    {
+        return $this->getRepo()->findOneBy(array(
+            'school' => $this->getCurrentSchool(),
+            'email' => $email,
         ));
     }
 

@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\Event;
 class UserEvent extends Event
 {
     const onUserCreated = 'fairpay.user.created';
+    const onUserRequestResetPassword = 'fairpay.user.request_reset_password';
 
     /** @var  User */
     private $user;

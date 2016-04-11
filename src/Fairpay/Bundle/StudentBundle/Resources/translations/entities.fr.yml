@@ -11,6 +11,8 @@ student:
     barcode: ID étudiant
     phone: Numéro de téléphone
     password: Mot de passe
+    new_password: Nouveau mot de passe
+    confirm_new_password: Comfirmez
 
     values:
         gender:

@@ -6,35 +6,45 @@ fairpay_showcase:
     prefix:   /
 
 fairpay_school_registration:
-    resource: "@FairpaySchoolBundle/Resources/config/registration.yml"
+    resource: "@FairpaySchoolBundle/Resources/config/routing/registration.yml"
     host: %base_host%
     prefix:   /
 
 # API
 
 fairpay_student_api:
-    resource: "@FairpayStudentBundle/Resources/config/api.yml"
+    resource: "@FairpayStudentBundle/Resources/config/routing/api.yml"
     host: api.%base_host%
 
 
 # School
 
+fairpay_dashboard:
+    path: /
+    host: "{_subdomain}.%base_host%"
+    defaults: { _controller: FrameworkBundle:Template:template, template: "::layout.html.twig" }
+
 fairpay_security:
-    resource: "@FairpayUserBundle/Resources/config/security.yml"
+    resource: "@FairpayUserBundle/Resources/config/routing/security.yml"
     host: "{_subdomain}.%base_host%"
     prefix:   /
 
 fairpay_user_registration:
-    resource: "@FairpayUserBundle/Resources/config/registration.yml"
+    resource: "@FairpayUserBundle/Resources/config/routing/registration.yml"
+    host: "{_subdomain}.%base_host%"
+    prefix:   /
+
+fairpay_user_account:
+    resource: "@FairpayUserBundle/Resources/config/routing/account.yml"
     host: "{_subdomain}.%base_host%"
     prefix:   /
 
 fairpay_student_public:
-    resource: "@FairpayStudentBundle/Resources/config/public.yml"
+    resource: "@FairpayStudentBundle/Resources/config/routing/public.yml"
     host: "{_subdomain}.%base_host%"
     prefix:   /
 
 fairpay_student_admin:
-    resource: "@FairpayStudentBundle/Resources/config/admin.yml"
+    resource: "@FairpayStudentBundle/Resources/config/routing/admin.yml"
     host: "{_subdomain}.%base_host%"
     prefix:   /

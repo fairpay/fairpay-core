@@ -2,6 +2,7 @@
 
 namespace Fairpay\Bundle\UserBundle\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Fairpay\Bundle\UserBundle\Entity\User;
 
 /**
@@ -22,5 +23,33 @@ class TokenRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('type', $type)
             ->getQuery()
             ->execute();
+    }
+
+    public function countForUser(User $user, $type)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('COUNT(t)')
+            ->where('t.user = :user')
+            ->andWhere('t.type = :type')
+            ->setParameter('user', $user)
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function findOneForUser(User $user, $type)
+    {
+        try {
+            return $this->createQueryBuilder('t')
+                ->where('t.user = :user')
+                ->andWhere('t.type = :type')
+                ->setParameter('user', $user)
+                ->setParameter('type', $type)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
     }
 }

@@ -6,6 +6,7 @@ services:
             - "@fairpay.token_generator"
             - "@fairpay.string_util"
             - "@security.token_storage"
+            - "@token_manager"
         calls:
             - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
             - [ setSchoolManager,[ "@school_manager" ] ]
@@ -71,8 +72,6 @@ services:
 
     fairpay.user.email_listener:
         class: Fairpay\Bundle\UserBundle\EventListener\EmailListener
-        arguments:
-            - "@token_manager"
         calls:
             - [ init,[ "@mailer", "@twig" ] ]
         tags:

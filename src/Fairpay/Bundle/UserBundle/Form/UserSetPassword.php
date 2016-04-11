@@ -4,12 +4,6 @@
 namespace Fairpay\Bundle\UserBundle\Form;
 
 
-use Fairpay\Bundle\UserBundle\Validator\Constraints\Password;
-
-class UserSetPassword
+class UserSetPassword extends AbstractUserSetPassword
 {
-    /**
-     * @Password()
-     */
-    public $plainPassword;
 }

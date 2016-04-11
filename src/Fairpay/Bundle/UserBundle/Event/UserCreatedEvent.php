@@ -4,6 +4,7 @@
 namespace Fairpay\Bundle\UserBundle\Event;
 
 
+use Fairpay\Bundle\UserBundle\Entity\Token;
 use Fairpay\Bundle\UserBundle\Entity\User;
 
 class UserCreatedEvent extends UserEvent
@@ -14,15 +15,19 @@ class UserCreatedEvent extends UserEvent
 
     private $trigger;
 
+    /** @var  Token */
+    private $token;
+
     /**
      * UserCreatedEvent constructor.
      * @param User $user
      * @param      $trigger
      */
-    public function __construct(User $user, $trigger)
+    public function __construct(User $user, $trigger, Token $token)
     {
         parent::__construct($user);
         $this->trigger = $trigger;
+        $this->token = $token;
     }
 
     /**
@@ -32,5 +37,21 @@ class UserCreatedEvent extends UserEvent
     public function triggeredBy($trigger)
     {
         return in_array($this->trigger, (array) $trigger);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTrigger()
+    {
+        return $this->trigger;
+    }
+
+    /**
+     * @return Token
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 }

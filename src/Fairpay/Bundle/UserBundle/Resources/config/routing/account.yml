@@ -1,0 +1,11 @@
+fairpay_user_account_change_password:
+    path:     /account/change-password
+    defaults: { _controller: FairpayUserBundle:Account:changePassword }
+
+fairpay_user_account_request_reset_password:
+    path:     /reset-password
+    defaults: { _controller: FairpayUserBundle:Account:requestResetPassword }
+
+fairpay_user_account_reset_password:
+    path:     /reset-password/{token}
+    defaults: { _controller: FairpayUserBundle:Account:resetPassword }

@@ -4,9 +4,12 @@
 namespace Fairpay\Bundle\UserBundle\Manager;
 
 use Fairpay\Bundle\StudentBundle\Entity\Student;
+use Fairpay\Bundle\UserBundle\Entity\Token;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Event\UserCreatedEvent;
-use Fairpay\Bundle\UserBundle\Form\UserSetPassword;
+use Fairpay\Bundle\UserBundle\Event\UserEvent;
+use Fairpay\Bundle\UserBundle\Event\UserRequestResetPassword;
+use Fairpay\Bundle\UserBundle\Form\AbstractUserSetPassword;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
@@ -35,16 +38,21 @@ class UserManager extends CurrentSchoolAwareManager
     /** @var  TokenStorage */
     private $tokenStorage;
 
+    /** @var  TokenManager */
+    private $tokenManager;
+
     public function __construct(
         UserPasswordEncoder $passwordEncoder,
         TokenGeneratorInterface $tokenGenerator,
         StringUtil $stringUtil,
-        TokenStorage $tokenStorage
+        TokenStorage $tokenStorage,
+        TokenManager $tokenManager
     ) {
         $this->passwordEncoder = $passwordEncoder;
-        $this->tokenGenerator = $tokenGenerator;
-        $this->stringUtil = $stringUtil;
-        $this->tokenStorage = $tokenStorage;
+        $this->tokenGenerator  = $tokenGenerator;
+        $this->stringUtil      = $stringUtil;
+        $this->tokenStorage    = $tokenStorage;
+        $this->tokenManager    = $tokenManager;
     }
 
     public function login(User $user)
@@ -72,9 +80,11 @@ class UserManager extends CurrentSchoolAwareManager
         $this->em->persist($user);
         $this->em->flush();
 
+        $token = $this->tokenManager->create($user, Token::REGISTER);
+
         $this->dispatcher->dispatch(
             UserCreatedEvent::onUserCreated,
-            new UserCreatedEvent($user, UserCreatedEvent::REGISTERED_WITH_SCHOOL)
+            new UserCreatedEvent($user, UserCreatedEvent::REGISTERED_WITH_SCHOOL, $token)
         );
 
         return $user;
@@ -84,9 +94,10 @@ class UserManager extends CurrentSchoolAwareManager
      * Create a user based on a student and link it.
      *
      * @param Student $student
+     * @param int     $trigger
      * @return User
      */
-    public function createFromStudent(Student $student)
+    public function createFromStudent(Student $student, $trigger = UserCreatedEvent::REGISTERED_BY_ADMIN)
     {
         $user = $this->newUser((string) $student);
         $user->setPassword($this->tokenGenerator->generateToken());
@@ -100,9 +111,11 @@ class UserManager extends CurrentSchoolAwareManager
         $this->em->persist($student);
         $this->em->flush();
 
+        $token = $this->tokenManager->create($user, Token::REGISTER);
+
         $this->dispatcher->dispatch(
             UserCreatedEvent::onUserCreated,
-            new UserCreatedEvent($user, UserCreatedEvent::REGISTERED_BY_ADMIN)
+            new UserCreatedEvent($user, $trigger, $token)
         );
 
         return $user;
@@ -129,15 +142,42 @@ class UserManager extends CurrentSchoolAwareManager
     /**
      * Set $user's password and save it to DB.
      *
-     * @param User            $user
-     * @param UserSetPassword $setPassword
+     * @param User                    $user
+     * @param AbstractUserSetPassword $setPassword
      */
-    public function setPassword(User $user, UserSetPassword $setPassword)
+    public function setPassword(User $user, AbstractUserSetPassword $setPassword)
     {
         $user->setPassword($this->passwordEncoder->encodePassword($user, $setPassword->plainPassword));
 
         $this->em->persist($user);
         $this->em->flush();
+    }
+
+    /**
+     * If a User with this particular email exist send him a link to reset his password or to finish registration.
+     * @param $email
+     * @return bool true if a User is found
+     */
+    public function requestResetPassword($email)
+    {
+        $user = $this->findUserByUsernameOrEmail($email);
+
+        if ($user) {
+            $token = $this->tokenManager->getToken($user, Token::REGISTER);
+
+            if (!$token) {
+                $token = $this->tokenManager->create($user, Token::RESET_PASSWORD);
+            }
+
+            $this->dispatcher->dispatch(
+                UserEvent::onUserRequestResetPassword,
+                new UserRequestResetPassword($user, $token)
+            );
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

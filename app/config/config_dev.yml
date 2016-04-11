@@ -24,5 +24,10 @@ monolog:
             bubble: false
             channels: [!event, !doctrine]
 
+security:
+    encoders:
+        Fairpay\Bundle\UserBundle\Entity\User:
+            algorithm: plaintext
+
 #swiftmailer:
 #    delivery_address: me@example.com

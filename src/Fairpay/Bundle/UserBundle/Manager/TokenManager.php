@@ -62,6 +62,16 @@ class TokenManager extends EntityManager
         $this->em->flush();
     }
 
+    public function hasToken(User $user, $type)
+    {
+        return (boolean) $this->getRepo()->countForUser($user, $type);
+    }
+
+    public function getToken(User $user, $type)
+    {
+        return $this->getRepo()->findOneForUser($user, $type);
+    }
+
     /**
      * Find a Token object from it's string token.
      *

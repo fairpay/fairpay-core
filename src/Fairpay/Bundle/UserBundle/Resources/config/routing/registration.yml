@@ -1,3 +1,7 @@
+fairpay_user_register:
+    path:     /register
+    defaults: { _controller: FairpayUserBundle:Registration:register }
+
 fairpay_user_registration_step1:
     path:     /register/{token}/finalize
     defaults: { _controller: FairpayUserBundle:Registration:step1 }

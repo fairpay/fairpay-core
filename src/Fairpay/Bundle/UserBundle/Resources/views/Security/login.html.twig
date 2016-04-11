@@ -8,13 +8,26 @@
     {% endif %}
 
     <form action="{{ path("fairpay_login_check") }}" method="post">
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="_password" />
+        </div>
+
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" />
 
-        <button type="submit">login</button>
+        <div class="form-group">
+            <button type="submit">Connexion</button>
+        </div>
     </form>
+    <p>
+        <a href="{{ path('fairpay_user_register') }}">Inscription</a> |
+        <a href="{{ path('fairpay_user_account_request_reset_password') }}">Mot de passe oublié</a>
+    </p>
 {% endblock %}
