@@ -5,7 +5,9 @@ namespace Fairpay\Bundle\UserBundle\Tests\Manager;
 
 
 use Fairpay\Bundle\SchoolBundle\Entity\School;
+use Fairpay\Bundle\UserBundle\Entity\Token;
 use Fairpay\Bundle\UserBundle\Entity\User;
+use Fairpay\Bundle\UserBundle\Manager\TokenManager;
 use Fairpay\Bundle\UserBundle\Manager\UserManager;
 use Fairpay\Util\Tests\UnitTestCase;
 use Fairpay\Util\Util\StringUtil;
@@ -21,6 +23,7 @@ class UserManagerTest extends UnitTestCase
 
     // Mocked
     protected $passwordEncoder;
+    protected $tokenManager;
 
     /**
      * {@inheritDoc}
@@ -30,12 +33,17 @@ class UserManagerTest extends UnitTestCase
         parent::setUp();
 
         $this->passwordEncoder = $this->mock(UserPasswordEncoder::class);
+        $this->tokenManager = $this->mock(TokenManager::class);
+        $this->tokenManager->create(Argument::type(User::class), Argument::any())->will(function($args) {
+            return new Token($args[0], $args[1], 'token');
+        });
 
         $this->userManager = new UserManager(
             $this->passwordEncoder->reveal(),
             new TokenGenerator(),
             new StringUtil(),
-            new TokenStorage()
+            new TokenStorage(),
+            $this->tokenManager->reveal()
         );
 
         $this->initManager($this->userManager);

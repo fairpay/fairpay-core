@@ -18,4 +18,14 @@ class FairpayController extends Controller
     {
         return $this->getDoctrine()->getManager();
     }
+
+    protected function flashSuccess($message)
+    {
+        $this->addFlash('success', $message);
+    }
+
+    protected function flashError($message)
+    {
+        $this->addFlash('danger', $message);
+    }
 }

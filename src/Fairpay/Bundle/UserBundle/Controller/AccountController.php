@@ -25,6 +25,7 @@ class AccountController extends FairpayController
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $this->get('user_manager')->setPassword($this->getUser(), $form->getData());
+            $this->flashSuccess('Votre mot de passe à bien été mis à jour.');
 
             return $this->redirectToRoute('fairpay_user_account_change_password');
         }
@@ -45,6 +46,7 @@ class AccountController extends FairpayController
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $this->get('user_manager')->requestResetPassword($form->getData()->email);
+            $this->flashSuccess('Un email vous a été envoyé pour réinitialiser votre mot de passe.');
 
             return $this->redirectToRoute('fairpay_user_account_request_reset_password');
         }
@@ -68,6 +70,8 @@ class AccountController extends FairpayController
             $this->get('user_manager')->setPassword($token->getUser(), $form->getData());
             $this->get('user_manager')->login($token->getUser());
             $this->get('token_manager')->remove($token);
+
+            $this->flashSuccess('Votre mot de passe à bien été mis à jour.');
 
             return $this->redirectToRoute('fairpay_dashboard');
         }

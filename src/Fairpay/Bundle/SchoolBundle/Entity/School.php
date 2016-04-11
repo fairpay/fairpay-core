@@ -270,6 +270,27 @@ class School
     }
 
     /**
+     * Get allowedEmailDomains
+     *
+     * @return array
+     */
+    public function getAllowedEmailDomainsPretty()
+    {
+        $domains = array_map(function($domain) {
+            return '@' . $domain;
+        }, $this->allowedEmailDomains);
+
+        $last = array_pop($domains);
+
+        if (count($domains)) {
+            return implode(', ', $domains) . ' ou ' . $last;
+        }
+
+        return $last;
+
+    }
+
+    /**
      * Set schoolYears
      *
      * @param array $schoolYears

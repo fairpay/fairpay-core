@@ -1,7 +1,6 @@
 .alert {
     padding: 15px;
     margin-bottom: 20px;
-    border: 1px solid transparent;
     border-radius: 4px;
 
     a {
@@ -13,43 +12,28 @@
         color: inherit;
     }
 
-    &-success {
-        color: #3c763d;
-        background-color: #dff0d8;
-        border-color: #d6e9c6;
 
-        a {
-            color: #2b542c;
-        }
+    &.success {
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #5cb85c;
     }
 
-    &-info {
-        color: #31708f;
-        background-color: #d9edf7;
-        border-color: #bce8f1;
-
-        a {
-            color: #245269;
-        }
+    &.info {
+        color: #fff;
+        background-color: #5bc0de;
+        border-color: #5bc0de;
     }
 
-    &-warning {
-        color: #8a6d3b;
-        background-color: #fcf8e3;
-        border-color: #faebcc;
-
-        a {
-            color: #66512c;
-        }
+    &.warning {
+        color: #fff;
+        background-color: #f0ad4e;
+        border-color: #f0ad4e;
     }
 
-    &-danger {
-        color: #a94442;
-        background-color: #f2dede;
-        border-color: #ebccd1;
-
-        a {
-            color: #843534;
-        }
+    &.danger {
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d9534f;
     }
 }

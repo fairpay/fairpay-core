@@ -35,6 +35,8 @@ class AdminController extends FairpayController
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $student = $this->get('student_manager')->create($form->getData());
 
+            $this->flashSuccess(sprintf('%s à bien été créé.', $student));
+
             return $this->redirectToRoute('fairpay_profile_student', ['id' => $student->getId()]);
         }
 
@@ -56,6 +58,8 @@ class AdminController extends FairpayController
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $this->get('student_manager')->update($student, $form->getData());
 
+            $this->flashSuccess(sprintf('%s à bien été mis à jour.', $student));
+
             return $this->redirectToRoute('fairpay_profile_student', ['id' => $student->getId()]);
         }
 
@@ -68,9 +72,10 @@ class AdminController extends FairpayController
     public function createUserAction(Student $student)
     {
         if ($student->hasAccount()) {
-            // TODO add error message
+            $this->flashError(sprintf('%s a déjà un compte.', $student));
         } else {
             $this->get('user_manager')->createFromStudent($student);
+            $this->flashSuccess(sprintf('Un email a été envoyé à %s pour finaliser son inscription.', $student));
         }
 
         return $this->redirectToRoute('fairpay_profile_student', ['id' => $student->getId()]);

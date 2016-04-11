@@ -52,6 +52,10 @@ class RegistrationController extends FairpayController
                     $domain = $this->get('fairpay.email_helper')->getDomain($email);
 
                     if (!$school->getAllowUnregisteredEmails()) {
+                        $this->flashError(sprintf(
+                            'Votre adresse email n\'est pas sur la liste des élèves, demandez au BDE (%s) de vous ajouter.',
+                            $school->getEmail()
+                        ));
 
                         return array(
                             'form' => $form->createView(),
@@ -59,6 +63,10 @@ class RegistrationController extends FairpayController
                     }
 
                     if (!in_array($domain, $school->getAllowedEmailDomains())) {
+                        $this->flashError(sprintf(
+                            'Vous devez utiliser votre adresse email scolaire pour vous inscrire: %s.',
+                            $school->getAllowedEmailDomainsPretty()
+                        ));
 
                         return array(
                             'form' => $form->createView(),
@@ -69,6 +77,7 @@ class RegistrationController extends FairpayController
                 }
 
                 $this->get('user_manager')->createFromStudent($student, UserCreatedEvent::SELF_REGISTERED);
+                $this->flashSuccess('Un email vous a été envoyé pour finaliser votre inscription.');
             }
         }
 
@@ -145,6 +154,8 @@ class RegistrationController extends FairpayController
             $userManager->setPassword($user, $form->getData());
             $userManager->login($user);
             $this->get('token_manager')->remove($token);
+
+            $this->flashSuccess('Félicitation, vous êtes maintenant inscrit sur Fairpay !');
 
             return $this->redirectToRoute(
                 'fairpay_student_list'
