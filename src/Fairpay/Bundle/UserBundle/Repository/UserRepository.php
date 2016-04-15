@@ -83,20 +83,29 @@ class UserRepository extends EntityRepository
      * Get all usernames from $school that starts with $username.
      * @param School $school
      * @param string $username
+     * @param User   $user
      * @return array
      */
-    public function findTakenUsernames(School $school, $username)
+    public function findTakenUsernames(School $school, $username, User $user = null)
     {
+        $queryBuilder = $this->createQueryBuilder('u')
+            ->select('u.username')
+            ->where('u.username LIKE :username')
+            ->andWhere('u.school = :school')
+            ->setParameter('username', $username . '%')
+            ->setParameter('school', $school);
+
+        if ($user) {
+            $queryBuilder
+                ->andWhere('u.id != :id')
+                ->setParameter('id', $user->getId());
+        }
+
         return array_map(
             function($row) {
                 return $row['username'];
             },
-            $this->createQueryBuilder('u')
-                ->select('u.username')
-                ->where('u.username LIKE :username')
-                ->andWhere('u.school = :school')
-                ->setParameter('username', $username.'%')
-                ->setParameter('school', $school)
+            $queryBuilder
                 ->getQuery()
                 ->getArrayResult()
         );

@@ -4,6 +4,7 @@
 namespace Fairpay\Bundle\UserBundle\Manager;
 
 use Fairpay\Bundle\StudentBundle\Entity\Student;
+use Fairpay\Bundle\StudentBundle\Manager\StudentManager;
 use Fairpay\Bundle\UserBundle\Entity\Token;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Event\UserCreatedEvent;
@@ -11,6 +12,7 @@ use Fairpay\Bundle\UserBundle\Event\UserEvent;
 use Fairpay\Bundle\UserBundle\Event\UserRequestResetPassword;
 use Fairpay\Bundle\UserBundle\Form\AbstractUserSetPassword;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
+use Fairpay\Util\Email\Services\EmailHelper;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
 use Fairpay\Util\Util\StringUtil;
@@ -41,18 +43,28 @@ class UserManager extends CurrentSchoolAwareManager
     /** @var  TokenManager */
     private $tokenManager;
 
+    /** @var  StudentManager */
+    private $studentManager;
+
+    /** @var  EmailHelper */
+    private $emailHelper;
+
     public function __construct(
         UserPasswordEncoder $passwordEncoder,
         TokenGeneratorInterface $tokenGenerator,
         StringUtil $stringUtil,
         TokenStorage $tokenStorage,
-        TokenManager $tokenManager
+        TokenManager $tokenManager,
+        StudentManager $studentManager,
+        EmailHelper $emailHelper
     ) {
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenGenerator  = $tokenGenerator;
         $this->stringUtil      = $stringUtil;
         $this->tokenStorage    = $tokenStorage;
         $this->tokenManager    = $tokenManager;
+        $this->studentManager  = $studentManager;
+        $this->emailHelper     = $emailHelper;
     }
 
     public function login(User $user)
@@ -91,7 +103,7 @@ class UserManager extends CurrentSchoolAwareManager
     }
 
     /**
-     * Create a user based on a student and link it.
+     * Create a user based on a student.
      *
      * @param Student $student
      * @param int     $trigger
@@ -119,6 +131,41 @@ class UserManager extends CurrentSchoolAwareManager
         );
 
         return $user;
+    }
+
+    /**
+     * Create a User based on an email.
+     *
+     * @param $email
+     * @return null|string Error message
+     */
+    public function createFromEmail($email)
+    {
+        $student = $this->studentManager->findStudentByEmail($email);
+
+        if (!$student) {
+            $school = $this->schoolManager->getCurrentSchool();
+            $domain = $this->emailHelper->getDomain($email);
+
+            if (!$school->getAllowUnregisteredEmails()) {
+                return sprintf(
+                    'Votre adresse email n\'est pas sur la liste des élèves, demandez au BDE (%s) de vous ajouter.',
+                    $school->getEmail()
+                );
+            }
+
+            if (!in_array($domain, $school->getAllowedEmailDomains())) {
+                return sprintf(
+                    'Vous devez utiliser votre adresse email scolaire pour vous inscrire: %s.',
+                    $school->getAllowedEmailDomainsPretty()
+                );
+            }
+
+            $student = $this->studentManager->createBlank($email);
+        }
+
+        $this->createFromStudent($student, UserCreatedEvent::SELF_REGISTERED);
+        return null;
     }
 
     /**
@@ -155,12 +202,14 @@ class UserManager extends CurrentSchoolAwareManager
 
     /**
      * If a User with this particular email exist send him a link to reset his password or to finish registration.
-     * @param $email
+     * @param User|string $user
      * @return bool true if a User is found
      */
-    public function requestResetPassword($email)
+    public function requestResetPassword($user)
     {
-        $user = $this->findUserByUsernameOrEmail($email);
+        if (!$user instanceof User) {
+            $user = $this->findUserByUsernameOrEmail($user);
+        }
 
         if ($user) {
             $token = $this->tokenManager->getToken($user, Token::REGISTER);
@@ -181,14 +230,45 @@ class UserManager extends CurrentSchoolAwareManager
     }
 
     /**
+     * If a User with this particular email exist send him a link to finish registration.
+     *
+     * @param User|string $user
+     * @return bool true if a User is found
+     */
+    public function requestResendRegistrationEmail($user)
+    {
+        if (!$user instanceof User) {
+            $user = $this->findUserByUsernameOrEmail($user);
+        }
+
+        if ($user) {
+            $token = $this->tokenManager->getToken($user, Token::REGISTER);
+
+            if (!$token) {
+                $token = $this->tokenManager->create($user, Token::REGISTER);
+            }
+
+            $this->dispatcher->dispatch(
+                UserEvent::onUserCreated,
+                new UserCreatedEvent($user, UserCreatedEvent::SELF_REGISTERED, $token)
+            );
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $displayName
+     * @param User   $user
      * @return string
      * @throws NoCurrentSchoolException
      */
-    public function usernameFromDisplayName($displayName)
+    public function usernameFromDisplayName($displayName, User $user = null)
     {
         $username = $this->stringUtil->urlize($displayName, '.');
-        $takenUsernames = $this->getRepo()->findTakenUsernames($this->getCurrentSchool(), $username);
+        $takenUsernames = $this->getRepo()->findTakenUsernames($this->getCurrentSchool(), $username, $user);
         $suffix = '';
 
         while (in_array($username . $suffix, $takenUsernames)) {

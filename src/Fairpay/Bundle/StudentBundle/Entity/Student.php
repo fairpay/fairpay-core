@@ -469,7 +469,7 @@ class Student extends SchoolContext
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {

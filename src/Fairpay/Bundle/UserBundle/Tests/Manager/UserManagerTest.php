@@ -5,10 +5,12 @@ namespace Fairpay\Bundle\UserBundle\Tests\Manager;
 
 
 use Fairpay\Bundle\SchoolBundle\Entity\School;
+use Fairpay\Bundle\StudentBundle\Manager\StudentManager;
 use Fairpay\Bundle\UserBundle\Entity\Token;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Manager\TokenManager;
 use Fairpay\Bundle\UserBundle\Manager\UserManager;
+use Fairpay\Util\Email\Services\EmailHelper;
 use Fairpay\Util\Tests\UnitTestCase;
 use Fairpay\Util\Util\StringUtil;
 use Fairpay\Util\Util\TokenGenerator;
@@ -24,6 +26,7 @@ class UserManagerTest extends UnitTestCase
     // Mocked
     protected $passwordEncoder;
     protected $tokenManager;
+    protected $studentManager;
 
     /**
      * {@inheritDoc}
@@ -37,13 +40,16 @@ class UserManagerTest extends UnitTestCase
         $this->tokenManager->create(Argument::type(User::class), Argument::any())->will(function($args) {
             return new Token($args[0], $args[1], 'token');
         });
+        $this->studentManager = $this->mock(StudentManager::class);
 
         $this->userManager = new UserManager(
             $this->passwordEncoder->reveal(),
             new TokenGenerator(),
             new StringUtil(),
             new TokenStorage(),
-            $this->tokenManager->reveal()
+            $this->tokenManager->reveal(),
+            $this->studentManager->reveal(),
+            new EmailHelper([], [])
         );
 
         $this->initManager($this->userManager);
@@ -183,6 +189,6 @@ class UserManagerTest extends UnitTestCase
      */
     public function havingTakenUsernames(array $usernames = [])
     {
-        $this->repo->findTakenUsernames(Argument::type(School::class), Argument::any())->willReturn($usernames);
+        $this->repo->findTakenUsernames(Argument::type(School::class), Argument::any(), null)->willReturn($usernames);
     }
 }

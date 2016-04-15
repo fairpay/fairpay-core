@@ -5,6 +5,7 @@ namespace Fairpay\Util\Tests\Helpers;
 
 /**
  * @method showcase()
+ * @method dashboard()
  * @method registrationEmailSent($email)
  * @method registrationStep1($registrationToken)
  * @method registrationStep3($registrationToken)
@@ -30,7 +31,10 @@ class RedirectedHelper extends TestCaseHelper
         $expected = $this->testCase->url->__call($name, $arguments);
         $actual = $this->testCase->client->getRequest()->getRequestUri();
 
-        $this->testCase->assertEquals($this->normalize($expected), $this->normalize($actual));
+        $expected = $this->normalize($expected);
+        $actual   = $this->normalize($actual);
+
+        $this->testCase->assertEquals($expected, $actual, 'You are not redirected to the right place.');
     }
 
     protected function normalize($path)

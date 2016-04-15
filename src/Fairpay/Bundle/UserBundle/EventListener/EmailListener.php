@@ -7,6 +7,7 @@ namespace Fairpay\Bundle\UserBundle\EventListener;
 use Fairpay\Bundle\UserBundle\Entity\Token;
 use Fairpay\Bundle\UserBundle\Event\UserCreatedEvent;
 use Fairpay\Bundle\UserBundle\Event\UserEvent;
+use Fairpay\Bundle\UserBundle\Event\UserRequestResendRegistrationEmail;
 use Fairpay\Bundle\UserBundle\Event\UserRequestResetPassword;
 
 class EmailListener extends \Fairpay\Util\EventListener\EmailListener

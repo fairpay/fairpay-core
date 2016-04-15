@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
  * @method string showcase()
+ * @method string dashboard()
  * @method string registrationEmailSent($email)
  * @method string registrationStep1($registrationToken)
  * @method string registrationStep3($registrationToken)
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
  * @method string registrationStep5($registrationToken)
  * @method string registrationStep6($registrationToken)
  * @method string createUserFromStudent($id)
+ * @method string userRegister()
  * @method string userRegistrationStep1($token)
  * @method string userRegistrationStep2($token)
  * @method string userRegistrationStep3($token)
@@ -22,6 +24,7 @@ class UrlHelper extends TestCaseHelper
 {
     static $routes = array(
         'showcase' => 'fairpay_homepage',
+        'dashboard' => 'fairpay_dashboard',
         'registrationEmailSent' => ['fairpay_school_registration_email_sent', 'email'],
         'registrationStep1' => ['fairpay_school_registration_step1', 'registrationToken'],
         'registrationStep3' => ['fairpay_school_registration_step3', 'registrationToken'],
@@ -29,6 +32,7 @@ class UrlHelper extends TestCaseHelper
         'registrationStep5' => ['fairpay_school_registration_step5', 'registrationToken'],
         'registrationStep6' => ['fairpay_school_registration_step6', 'registrationToken'],
         'createUserFromStudent' => ['fairpay_student_create_user', 'id'],
+        'userRegister' => 'fairpay_user_register',
         'userRegistrationStep1' => ['fairpay_user_registration_step1', 'token'],
         'userRegistrationStep2' => ['fairpay_user_registration_step2', 'token'],
         'userRegistrationStep3' => ['fairpay_user_registration_step3', 'token'],

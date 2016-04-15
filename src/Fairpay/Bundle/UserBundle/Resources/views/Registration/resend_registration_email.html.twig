@@ -2,7 +2,6 @@
 
 {% block body %}
     <p>Vous devriez déjà être inscrit et avoir reçus un email de validation.</p>
-    <p>
-        <a class="btn success">Me renvoyer l'email de validation</a>
-    </p>
+
+    <a href="{{ path('fairpay_user_register') }}" class="btn success" id="resend-email">Me renvoyer l'email de validation</a>
 {% endblock %}

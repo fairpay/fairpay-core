@@ -7,6 +7,8 @@ services:
             - "@fairpay.string_util"
             - "@security.token_storage"
             - "@token_manager"
+            - "@student_manager"
+            - "@fairpay.email_helper"
         calls:
             - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
             - [ setSchoolManager,[ "@school_manager" ] ]
@@ -76,3 +78,10 @@ services:
             - [ init,[ "@mailer", "@twig" ] ]
         tags:
             - { name: kernel.event_subscriber }
+
+    fairpay.user.student_change_name_listener:
+        class: Fairpay\Bundle\UserBundle\EventListener\StudentChangeNameListener
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate }

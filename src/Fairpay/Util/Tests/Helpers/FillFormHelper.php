@@ -59,6 +59,13 @@ class FillFormHelper extends TestCaseHelper
         ));
     }
 
+    public function userEmail($email = null)
+    {
+        $this->sendForm('user_email', array(
+            'email' => $email,
+        ));
+    }
+
     public function userRegistrationStep1($firstName = null, $lastName = null, $schoolYear = null)
     {
         $this->sendForm('student_mandatory_fields', array(
