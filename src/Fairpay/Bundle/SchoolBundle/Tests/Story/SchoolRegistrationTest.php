@@ -32,7 +32,7 @@ class SchoolRegistrationTest extends WebTestCase
     {
         $this->havingRegistered();
         $this->havingAnotherSchoolWithOldSlug('esiee');
-        $this->client->request('GET', $this->url->registrationStep3($this->registrationToken));
+        $this->client->request('GET', $this->url->schoolRegistrationStep3($this->registrationToken));
         $this->completeStep3('esiee');
         $this->assertNoSchoolWithOldSlug('esiee');
     }
@@ -42,13 +42,13 @@ class SchoolRegistrationTest extends WebTestCase
         $this->havingRegistered();
 
         // Go directly to step 4
-        $this->client->request('GET', $this->url->registrationStep4($this->registrationToken));
-        $this->redirected->registrationStep3($this->registrationToken);
+        $this->client->request('GET', $this->url->schoolRegistrationStep4($this->registrationToken));
+        $this->redirected->schoolRegistrationStep3($this->registrationToken);
 
         // Go directly to step 6
-        $this->client->request('GET', $this->url->registrationStep6($this->registrationToken));
-        $this->redirected->registrationStep5($this->registrationToken);
-        $this->redirected->registrationStep3($this->registrationToken);
+        $this->client->request('GET', $this->url->schoolRegistrationStep6($this->registrationToken));
+        $this->redirected->schoolRegistrationStep5($this->registrationToken);
+        $this->redirected->schoolRegistrationStep3($this->registrationToken);
     }
 
     /**
@@ -63,7 +63,7 @@ class SchoolRegistrationTest extends WebTestCase
         $this->mail->catchMails();
         $this->fillForm->schoolCreation($name, $email);
         $this->registrationToken = $this->getRegistrationTokenFromMail();
-        $this->redirected->registrationEmailSent($email);
+        $this->redirected->schoolRegistrationEmailSent($email);
 
         return $this->registrationToken;
     }
@@ -78,7 +78,7 @@ class SchoolRegistrationTest extends WebTestCase
             $registrationToken = $this->registrationToken;
         }
 
-        $crawler = $this->client->request('GET', $this->url->registrationStep1($registrationToken));
+        $crawler = $this->client->request('GET', $this->url->schoolRegistrationStep1($registrationToken));
         $link = $crawler->filter('#go-to-step-2')->eq(0)->link();
         $this->client->click($link);
     }
@@ -93,7 +93,7 @@ class SchoolRegistrationTest extends WebTestCase
             $registrationToken = $this->registrationToken;
         }
 
-        $this->client->request('GET', $this->url->registrationStep1($registrationToken));
+        $this->client->request('GET', $this->url->schoolRegistrationStep1($registrationToken));
         $this->mail->catchMails();
         $this->fillForm->registrationChangeEmail('new@edu.esiee.fr');
         $newRegistrationToken = $this->getRegistrationTokenFromMail();
@@ -109,7 +109,7 @@ class SchoolRegistrationTest extends WebTestCase
     protected function completeStep2($schoolName = null)
     {
         $this->fillForm->registrationStep2($schoolName);
-        $this->redirected->registrationStep3($this->registrationToken);
+        $this->redirected->schoolRegistrationStep3($this->registrationToken);
     }
 
     /**
@@ -119,7 +119,7 @@ class SchoolRegistrationTest extends WebTestCase
     protected function completeStep3($schoolSlug = 'esiee')
     {
         $this->fillForm->registrationStep3($schoolSlug);
-        $this->redirected->registrationStep4($this->registrationToken);
+        $this->redirected->schoolRegistrationStep4($this->registrationToken);
     }
 
     /**
@@ -130,7 +130,7 @@ class SchoolRegistrationTest extends WebTestCase
     protected function completeStep4($allowUnregisteredEmails = null, $allowedEmailDomains = null)
     {
         $this->fillForm->registrationStep4($allowUnregisteredEmails, $allowedEmailDomains);
-        $this->redirected->registrationStep5($this->registrationToken);
+        $this->redirected->schoolRegistrationStep5($this->registrationToken);
     }
 
     /**
@@ -140,7 +140,7 @@ class SchoolRegistrationTest extends WebTestCase
     protected function completeStep5($username = 'Ferus')
     {
         $this->fillForm->registrationStep5($username);
-        $this->redirected->registrationStep6($this->registrationToken);
+        $this->redirected->schoolRegistrationStep6($this->registrationToken);
     }
 
     /**

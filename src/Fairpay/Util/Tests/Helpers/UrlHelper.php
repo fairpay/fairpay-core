@@ -6,44 +6,44 @@ namespace Fairpay\Util\Tests\Helpers;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
- * @method string showcase()
- * @method string dashboard()
- * @method string registrationEmailSent($email)
- * @method string registrationStep1($registrationToken)
- * @method string registrationStep3($registrationToken)
- * @method string registrationStep4($registrationToken)
- * @method string registrationStep5($registrationToken)
- * @method string registrationStep6($registrationToken)
  * @method string createUserFromStudent($id)
+ * @method string dashboard()
+ * @method string login()
+ * @method string logout()
+ * @method string requestResetPassword()
+ * @method string resetPassword($token)
+ * @method string schoolRegistrationEmailSent($email)
+ * @method string schoolRegistrationStep1($registrationToken)
+ * @method string schoolRegistrationStep3($registrationToken)
+ * @method string schoolRegistrationStep4($registrationToken)
+ * @method string schoolRegistrationStep5($registrationToken)
+ * @method string schoolRegistrationStep6($registrationToken)
+ * @method string showcase()
  * @method string userRegister()
  * @method string userRegistrationStep1($token)
  * @method string userRegistrationStep2($token)
  * @method string userRegistrationStep3($token)
- * @method string requestResetPassword()
- * @method string resetPassword($token)
- * @method string login()
- * @method string logout()
  */
 class UrlHelper extends TestCaseHelper
 {
-    static $routes = array(
-        'showcase' => 'fairpay_homepage',
-        'dashboard' => 'fairpay_dashboard',
-        'registrationEmailSent' => ['fairpay_school_registration_email_sent', 'email'],
-        'registrationStep1' => ['fairpay_school_registration_step1', 'registrationToken'],
-        'registrationStep3' => ['fairpay_school_registration_step3', 'registrationToken'],
-        'registrationStep4' => ['fairpay_school_registration_step4', 'registrationToken'],
-        'registrationStep5' => ['fairpay_school_registration_step5', 'registrationToken'],
-        'registrationStep6' => ['fairpay_school_registration_step6', 'registrationToken'],
+    static public $routes = array(
         'createUserFromStudent' => ['fairpay_student_create_user', 'id'],
+        'dashboard' => 'fairpay_dashboard',
+        'login' => 'fairpay_login',
+        'logout' => 'fairpay_logout',
+        'requestResetPassword' => 'fairpay_user_account_request_reset_password',
+        'resetPassword' => ['fairpay_user_account_reset_password', 'token'],
+        'schoolRegistrationEmailSent' => ['fairpay_school_registration_email_sent', 'email'],
+        'schoolRegistrationStep1' => ['fairpay_school_registration_step1', 'registrationToken'],
+        'schoolRegistrationStep3' => ['fairpay_school_registration_step3', 'registrationToken'],
+        'schoolRegistrationStep4' => ['fairpay_school_registration_step4', 'registrationToken'],
+        'schoolRegistrationStep5' => ['fairpay_school_registration_step5', 'registrationToken'],
+        'schoolRegistrationStep6' => ['fairpay_school_registration_step6', 'registrationToken'],
+        'showcase' => 'fairpay_homepage',
         'userRegister' => 'fairpay_user_register',
         'userRegistrationStep1' => ['fairpay_user_registration_step1', 'token'],
         'userRegistrationStep2' => ['fairpay_user_registration_step2', 'token'],
         'userRegistrationStep3' => ['fairpay_user_registration_step3', 'token'],
-        'requestResetPassword' => 'fairpay_user_account_request_reset_password',
-        'resetPassword' => ['fairpay_user_account_reset_password', 'token'],
-        'login' => 'fairpay_login',
-        'logout' => 'fairpay_logout',
     );
 
     private $subdomain;

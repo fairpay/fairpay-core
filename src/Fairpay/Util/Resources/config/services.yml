@@ -78,3 +78,11 @@ services:
             - "@fairpay.email_helper"
         tags:
             - { name: validator.constraint_validator, alias: fairpay.valid_domain }
+
+    # Commands
+    command.add_route_for_tests:
+        class: Fairpay\Util\Command\AddRouteForTests
+        arguments:
+            - "@router"
+        tags:
+            -  { name: console.command }
