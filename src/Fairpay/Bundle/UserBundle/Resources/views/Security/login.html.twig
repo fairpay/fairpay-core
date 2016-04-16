@@ -7,7 +7,7 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path("fairpay_login_check") }}" method="post">
+    <form action="{{ path("fairpay_login_check") }}" method="post" name="login">
 
         <div class="form-group">
             <label for="username">Username:</label>

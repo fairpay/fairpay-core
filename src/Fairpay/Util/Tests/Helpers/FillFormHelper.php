@@ -91,6 +91,22 @@ class FillFormHelper extends TestCaseHelper
         ));
     }
 
+    public function userResetPassword($plainPassword, $repeat)
+    {
+        $this->sendForm('user_reset_password', array(
+            'plainPassword[first]' => $plainPassword,
+            'plainPassword[second]' => $repeat,
+        ));
+    }
+
+    public function login($username, $password)
+    {
+        $this->sendForm('login', array(
+            '_username' => $username,
+            '_password' => $password,
+        ));
+    }
+
     /**
      * Get a form from its name.
      *
@@ -107,7 +123,7 @@ class FillFormHelper extends TestCaseHelper
         $form = $this->getForm($name);
         $formData = array();
         foreach($data as $key => $value) {
-            $formData[$name."[$key]"] = $value === null ? $this->getFormValue($form, $name, $key) : $value;
+            $formData[$this->getInputName($name, $key)] = $value === null ? $this->getFormValue($form, $name, $key) : $value;
         }
         $this->getClient()->submit($form, $formData);
     }
@@ -115,12 +131,27 @@ class FillFormHelper extends TestCaseHelper
     protected function getFormValue($form, $name, $field)
     {
         $values = $form->getValues();
-        $key = $name."[$field]";
+        $key = $this->getInputName($name, $field);
 
         if (isset($values[$key])) {
-            return $values[$name."[$field]"];
+            return $values[$key];
         }
 
         return null;
+    }
+
+    protected function getInputName($formName, $inputName)
+    {
+        if (in_array($inputName, ['_username', '_password'])) {
+            return $inputName;
+        }
+
+        $pos = strpos($inputName, '[');
+
+        if (!$pos) {
+            return $formName."[$inputName]";
+        }
+
+        return $formName . '[' . substr($inputName, 0, $pos) . ']' . substr($inputName, $pos);
     }
 }

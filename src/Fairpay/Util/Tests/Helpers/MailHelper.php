@@ -33,7 +33,7 @@ class MailHelper extends TestCaseHelper
         $router = $this->get('router');
         $route = $router->generate($name, array($param => md5($param), '_subdomain' => $subdomain));
         $route = preg_replace('[#()]', '\\\$0', $route); // Escape regexp special char
-        $route = str_replace(md5($param), '([^/]+)', $route);
+        $route = str_replace(md5($param), '([^/"]+)', $route);
         preg_match('#' . $route . '#', $body, $matches);
 
         $this->testCase->assertEquals(2, count($matches), "Link to route $name was not found in the email body.");

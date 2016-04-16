@@ -14,6 +14,7 @@ namespace Fairpay\Util\Tests\Helpers;
  * @method registrationStep6($registrationToken)
  * @method userRegistrationStep2($token)
  * @method userRegistrationStep3($token)
+ * @method login()
  */
 class RedirectedHelper extends TestCaseHelper
 {

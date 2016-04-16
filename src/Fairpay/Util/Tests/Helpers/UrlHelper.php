@@ -19,6 +19,10 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
  * @method string userRegistrationStep1($token)
  * @method string userRegistrationStep2($token)
  * @method string userRegistrationStep3($token)
+ * @method string requestResetPassword()
+ * @method string resetPassword($token)
+ * @method string login()
+ * @method string logout()
  */
 class UrlHelper extends TestCaseHelper
 {
@@ -36,6 +40,10 @@ class UrlHelper extends TestCaseHelper
         'userRegistrationStep1' => ['fairpay_user_registration_step1', 'token'],
         'userRegistrationStep2' => ['fairpay_user_registration_step2', 'token'],
         'userRegistrationStep3' => ['fairpay_user_registration_step3', 'token'],
+        'requestResetPassword' => 'fairpay_user_account_request_reset_password',
+        'resetPassword' => ['fairpay_user_account_reset_password', 'token'],
+        'login' => 'fairpay_login',
+        'logout' => 'fairpay_logout',
     );
 
     private $subdomain;
