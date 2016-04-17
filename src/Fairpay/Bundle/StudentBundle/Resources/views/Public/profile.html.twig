@@ -17,6 +17,10 @@
         <p>
             Cet étudiant n'a pas de compte. <a href="{{ path('fairpay_student_create_user', {'id': student.id}) }}">Creer</a>
         </p>
+    {% else %}
+        <p>
+            <b>{{ 'user.balance'|trans }} :</b> {{ student.balance|format_price }}
+        </p>
     {% endif %}
     <p>
         <b>{{ 'student.email'|trans }} :</b> {{ student.email }}

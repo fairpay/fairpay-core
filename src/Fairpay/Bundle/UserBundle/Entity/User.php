@@ -64,6 +64,12 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
     private $isVendor;
 
     /**
+     * @var float
+     * @ORM\Column(name="balance", type="decimal", precision=7, scale=2)
+     */
+    private $balance;
+
+    /**
      * @var Student
      * @ORM\OneToOne(targetEntity="Fairpay\Bundle\StudentBundle\Entity\Student", fetch="EXTRA_LAZY", mappedBy="user")
      */
@@ -72,6 +78,7 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
     public function __construct()
     {
         $this->isVendor = true;
+        $this->balance = 0;
     }
 
     public function __toString()
@@ -265,6 +272,22 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
     public function setIsVendor($isVendor)
     {
         $this->isVendor = $isVendor;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBalance()
+    {
+        return $this->balance;
+    }
+
+    /**
+     * @param float $balance
+     */
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
     }
 }
 

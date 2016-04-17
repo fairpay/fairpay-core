@@ -105,6 +105,7 @@ class Student extends SchoolContext
 
     /**
      * @var SubHistory
+     * @Exclude()
      * @ORM\OneToMany(targetEntity="Fairpay\Bundle\StudentBundle\Entity\SubHistory", mappedBy="student", fetch="LAZY")
      */
     protected $subHistory;
@@ -133,6 +134,19 @@ class Student extends SchoolContext
     public function __toString()
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * @VirtualProperty()
+     * @return float
+     */
+    public function getBalance()
+    {
+        if ($this->user) {
+            return $this->user->getBalance();
+        }
+
+        return null;
     }
 
 

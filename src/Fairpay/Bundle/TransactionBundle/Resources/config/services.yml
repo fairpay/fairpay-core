@@ -1,0 +1,8 @@
+services:
+    transaction_manager:
+        class: Fairpay\Bundle\TransactionBundle\Manager\TransactionManager
+        arguments:
+            - "@user_manager"
+        calls:
+            - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
+            - [ setSchoolManager,[ "@school_manager" ] ]

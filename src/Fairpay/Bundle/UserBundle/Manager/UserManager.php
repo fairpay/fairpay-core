@@ -10,6 +10,8 @@ use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Event\UserCreatedEvent;
 use Fairpay\Bundle\UserBundle\Event\UserEvent;
 use Fairpay\Bundle\UserBundle\Event\UserRequestResetPassword;
+use Fairpay\Bundle\UserBundle\Exception\NotAllowedEmailDomainException;
+use Fairpay\Bundle\UserBundle\Exception\UnregisteredEmailsNotAllowedException;
 use Fairpay\Bundle\UserBundle\Form\AbstractUserSetPassword;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
 use Fairpay\Util\Email\Services\EmailHelper;
@@ -67,6 +69,11 @@ class UserManager extends CurrentSchoolAwareManager
         $this->emailHelper     = $emailHelper;
     }
 
+    /**
+     * Login a user.
+     *
+     * @param User $user
+     */
     public function login(User $user)
     {
         $token = new UsernamePasswordToken($user, null, 'fairpay_db', $user->getRoles());
@@ -137,7 +144,9 @@ class UserManager extends CurrentSchoolAwareManager
      * Create a User based on an email.
      *
      * @param $email
-     * @return null|string Error message
+     * @return User
+     * @throws NotAllowedEmailDomainException
+     * @throws UnregisteredEmailsNotAllowedException
      */
     public function createFromEmail($email)
     {
@@ -148,24 +157,17 @@ class UserManager extends CurrentSchoolAwareManager
             $domain = $this->emailHelper->getDomain($email);
 
             if (!$school->getAllowUnregisteredEmails()) {
-                return sprintf(
-                    'Votre adresse email n\'est pas sur la liste des élèves, demandez au BDE (%s) de vous ajouter.',
-                    $school->getEmail()
-                );
+                throw new UnregisteredEmailsNotAllowedException();
             }
 
             if (!in_array($domain, $school->getAllowedEmailDomains())) {
-                return sprintf(
-                    'Vous devez utiliser votre adresse email scolaire pour vous inscrire: %s.',
-                    $school->getAllowedEmailDomainsPretty()
-                );
+                throw new NotAllowedEmailDomainException();
             }
 
             $student = $this->studentManager->createBlank($email);
         }
 
-        $this->createFromStudent($student, UserCreatedEvent::SELF_REGISTERED);
-        return null;
+        return $this->createFromStudent($student, UserCreatedEvent::SELF_REGISTERED);
     }
 
     /**
@@ -201,8 +203,9 @@ class UserManager extends CurrentSchoolAwareManager
     }
 
     /**
-     * If a User with this particular email exist send him a link to reset his password or to finish registration.
-     * @param User|string $user
+     * Send the user a link to reset his password or to finish registration.
+     * If a User with this particular email does not exist, do nothing.
+     * @param User|string $user a User object, email, or username
      * @return bool true if a User is found
      */
     public function requestResetPassword($user)
@@ -232,7 +235,7 @@ class UserManager extends CurrentSchoolAwareManager
     /**
      * If a User with this particular email exist send him a link to finish registration.
      *
-     * @param User|string $user
+     * @param User|string $user a User object, email, or username
      * @return bool true if a User is found
      */
     public function requestResendRegistrationEmail($user)
@@ -310,6 +313,23 @@ class UserManager extends CurrentSchoolAwareManager
     public function isEmail($email)
     {
         return false !== strpos($email, '@');
+    }
+
+    /**
+     * Get current active User.
+     * @return User|null
+     */
+    public function getActiveUser()
+    {
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
     }
 
     public function getEntityShortcutName()

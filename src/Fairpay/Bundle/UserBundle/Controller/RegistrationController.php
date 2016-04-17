@@ -10,6 +10,8 @@ use Fairpay\Bundle\StudentBundle\Form\StudentOptionalFields;
 use Fairpay\Bundle\StudentBundle\Form\StudentOptionalFieldsType;
 use Fairpay\Bundle\UserBundle\Entity\Token;
 use Fairpay\Bundle\UserBundle\Entity\User;
+use Fairpay\Bundle\UserBundle\Exception\NotAllowedEmailDomainException;
+use Fairpay\Bundle\UserBundle\Exception\UnregisteredEmailsNotAllowedException;
 use Fairpay\Bundle\UserBundle\Form\UserEmailType;
 use Fairpay\Bundle\UserBundle\Form\UserSetPasswordType;
 use Fairpay\Util\Controller\FairpayController;
@@ -36,12 +38,19 @@ class RegistrationController extends FairpayController
             if ($user) {
                 return $this->handleAlreadyRegisteredUser($user);
             } else {
-                $error = $this->get('user_manager')->createFromEmail($email);
-
-                if ($error) {
-                    $this->flashError($error);
-                } else {
+                try {
+                    $this->get('user_manager')->createFromEmail($email);
                     $this->flashSuccess('Un email vous a été envoyé pour finaliser votre inscription.');
+                } catch (NotAllowedEmailDomainException $e) {
+                    $this->flashError(sprintf(
+                        'Vous devez utiliser votre adresse email scolaire pour vous inscrire: %s.',
+                        $this->get('school_manager')->getCurrentSchool()->getAllowedEmailDomainsPretty()
+                    ));
+                } catch (UnregisteredEmailsNotAllowedException $e) {
+                    $this->flashError(sprintf(
+                        'Votre adresse email n\'est pas sur la liste des élèves, demandez au BDE (%s) de vous ajouter .',
+                        $this->get('school_manager')->getCurrentSchool()->getEmail()
+                    ));
                 }
             }
         }

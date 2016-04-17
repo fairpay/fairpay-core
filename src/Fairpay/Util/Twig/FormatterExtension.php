@@ -26,6 +26,7 @@ class FormatterExtension extends \Twig_Extension
             new \Twig_SimpleFilter('format_gender', array($this, 'gender'), array('is_safe' => ['html'])),
             new \Twig_SimpleFilter('format_date', array($this, 'date'), array('is_safe' => ['html'])),
             new \Twig_SimpleFilter('format_phone', array($this, 'phone'), array('is_safe' => ['html'])),
+            new \Twig_SimpleFilter('format_price', array($this, 'price'), array('is_safe' => ['html'])),
         );
     }
 
@@ -68,6 +69,13 @@ class FormatterExtension extends \Twig_Extension
         }
 
         return $phone;
+    }
+
+    public function price($price = null)
+    {
+        $price = floatval($price);
+
+        return number_format($price, 2, '.', ' ') . '€';
     }
 
     /**
