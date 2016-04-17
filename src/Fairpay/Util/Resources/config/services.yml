@@ -86,3 +86,8 @@ services:
             - "@router"
         tags:
             -  { name: console.command }
+
+    command.add_form_for_tests:
+        class: Fairpay\Util\Command\AddFormForTests
+        tags:
+            -  { name: console.command }
