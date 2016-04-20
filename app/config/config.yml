@@ -10,6 +10,7 @@ imports:
     - { resource: "@FairpayUserBundle/Resources/config/services.yml" }
     - { resource: "@FairpayStudentBundle/Resources/config/services.yml" }
     - { resource: "@FairpayTransactionBundle/Resources/config/services.yml" }
+    - { resource: "@FairpayVendorBundle/Resources/config/services.yml" }
 
 parameters:
     locale: fr

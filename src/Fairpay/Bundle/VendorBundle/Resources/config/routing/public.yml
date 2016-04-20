@@ -1,0 +1,5 @@
+fairpay_profile_vendor:
+    path:     /profile/vendors/{id}
+    defaults: { _controller: FairpayVendorBundle:Public:profile }
+    requirements:
+        id: \d+|b80bb7740288fda1f201890375a60c8f

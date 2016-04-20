@@ -44,6 +44,11 @@ fairpay_student_public:
     host: "{_subdomain}.%base_host%"
     prefix:   /
 
+fairpay_vendor_public:
+    resource: "@FairpayVendorBundle/Resources/config/routing/public.yml"
+    host: "{_subdomain}.%base_host%"
+    prefix:   /
+
 fairpay_student_admin:
     resource: "@FairpayStudentBundle/Resources/config/routing/admin.yml"
     host: "{_subdomain}.%base_host%"

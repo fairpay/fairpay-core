@@ -51,6 +51,13 @@ services:
         tags:
             - { name: request.param_converter }
 
+    user_param_converter:
+        class: Fairpay\Bundle\UserBundle\Request\ParamConverter\UserParamConverter
+        arguments:
+            - "@user_manager"
+        tags:
+            - { name: request.param_converter }
+
     # Tiwg
     fairpay.twig.api_token_extension:
         class: Fairpay\Bundle\UserBundle\Twig\ApiTokenExtension

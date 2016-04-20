@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\SerializedName;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -33,6 +34,7 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
 
     /**
      * @var string
+     * @SerializedName("full_name")
      * @ORM\Column(name="display_name", type="string", length=50)
      */
     private $displayName;
