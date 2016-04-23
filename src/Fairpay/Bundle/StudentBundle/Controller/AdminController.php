@@ -18,9 +18,7 @@ class AdminController extends FairpayController
      */
     public function listAction()
     {
-        return array(
-            'token' => $this->get('jwt_generator')->generate($this->getUser()),
-        );
+        return array();
     }
 
     /**

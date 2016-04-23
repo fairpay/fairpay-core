@@ -1,0 +1,4 @@
+fairpay_api_vendors:
+    path: /vendors
+    defaults: { _controller: FairpayVendorBundle:Api:vendors }
+    methods: GET

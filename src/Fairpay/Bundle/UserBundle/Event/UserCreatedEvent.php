@@ -20,10 +20,11 @@ class UserCreatedEvent extends UserEvent
 
     /**
      * UserCreatedEvent constructor.
-     * @param User $user
-     * @param      $trigger
+     * @param User  $user
+     * @param       $trigger
+     * @param Token $token
      */
-    public function __construct(User $user, $trigger, Token $token)
+    public function __construct(User $user, $trigger, Token $token = null)
     {
         parent::__construct($user);
         $this->trigger = $trigger;

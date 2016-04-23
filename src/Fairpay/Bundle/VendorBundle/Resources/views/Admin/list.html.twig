@@ -1,0 +1,40 @@
+{% extends "FairpayVendorBundle:Admin:layout.html.twig" %}
+
+{% trans_default_domain "entities" %}
+
+{% block heading %}
+    <h1>Liste des marchand</h1>
+{% endblock %}
+
+{% block body %}
+    <div data-paginate="/vendors">
+        Chargement...
+        <script id="template" type="text/html">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ 'user.full_name'|trans }}</th>
+                        <th>{{ 'user.email'|trans }}</th>
+                        <th>{{ 'user.balance'|trans }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    [[for data]]
+                    <tr>
+                        <td>[[:full_name]]</td>
+                        <td>[[:email]]</td>
+                        <td>[[:balance]]</td>
+                        <td class="actions">
+                            <a class="btn info" href="{{ path_tmpl('fairpay_profile_vendor') }}">
+                                Voir
+                            </a>
+                        </td>
+                    </tr>
+                    [[/for]]
+                </tbody>
+            </table>
+        </script>
+    </div>
+{% endblock %}
+

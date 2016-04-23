@@ -1863,7 +1863,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/264188ddf4d3586c80ea615f8ec8eaea34e652a1",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/496745aeba741e63b7149da3e1f712d441751182",
                 "reference": "264188ddf4d3586c80ea615f8ec8eaea34e652a1",
                 "shasum": ""
             },
@@ -3303,7 +3303,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/855dc0e829fad123966347612b4183e307338c11",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/9562f8291b98bcd4abd4959ab74f35191d7b34b5",
                 "reference": "855dc0e829fad123966347612b4183e307338c11",
                 "shasum": ""
             },

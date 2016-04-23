@@ -1,3 +1,6 @@
 user:
 
     balance: Solde
+    email: Adresse email
+    full_name: Nom
+    username: Nom d'utilisateur

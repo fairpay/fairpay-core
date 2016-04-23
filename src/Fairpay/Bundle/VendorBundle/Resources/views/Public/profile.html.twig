@@ -1,12 +1,19 @@
 {% extends "::layout.html.twig" %}
 
+{% trans_default_domain "entities" %}
+
 {% block heading %}
     <h1>
-        <span class="label success">Marchand</span>
+        <span class="label success">Marchand</span> {{ vendor.full_name }}
     </h1>
 {% endblock %}
 
 
 {% block body %}
-    {{ dump(vendor) }}
+    <p>
+        <b>{{ 'user.balance'|trans }} :</b> {{ vendor.balance|format_price }}
+    </p>
+    <p>
+        <b>{{ 'user.email'|trans }} :</b> {{ vendor.email }}
+    </p>
 {% endblock %}

@@ -117,7 +117,7 @@ class UserManagerTest extends UnitTestCase
      */
     public function testCreateUserWithoutSchool()
     {
-        $this->userManager->createMainVendor('Bruce Wayne', 'b4atman', 'bruce@wayne');
+        $this->userManager->createVendor('Bruce Wayne', 'bruce@wayne', 'b4atman');
     }
 
     public function testCreateUser()
@@ -130,7 +130,7 @@ class UserManagerTest extends UnitTestCase
             ->encodePassword(Argument::type(User::class), 'b4atman')
             ->willReturn('encoded_password');
 
-        $user = $this->userManager->createMainVendor('Bruce Wayne', 'b4atman', 'bruce@wayne');
+        $user = $this->userManager->createVendor('Bruce Wayne', 'bruce@wayne', 'b4atman');
 
         $this->assertEquals('bruce.wayne', $user->getUsername());
         $this->assertEquals('Bruce Wayne', $user->getDisplayName());

@@ -2,9 +2,11 @@
 
 namespace Fairpay\Bundle\UserBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Fairpay\Bundle\SchoolBundle\Model\SchoolContext;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
+use Fairpay\Bundle\VendorBundle\Entity\Group;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\SerializedName;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -76,6 +78,13 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
      * @ORM\OneToOne(targetEntity="Fairpay\Bundle\StudentBundle\Entity\Student", fetch="EXTRA_LAZY", mappedBy="user")
      */
     private $student;
+
+    /**
+     * @var Collection
+     * @Exclude()
+     * @ORM\OneToMany(targetEntity="Fairpay\Bundle\VendorBundle\Entity\Group", fetch="EXTRA_LAZY", mappedBy="vendor")
+     */
+    private $groups;
 
     public function __construct()
     {
@@ -291,5 +300,38 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
     {
         $this->balance = $balance;
     }
-}
 
+    /**
+     * Add group
+     *
+     * @param Group $group
+     *
+     * @return User
+     */
+    public function addGroup(Group $group)
+    {
+        $this->groups[] = $group;
+
+        return $this;
+    }
+
+    /**
+     * Remove group
+     *
+     * @param Group $group
+     */
+    public function removeGroup(Group $group)
+    {
+        $this->groups->removeElement($group);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+}

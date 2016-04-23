@@ -106,9 +106,14 @@ class RegistrationController extends FairpayController
      */
     public function step1Action(Request $request, Token $token)
     {
-        $user    = $token->getUser();
+        $user = $token->getUser();
+
+        if ($user->getIsVendor()) {
+            return $this->redirectToRoute('fairpay_user_registration_step3', ['token' => $token]);
+        }
+
         $student = $user->getStudent();
-        $form    = $this->createForm(StudentMandatoryFieldsType::class, new StudentMandatoryFields($student));
+        $form = $this->createForm(StudentMandatoryFieldsType::class, new StudentMandatoryFields($student));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $this->get('student_manager')->selfUpdate($student, $form->getData());
@@ -133,7 +138,13 @@ class RegistrationController extends FairpayController
      */
     public function step2Action(Request $request, Token $token)
     {
-        $student = $token->getUser()->getStudent();
+        $user = $token->getUser();
+
+        if ($user->getIsVendor()) {
+            return $this->redirectToRoute('fairpay_user_registration_step3', ['token' => $token]);
+        }
+
+        $student = $user->getStudent();
         $form    = $this->createForm(StudentOptionalFieldsType::class, new StudentOptionalFields($student));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {

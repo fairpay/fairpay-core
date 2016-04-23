@@ -1,0 +1,7 @@
+fairpay_vendor_list:
+    path:     /admin/vendors
+    defaults: { _controller: FairpayVendorBundle:Admin:list }
+
+fairpay_vendor_add:
+    path:     /admin/vendors/add
+    defaults: { _controller: FairpayVendorBundle:Admin:add }

@@ -16,6 +16,10 @@ fairpay_student_api:
     resource: "@FairpayStudentBundle/Resources/config/routing/api.yml"
     host: api.%base_host%
 
+fairpay_vendors_api:
+    resource: "@FairpayVendorBundle/Resources/config/routing/api.yml"
+    host: api.%base_host%
+
 
 # School
 
@@ -51,5 +55,10 @@ fairpay_vendor_public:
 
 fairpay_student_admin:
     resource: "@FairpayStudentBundle/Resources/config/routing/admin.yml"
+    host: "{_subdomain}.%base_host%"
+    prefix:   /
+
+fairpay_vendor_admin:
+    resource: "@FairpayVendorBundle/Resources/config/routing/admin.yml"
     host: "{_subdomain}.%base_host%"
     prefix:   /

@@ -110,4 +110,13 @@ class UserRepository extends EntityRepository
                 ->getArrayResult()
         );
     }
+
+    public function queryAllVendors(School $school)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.school = :school')
+            ->andWhere('u.isVendor = true')
+            ->setParameter('school', $school)
+            ;
+    }
 }

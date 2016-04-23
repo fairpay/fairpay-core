@@ -1,1 +1,5 @@
 services:
+    vendor_manager:
+        class: Fairpay\Bundle\VendorBundle\Manager\VendorManager
+        arguments:
+            - "@user_manager"

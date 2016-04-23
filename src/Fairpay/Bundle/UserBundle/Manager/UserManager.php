@@ -81,29 +81,36 @@ class UserManager extends CurrentSchoolAwareManager
     }
 
     /**
-     * Create the main vendor and save it to DB.
+     * Create a vendor and save it to DB.
+     * If $plainPassword is null, then an email will be sent to invite the vendor to finish the registration.
      *
-     * @param string $displayName
-     * @param string $plainPassword
-     * @param string $email
+     * @param string      $displayName
+     * @param string      $email
+     * @param null|string $plainPassword
+     * @param int         $trigger
      * @return User
      * @throws NoCurrentSchoolException
      */
-    public function createMainVendor($displayName, $plainPassword, $email)
+    public function createVendor($displayName, $email, $plainPassword = null, $trigger = UserCreatedEvent::REGISTERED_BY_ADMIN)
     {
         $user = $this->newUser($displayName);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $plainPassword));
         $user->setEmail($email);
         $user->setIsVendor(true);
+
+        if ($plainPassword) {
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $plainPassword));
+        } else {
+            $user->setPassword($this->tokenGenerator->generateToken());
+        }
 
         $this->em->persist($user);
         $this->em->flush();
 
-        $token = $this->tokenManager->create($user, Token::REGISTER);
+        $token = $plainPassword ? null : $this->tokenManager->create($user, Token::REGISTER);
 
         $this->dispatcher->dispatch(
             UserCreatedEvent::onUserCreated,
-            new UserCreatedEvent($user, UserCreatedEvent::REGISTERED_WITH_SCHOOL, $token)
+            new UserCreatedEvent($user, $trigger, $token)
         );
 
         return $user;
