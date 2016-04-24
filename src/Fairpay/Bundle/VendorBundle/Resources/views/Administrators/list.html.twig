@@ -1,0 +1,25 @@
+{% extends "FairpayVendorBundle:Administrators:layout.html.twig" %}
+{% block heading %}
+    <h1>Liste des administrateurs</h1>
+    {{ form(form) }}
+{% endblock %}
+
+{% block body %}
+    {% spaceless %}
+        {% for group in vendor.groups %}
+            <div style="width: 50%; display:inline-block; vertical-align: top">
+                <h3>{{ group }}</h3>
+                <ul>
+                    {% for id in group.users %}
+                        <li>
+                            <a href="{{ path('fairpay_profile_student', {id: admins[id].student_id}) }}">{{ admins[id].full_name }}</a>
+                            (<a href="{{ path('fairpay_vendor_administrators_remove_user', {id: vendor.id, user: id}) }}">Retirer</a>)
+                        </li>
+                    {% else %}
+                        <p>Aucun administrateur</p>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}

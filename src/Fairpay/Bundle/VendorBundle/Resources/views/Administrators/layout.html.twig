@@ -1,0 +1,12 @@
+{% extends "::layout.html.twig" %}
+
+{% block nav %}
+    <div class="container submenu">
+        <nav>
+            <a href="{{ path('fairpay_vendor_administrators', {id: vendor.id}) }}">Administrateurs</a>
+            <a href="{{ path('fairpay_vendor_administrators', {id: vendor.id}) }}">Groupes</a>
+        </nav>
+
+        <a class="btn success" href="{{ path('fairpay_vendor_group_add', {id: vendor.id}) }}">Créer un groupe</a>
+    </div>
+{% endblock %}

@@ -57,6 +57,11 @@ services:
             - "@user_manager"
         tags:
             - { name: request.param_converter }
+    fairpay.permission_voter:
+        class: Fairpay\Bundle\UserBundle\Security\Voter\PermissionVoter
+        tags:
+            - { name: security.voter }
+        public: false
 
     # Tiwg
     fairpay.twig.api_token_extension:

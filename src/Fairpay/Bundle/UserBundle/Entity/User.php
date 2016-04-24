@@ -74,6 +74,12 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
     private $balance;
 
     /**
+     * @var array
+     * @ORM\Column(name="roles", type="json_array")
+     */
+    private $permissions;
+
+    /**
      * @var Student
      * @ORM\OneToOne(targetEntity="Fairpay\Bundle\StudentBundle\Entity\Student", fetch="EXTRA_LAZY", mappedBy="user")
      */
@@ -90,6 +96,7 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
     {
         $this->isVendor = true;
         $this->balance = 0;
+        $this->permissions = ['global' => 0];
     }
 
     public function __toString()
@@ -219,6 +226,22 @@ class User extends SchoolContext implements UserInterface, EquatableInterface, \
     public function getRoles()
     {
         return array('ROLE_USER');
+    }
+
+    /**
+     * @return array
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
+
+    /**
+     * @param array $permissions
+     */
+    public function setPermissions($permissions)
+    {
+        $this->permissions = $permissions;
     }
 
     public function eraseCredentials()

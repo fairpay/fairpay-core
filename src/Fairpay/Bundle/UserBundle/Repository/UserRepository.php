@@ -5,6 +5,7 @@ namespace Fairpay\Bundle\UserBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query;
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 use Fairpay\Bundle\UserBundle\Entity\User;
 
@@ -118,5 +119,36 @@ class UserRepository extends EntityRepository
             ->andWhere('u.isVendor = true')
             ->setParameter('school', $school)
             ;
+    }
+
+    /**
+     * Returns an array of ['id', 'full_name', 'student_id'] where the keys are also the ids.
+     * @param User $vendor
+     * @return array
+     */
+    public function findAdministrators(User $vendor)
+    {
+        $ids = [];
+
+        foreach ($vendor->getGroups() as $group) {
+            $ids = array_merge($ids, $group->getUsers());
+        }
+
+        $result = $this->createQueryBuilder('u')
+            ->select('u.id, u.displayName full_name, s.id student_id')
+            ->innerJoin('u.student', 's')
+            ->where('u.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY)
+            ;
+
+        $returnedValue = [];
+
+        foreach ($result as $item) {
+            $returnedValue[$item['id']] = $item;
+        }
+
+        return $returnedValue;
     }
 }

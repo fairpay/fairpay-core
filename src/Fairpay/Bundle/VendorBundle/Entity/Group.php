@@ -8,7 +8,7 @@ use Fairpay\Bundle\UserBundle\Entity\User;
 /**
  * RoleGroup
  *
- * @ORM\Table(name="vendor_permission_group")
+ * @ORM\Table(name="permission_group")
  * @ORM\Entity(repositoryClass="Fairpay\Bundle\VendorBundle\Repository\RoleGroupRepository")
  */
 class Group
@@ -30,7 +30,7 @@ class Group
     private $name;
 
     /**
-     * @var array
+     * @var integer
      *
      * @ORM\Column(name="mask", type="integer")
      */
@@ -38,10 +38,35 @@ class Group
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="Fairpay\Bundle\UserBundle\Entity\User", fetch="EAGER", inversedBy="groups")
+     * @ORM\ManyToOne(targetEntity="Fairpay\Bundle\UserBundle\Entity\User", fetch="LAZY", inversedBy="groups")
      */
     private $vendor;
 
+    /**
+     * @var integer[]
+     *
+     * @ORM\Column(name="users_ids", type="simple_array")
+     */
+    private $users;
+
+    /**
+     * Group constructor.
+     * @param string  $name
+     * @param integer $mask
+     * @param User    $vendor
+     */
+    public function __construct($name = null, $mask = 0, User $vendor = null)
+    {
+        $this->name   = $name;
+        $this->mask   = $mask;
+        $this->vendor = $vendor;
+        $this->users  = [];
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * Get id
@@ -107,6 +132,35 @@ class Group
     public function setVendor($vendor)
     {
         $this->vendor = $vendor;
+    }
+
+    /**
+     * @return \integer[]
+     */
+    public function getUsers()
+    {
+        return array_filter($this->users);
+    }
+
+    /**
+     * @param \integer[] $users
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    }
+
+    public function addUser(User $user)
+    {
+        $this->users[] = $user->getId();
+        $this->users = array_unique($this->users);
+    }
+
+    public function removeUser(User $user)
+    {
+        if (false !== $key = array_search($user->getId(), $this->users)) {
+            unset($this->users[$key]);
+        }
     }
 }
 

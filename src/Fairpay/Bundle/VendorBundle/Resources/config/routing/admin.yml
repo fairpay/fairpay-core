@@ -5,3 +5,15 @@ fairpay_vendor_list:
 fairpay_vendor_add:
     path:     /admin/vendors/add
     defaults: { _controller: FairpayVendorBundle:Admin:add }
+
+fairpay_vendor_administrators:
+    path:     /admin/{id}/administrators
+    defaults: { _controller: FairpayVendorBundle:Administrators:list }
+
+fairpay_vendor_administrators_remove_user:
+    path:     /admin/{id}/administrators/remove-user
+    defaults: { _controller: FairpayVendorBundle:Administrators:removeUser }
+
+fairpay_vendor_group_add:
+    path:     /admin/{id}/administrators/add-group
+    defaults: { _controller: FairpayVendorBundle:Administrators:addGroup }

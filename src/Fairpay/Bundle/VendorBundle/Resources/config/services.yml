@@ -3,3 +3,11 @@ services:
         class: Fairpay\Bundle\VendorBundle\Manager\VendorManager
         arguments:
             - "@user_manager"
+            - "@doctrine.orm.entity_manager"
+
+    fairpay.group.group_update_listener:
+        class: Fairpay\Bundle\VendorBundle\EventListener\GroupUpdateListener
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate }
