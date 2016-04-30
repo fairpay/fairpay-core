@@ -45,7 +45,7 @@ class Group
     /**
      * @var integer[]
      *
-     * @ORM\Column(name="users_ids", type="simple_array")
+     * @ORM\Column(name="users_ids", type="simple_array", nullable=true)
      */
     private $users;
 

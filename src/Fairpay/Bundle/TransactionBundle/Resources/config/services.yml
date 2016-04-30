@@ -3,6 +3,7 @@ services:
         class: Fairpay\Bundle\TransactionBundle\Manager\TransactionManager
         arguments:
             - "@user_manager"
+            - "@security.authorization_checker"
         calls:
             - [ init,[ "@doctrine.orm.entity_manager", "@event_dispatcher" ] ]
             - [ setSchoolManager,[ "@school_manager" ] ]

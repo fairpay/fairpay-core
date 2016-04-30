@@ -7,6 +7,13 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Fairpay\Bundle\VendorBundle\Entity\Group;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * When a Group is updated this listener updates the users as well.
+ *
+ * - When users are removed from the Group, their permission regarding this particular vendor is removed
+ * - When users are added to the Group, their permission regarding this particular vendor is updated
+ * - When the mask of the Group changes, all the users permission regarding this particular vendor are updated
+ */
 class GroupUpdateListener
 {
     /** @var  ContainerInterface */
@@ -29,31 +36,32 @@ class GroupUpdateListener
             return;
         }
 
-        $usrRepo = $args->getEntityManager()->getRepository('FairpayUserBundle:User');
-        $changes = $args->getEntityManager()->getUnitOfWork()->getEntityChangeSet($group);
-        $newUsers = array_diff($changes['users'][1], $changes['users'][0]);
-        $removedUsers = array_diff($changes['users'][0], $changes['users'][1]);
+        $userManager = $this->container->get('user_manager');
+        $changes = $args
+            ->getEntityManager()
+            ->getUnitOfWork()
+            ->getEntityChangeSet($group);
 
-        foreach ($removedUsers as $id) {
-            $user = $usrRepo->findOneBy(['id' => $id]);
-            $permissions = $user->getPermissions();
+        if (key_exists('users', $changes)) {
+            $newUsers     = array_diff($changes['users'][1], $changes['users'][0]);
+            $removedUsers = array_diff($changes['users'][0], $changes['users'][1]);
 
-            unset($permissions[$group->getVendor()->getId()]);
+            foreach ($removedUsers as $id) {
+                $user = $userManager->findUserById($id);
+                $userManager->removePermission($user, $group->getVendor());
+            }
 
-            $user->setPermissions($permissions);
-            $args->getEntityManager()->persist($user);
+            foreach ($newUsers as $id) {
+                $user = $userManager->findUserById($id);
+                $userManager->setPermission($user, $group);
+            }
         }
 
-        foreach ($newUsers as $id) {
-            $user = $usrRepo->findOneBy(['id' => $id]);
-            $permissions = $user->getPermissions();
-
-            $permissions[$group->getVendor()->getId()] = $group->getMask();
-
-            $user->setPermissions($permissions);
-            $args->getEntityManager()->persist($user);
+        if (key_exists('mask', $changes)) {
+            foreach ($group->getUsers() as $id) {
+                $user = $userManager->findUserById($id);
+                $userManager->setPermission($user, $group);
+            }
         }
-
-        $args->getEntityManager()->flush();
     }
 }

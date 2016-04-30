@@ -9,6 +9,7 @@ use Fairpay\Bundle\TransactionBundle\Entity\Transaction;
 use Fairpay\Bundle\TransactionBundle\Exception\ActiveUserIsNotStudentException;
 use Fairpay\Bundle\TransactionBundle\Exception\DifferentSchoolsException;
 use Fairpay\Bundle\TransactionBundle\Exception\InsufficientBalanceException;
+use Fairpay\Bundle\TransactionBundle\Exception\InsufficientPermissionsException;
 use Fairpay\Bundle\TransactionBundle\Exception\InvalidAmountException;
 use Fairpay\Bundle\TransactionBundle\Exception\IssuerAndReceiverNotDefinedException;
 use Fairpay\Bundle\TransactionBundle\Exception\SameIssuerAndReceiverException;
@@ -17,6 +18,7 @@ use Fairpay\Bundle\TransactionBundle\Repository\TransactionRepository;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\UserBundle\Manager\UserManager;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 
 /**
@@ -32,13 +34,18 @@ class TransactionManager extends CurrentSchoolAwareManager
     /** @var  UserManager */
     private $userManager;
 
+    /** @var  AuthorizationChecker */
+    private $authorizationChecker;
+
     /**
      * TransactionManager constructor.
-     * @param UserManager $userManager
+     * @param UserManager          $userManager
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct(UserManager $userManager)
+    public function __construct(UserManager $userManager, AuthorizationChecker $authorizationChecker)
     {
         $this->userManager = $userManager;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -67,7 +74,7 @@ class TransactionManager extends CurrentSchoolAwareManager
      */
     public function withdrawal(User $user, $amount, $message)
     {
-        $this->execute($amount, $message, null, $user);
+        $this->execute($amount, $message, $user, null);
     }
 
     /**
@@ -85,7 +92,7 @@ class TransactionManager extends CurrentSchoolAwareManager
      * @throws ConnectionException
      * @throws \Exception
      */
-    public function create($amount, $message, User $issuer = null, User $receiver = null)
+    public function execute($amount, $message, User $issuer = null, User $receiver = null)
     {
         $issuedBy = $this->userManager->getActiveUser();
 
@@ -99,11 +106,11 @@ class TransactionManager extends CurrentSchoolAwareManager
         }
 
         // Check amount
-        if ($amount < 0.01) {
+        if ($amount < 0.01 || $this->numberOfDecimals($amount) > 2) {
             throw new InvalidAmountException('The amount must be greater than zero.');
         }
 
-        $type = ($issuer ? 2 : 0) + ($receiver ? 1 : 0);
+        $type = ($issuer ? self::TYPE_WITHDRAWAL : 0) + ($receiver ? self::TYPE_DEPOSIT : 0);
 
         // Check deposit
         if (self::TYPE_DEPOSIT === $type) {
@@ -113,12 +120,28 @@ class TransactionManager extends CurrentSchoolAwareManager
                 throw new DifferentSchoolsException('The receiver is from a different school than you.');
             }
 
+            if (!$this->authorizationChecker->isGranted('TRANSACTIONS_DEPOSIT')) {
+                throw new InsufficientPermissionsException('You do not have sufficient permissions to deposit money on an account.');
+            }
+
+            if ($receiver->getIsVendor() && !$this->authorizationChecker->isGranted('TRANSACTIONS_VENDOR')) {
+                throw new InsufficientPermissionsException('You do not have sufficient permissions to deposit money on a vendor\'s account.');
+            }
+
         // Check withdrawal
         } else if (self::TYPE_WITHDRAWAL === $type) {
 
             // Check same school
             if ($issuer->getSchool() !== $issuedBy->getSchool()) {
                 throw new DifferentSchoolsException('The issuer is from a different school than you.');
+            }
+
+            if (!$this->authorizationChecker->isGranted('TRANSACTIONS_WITHDRAWAL')) {
+                throw new InsufficientPermissionsException('You do not have sufficient permissions to withdraw money from an account.');
+            }
+
+            if ($receiver->getIsVendor() && !$this->authorizationChecker->isGranted('TRANSACTIONS_VENDOR')) {
+                throw new InsufficientPermissionsException('You do not have sufficient permissions to withdraw money from a vendor\'s account.');
             }
 
         // Check transfer
@@ -137,6 +160,16 @@ class TransactionManager extends CurrentSchoolAwareManager
             // Check same school
             if ($issuedBy->getSchool() !== $receiver->getSchool()) {
                 throw new DifferentSchoolsException('You are not from the same school than the issuer and the receiver.');
+            }
+
+            // Check if issuer is a vendor
+            if ($issuer->getIsVendor() && !$this->authorizationChecker->isGranted('_TRANSACTIONS_EXECUTE', $issuer)) {
+                throw new InsufficientPermissionsException('You do not have sufficient permissions to transfer money on behalf of this vendor\'s account.');
+            }
+
+            // Check if issuer is not a vendor
+            if (!$issuer->getIsVendor() && $issuer->getId() != $issuedBy->getId() && !$this->authorizationChecker->isGranted('TRANSACTIONS_GOD')) {
+                throw new InsufficientPermissionsException('You do not have sufficient permissions to transfer money on behalf of this student\'s account.');
             }
         }
 
@@ -213,7 +246,11 @@ class TransactionManager extends CurrentSchoolAwareManager
         }
 
         if ($transaction->getCanceled()) {
-            throw new TransactionAlreadyCanceledException();
+            throw new TransactionAlreadyCanceledException('This transaction has already been canceled.');
+        }
+
+        if (!$this->authorizationChecker->isGranted('TRANSACTIONS_GOD')) {
+            throw new InsufficientPermissionsException('You do not have sufficient permissions to cancel a transaction.');
         }
 
         $transaction->setCanceled(true);
@@ -262,6 +299,15 @@ class TransactionManager extends CurrentSchoolAwareManager
                 throw $e;
             }
         }
+    }
+
+    public function numberOfDecimals($value)
+    {
+        if ((int) $value == $value) {
+            return 0;
+        }
+
+        return strlen($value) - strrpos($value, '.') - 1;
     }
 
     public function getEntityShortcutName()

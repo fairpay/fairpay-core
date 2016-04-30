@@ -14,6 +14,8 @@ use Fairpay\Bundle\UserBundle\Exception\NotAllowedEmailDomainException;
 use Fairpay\Bundle\UserBundle\Exception\UnregisteredEmailsNotAllowedException;
 use Fairpay\Bundle\UserBundle\Form\AbstractUserSetPassword;
 use Fairpay\Bundle\UserBundle\Repository\UserRepository;
+use Fairpay\Bundle\UserBundle\Security\Acl\MaskBuilder;
+use Fairpay\Bundle\VendorBundle\Entity\Group;
 use Fairpay\Util\Email\Services\EmailHelper;
 use Fairpay\Util\Manager\CurrentSchoolAwareManager;
 use Fairpay\Util\Manager\NoCurrentSchoolException;
@@ -310,6 +312,59 @@ class UserManager extends CurrentSchoolAwareManager
     public function findUserById($id)
     {
         return $this->getRepo()->findUserById($this->getCurrentSchool(), $id);
+    }
+
+    /**
+     * Remove the permission of a $user regarding a particular $vendor.
+     * @param User $user
+     * @param User $vendor
+     */
+    public function removePermission(User $user, User $vendor)
+    {
+        $permissions = $user->getPermissions();
+
+        unset($permissions[$vendor->getId()]);
+        $this->dispatchGlobalPermissions($permissions);
+
+        $user->setPermissions($permissions);
+        $this->em->persist($user);
+        $this->em->flush();
+    }
+
+    /**
+     * Remove the permission of a $user regarding a particular $vendor.
+     * @param User  $user
+     * @param Group $group
+     */
+    public function setPermission(User $user, Group $group)
+    {
+        $permissions = $user->getPermissions();
+
+        $permissions[$group->getVendor()->getId()] = $group->getMask();
+        $this->dispatchGlobalPermissions($permissions);
+
+        $user->setPermissions($permissions);
+        $this->em->persist($user);
+        $this->em->flush();
+    }
+
+    /**
+     * Recompute the global roles from each vendor specific roles.
+     * @param $permissions
+     */
+    private function dispatchGlobalPermissions(&$permissions)
+    {
+        $builder = new MaskBuilder();
+
+        foreach ($permissions as $id => $mask) {
+            if ($id === 'global') {
+                continue;
+            }
+
+            $builder->addAllGlobalRoles($mask);
+        }
+
+        $permissions['global'] = $builder->get();
     }
 
     /**

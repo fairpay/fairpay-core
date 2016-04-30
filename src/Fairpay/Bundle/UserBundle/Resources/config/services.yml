@@ -97,3 +97,10 @@ services:
             - "@service_container"
         tags:
             - { name: doctrine.event_listener, event: postUpdate }
+
+    fairpay.annotation.security:
+        class: Fairpay\Bundle\UserBundle\EventListener\PermissionListener
+        arguments:
+            - "@security.authorization_checker"
+        tags:
+            - { name: kernel.event_subscriber }

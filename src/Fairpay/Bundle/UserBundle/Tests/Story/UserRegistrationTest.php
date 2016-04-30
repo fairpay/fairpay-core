@@ -6,6 +6,7 @@ namespace Fairpay\Bundle\UserBundle\Tests\Story;
 use Fairpay\Bundle\SchoolBundle\Entity\School;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Bundle\UserBundle\Entity\User;
+use Fairpay\Bundle\UserBundle\Security\Acl\MaskBuilder;
 use Fairpay\Util\Tests\WebTestCase;
 
 class UserRegistrationTest extends WebTestCase
@@ -112,7 +113,7 @@ class UserRegistrationTest extends WebTestCase
         $student = $this->havingAStudent();
         $this->mail->catchMails();
 
-        $this->login();
+        $this->login(['global' => MaskBuilder::MASK_ACCOUNTS_MANAGE]);
         $this->client->request('GET', $this->url->createUserFromStudent($student->getId()));
         $this->logout();
 

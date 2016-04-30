@@ -75,10 +75,10 @@ abstract class WebTestCase extends BaseTestCase
         return $this->$name;
     }
 
-    protected function login(array $roles = ['ROLE_USER'], $username = 'user')
+    protected function login(array $permissions = ['global' => 0], $username = 'user')
     {
         $this->client->setServerParameter('HTTP_username', $username);
-        $this->client->setServerParameter('HTTP_roles', implode('|', $roles));
+        $this->client->setServerParameter('HTTP_permissions', json_encode($permissions));
     }
 
     protected function logout()

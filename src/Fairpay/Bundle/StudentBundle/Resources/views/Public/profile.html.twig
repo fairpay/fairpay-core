@@ -10,14 +10,16 @@
 
 
 {% block body %}
-    <p>
-        <a href="{{ path('fairpay_student_edit', {'id': student.id}) }}" class="btn">Editer cet étudiant</a>
-    </p>
-    {% if not student.has_account %}
+    {% if is_granted('STUDENTS_MANAGE') %}
+        <p>
+            <a href="{{ path('fairpay_student_edit', {'id': student.id}) }}" class="btn">Editer cet étudiant</a>
+        </p>
+    {% endif %}
+    {% if not student.has_account and is_granted('ACCOUNTS_MANAGE') %}
         <p>
             Cet étudiant n'a pas de compte. <a href="{{ path('fairpay_student_create_user', {'id': student.id}) }}">Creer</a>
         </p>
-    {% else %}
+    {% else if student.balance is defined %}
         <p>
             <b>{{ 'user.balance'|trans }} :</b> {{ student.balance|format_price }}
         </p>

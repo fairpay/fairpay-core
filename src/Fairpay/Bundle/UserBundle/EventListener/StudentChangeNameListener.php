@@ -8,6 +8,9 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * When a student updates his first or last name, update the user's display name and username.
+ */
 class StudentChangeNameListener
 {
     /** @var  ContainerInterface */
@@ -31,7 +34,7 @@ class StudentChangeNameListener
         }
 
         $user = $student->getUser();
-        $displayName = (string)$student;
+        $displayName = (string) $student;
         $user->setDisplayName($displayName);
         $user->setUsername($this->container->get('user_manager')->usernameFromDisplayName($displayName, $user));
 

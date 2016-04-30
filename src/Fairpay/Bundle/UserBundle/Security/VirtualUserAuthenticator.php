@@ -38,7 +38,7 @@ class VirtualUserAuthenticator extends AbstractGuardAuthenticator
     {
         return [
             'username' => $request->headers->get('username'),
-            'roles' => explode('|', $request->headers->get('roles')),
+            'permissions' => json_decode($request->headers->get('permissions'), true),
         ];
     }
 
@@ -57,6 +57,7 @@ class VirtualUserAuthenticator extends AbstractGuardAuthenticator
         if ($credentials['username']) {
             $user = new User();
             $user->setUsername($credentials['username']);
+            $user->setPermissions($credentials['permissions']);
             return $user;
         }
 

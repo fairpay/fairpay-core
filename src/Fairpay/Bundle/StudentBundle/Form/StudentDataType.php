@@ -10,9 +10,22 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class StudentDataType extends AbstractType
 {
+    /** @var  AuthorizationChecker */
+    private $authorizationChecker;
+
+    /**
+     * StudentDataType constructor.
+     * @param AuthorizationChecker  $authorizationChecker
+     */
+    public function __construct(AuthorizationChecker $authorizationChecker)
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -66,6 +79,10 @@ class StudentDataType extends AbstractType
                 'label' => 'Ok',
             ))
         ;
+
+        if (!$this->authorizationChecker->isGranted('SUBSCRIBERS_MANAGE')) {
+            $builder->remove('isSub');
+        }
     }
     
     /**

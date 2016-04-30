@@ -7,10 +7,14 @@ namespace Fairpay\Bundle\StudentBundle\Controller;
 use Fairpay\Bundle\StudentBundle\Entity\Student;
 use Fairpay\Bundle\StudentBundle\Form\StudentData;
 use Fairpay\Bundle\StudentBundle\Form\StudentDataType;
+use Fairpay\Bundle\UserBundle\Annotation\Permission;
 use Fairpay\Util\Controller\FairpayController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Permission("STUDENTS_MANAGE")
+ */
 class AdminController extends FairpayController
 {
     /**
@@ -67,6 +71,11 @@ class AdminController extends FairpayController
         );
     }
 
+    /**
+     * @Permission("ACCOUNTS_MANAGE")
+     * @param Student $student
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function createUserAction(Student $student)
     {
         if ($student->hasAccount()) {

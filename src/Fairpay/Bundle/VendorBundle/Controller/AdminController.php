@@ -4,6 +4,7 @@
 namespace Fairpay\Bundle\VendorBundle\Controller;
 
 
+use Fairpay\Bundle\UserBundle\Annotation\Permission;
 use Fairpay\Bundle\VendorBundle\Form\VendorDataType;
 use Fairpay\Util\Controller\FairpayController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -13,6 +14,7 @@ class AdminController extends FairpayController
 {
     /**
      * @Template()
+     * @Permission("VENDORS_VIEW")
      * @return array
      */
     public function listAction()

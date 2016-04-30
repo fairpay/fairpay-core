@@ -47,12 +47,15 @@ class PermissionVoter extends Voter
         $builder = new MaskBuilder();
         $builder->set($builder->resolveMask($attribute));
 
-        if (!$vendor) {
+        if (!$vendor || !key_exists($vendor->getId(), $user->getPermissions())) {
             return $builder->isIncluded($user->getPermissions()['global']);
         }
 
         if ($vendor && key_exists($vendor->getId(), $user->getPermissions())) {
-            return $builder->isIncluded($user->getPermissions()[$vendor->getId()]);
+            $permission = new MaskBuilder($user->getPermissions()[$vendor->getId()]);
+            $permission->add($user->getPermissions()['global']);
+
+            return $builder->isIncluded($permission->get());
         }
 
         return false;

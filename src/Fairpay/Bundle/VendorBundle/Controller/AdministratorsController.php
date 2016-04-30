@@ -4,6 +4,7 @@
 namespace Fairpay\Bundle\VendorBundle\Controller;
 
 
+use Fairpay\Bundle\UserBundle\Annotation\Permission;
 use Fairpay\Bundle\UserBundle\Entity\User;
 use Fairpay\Bundle\VendorBundle\Form\GroupAssignmentType;
 use Fairpay\Bundle\VendorBundle\Form\GroupDataType;
@@ -11,6 +12,9 @@ use Fairpay\Util\Controller\FairpayController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Permission("_ADMINS_MANAGE")
+ */
 class AdministratorsController extends FairpayController
 {
     /**
